@@ -38,9 +38,9 @@ class MenusSettingControllerTest extends ControllerTestCase {
 		'plugin.menus.frame',
 		'plugin.menus.block',
 		'plugin.menus.box',
-		'plugin.boxes.plugin',
-		'plugin.boxes.language',
-		'plugin.boxes.frames_language',
+		'plugin.menus.plugin',
+		'plugin.menus.language',
+		'plugin.menus.frames_language',
 	);
 
 /**
