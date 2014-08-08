@@ -18,6 +18,7 @@
 		"mustangostang/spyc":     "dev-master",
 		"satooshi/php-coveralls": "dev-master",
 		"netcommons/users":       "dev-master",
+		"netcommons/containers":  "dev-master",
 		"netcommons/frames":      "dev-master",
 		"netcommons/boxes":       "dev-master"
 	},
