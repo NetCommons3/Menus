@@ -1,30 +1,36 @@
 {
-    "name":        "netcommons/menus",
-    "description": "Menus Plugin for NetCommons3",
-    "type":        "cakephp-plugin",
-    "keywords":    ["netcommons","cakephp2"],
-    "homepage":    "http://www.netcommons.org/",
-    "license":     "NetCommons License",
-    "authors": [
-        {
-            "name":     "NetCommons Community",
-            "homepage": "https://github.com/NetCommons3/Auth/graphs/contributors"
-        }
-    ],
-    "require": {
-        "cakephp/cakephp":        "~2.4",
-        "cakephp/debug_kit":      "~2.2",
-        "cakedc/migrations":      "~2.2",
-        "twbs/bootstrap":         "~3.1",
-        "components/jquery":      "~2.1"
-    },
-    "require-dev": {
-        "netcommons/users":       "dev-master",
-        "netcommons/frames":      "dev-master",
-        "netcommons/boxes":       "dev-master",
-        "satooshi/php-coveralls": "dev-master"
-    },
-    "config": {
-        "vendor-dir": "vendors"
-    }
+	"name": "netcommons/menus",
+	"description": "MenusPlugin for Cakephp",
+	"homepage": "http://www.netcommons.org/",
+	"extra": {
+		"installer-paths": {
+			"app/Plugin/{$name}": ["type:cakephp-plugin"]
+		}
+	},
+	"require": {
+		"cakephp/cakephp":              "~2.4",
+		"cakephp/debug_kit":            "~2.2",
+		"cakedc/migrations":            "~2.2",
+		"twbs/bootstrap":               "~3.1",
+		"components/jquery":            "~2.1"
+	},
+	"require-dev": {
+		"mustangostang/spyc":     "dev-master",
+		"satooshi/php-coveralls": "dev-master",
+		"netcommons/users":       "dev-master",
+		"netcommons/frames":      "dev-master",
+		"netcommons/boxes":       "dev-master"
+	},
+	"license": "NetCommons License",
+	"authors": [
+		{
+			"name": "NetCommons Community",
+			"homepage": "https://github.com/NetCommons3/Menus/graphs/contributors"
+		}
+	],
+	"type":        "cakephp-plugin",
+	"keywords":    ["cakephp", "menu"],
+	"config": {
+		"vendor-dir": "vendors"
+	}
 }
