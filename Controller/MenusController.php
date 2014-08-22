@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Controller
  */
 
@@ -18,7 +17,6 @@ App::uses('MenusAppController', 'Menus.Controller');
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package     app.Plugin.Menus.Controller
- * @since       NetCommons 3.0.0.0
  */
 class MenusController extends MenusAppController {
 
@@ -26,7 +24,6 @@ class MenusController extends MenusAppController {
  * Language ID
  *
  * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since     NetCommons 3.0.0.0
  * @var       int
  */
 	public $langId = 2;
@@ -35,7 +32,6 @@ class MenusController extends MenusAppController {
  * Room Id
  *
  * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since     NetCommons 3.0.0.0
  * @var       bool
  */
 	public $roomId = 1;
@@ -44,7 +40,6 @@ class MenusController extends MenusAppController {
  * Model name
  *
  * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since     NetCommons 3.0.0.0
  * @var       array
  */
 	public $uses = array(
@@ -57,7 +52,6 @@ class MenusController extends MenusAppController {
  * beforeFilter
  *
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @return   void
  */
 	public function beforeFilter() {
@@ -70,7 +64,6 @@ class MenusController extends MenusAppController {
  *
  * @param int $frameId frames.id
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @return   CakeResponse
  */
 	public function index($frameId = 0) {

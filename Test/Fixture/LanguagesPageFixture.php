@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Test.Fixture
  */
 
@@ -15,7 +14,6 @@
  * MenuPageFixure
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Test.Case
  */
 class LanguagesPageFixture extends CakeTestFixture {
@@ -24,7 +22,6 @@ class LanguagesPageFixture extends CakeTestFixture {
  * Fields
  *
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @var      array
  */
 	public $fields = array(
@@ -46,7 +43,6 @@ class LanguagesPageFixture extends CakeTestFixture {
  * Records
  *
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @var      array
  */
 	public $records = array(

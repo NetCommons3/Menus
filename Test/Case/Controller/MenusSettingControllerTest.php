@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.AccessCounters.Test.Controller.Case
  */
 
@@ -18,7 +17,6 @@ Configure::load('Containers.config');
  * MenusController Test Case
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Test.Controller.Case
  */
 class MenusSettingControllerTest extends ControllerTestCase {
@@ -27,7 +25,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * Fixtures
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @var     array
  */
 	public $fixtures = array(
@@ -48,7 +45,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * setUp
  *
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @return   void
  */
 	public function setUp() {
@@ -62,7 +58,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * tearDown method
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function tearDown() {
@@ -76,7 +71,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testIndex
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testIndex() {
@@ -87,7 +81,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testHeaderMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testHeaderMenu() {
@@ -101,7 +94,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testLeftMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testLeftMenu() {
@@ -115,7 +107,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testMainMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testMainMenu() {
@@ -129,7 +120,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testRightMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testRightMenu() {
@@ -143,7 +133,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testFooterMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testFooterMenu() {
@@ -157,7 +146,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testNoContainerMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testNoContainer() {
@@ -171,7 +159,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testNoContainerMenu
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testNoFrameId() {
@@ -185,7 +172,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * testSlugs
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  void
  */
 	public function testSlugs() {

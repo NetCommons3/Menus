@@ -7,7 +7,6 @@
  * @author        Noriko Arai <arai@nii.ac.jp>
  * @author        Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package       app.Plugin.Menus.Test.Case
- * @since         NetCommons 3.0.0.0
  * @license       http://www.netcommons.org/license.txt NetCommons License
  */
 
@@ -16,7 +15,6 @@
  *
  * @author        Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package       app.Plugin.Menus.Test.Case
- * @since         NetCommons 3.0.0.0
  * @codeCoverageIgnore
  */
 class AllMenusTest extends CakeTestSuite {
@@ -25,7 +23,6 @@ class AllMenusTest extends CakeTestSuite {
  * All test suite
  *
  * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since    NetCommons 3.0.0.0
  * @return   CakeTestSuite
  */
 	public static function suite() {

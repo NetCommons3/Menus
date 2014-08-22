@@ -10,7 +10,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Model
  */
 
@@ -23,7 +22,6 @@ App::uses('AppModel', 'Model');
  * @property Language $Language
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since       NetCommons 3.0.0.0
  * @package     app.Plugin.Menus.Model
  */
 class MenuPage extends AppModel {
@@ -32,7 +30,6 @@ class MenuPage extends AppModel {
  * table name
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @var     string
  */
 	public $useTable = 'languages_pages';
@@ -41,7 +38,6 @@ class MenuPage extends AppModel {
  * model name
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @var     string
  */
 	public $name = "MenuPage";
@@ -50,7 +46,6 @@ class MenuPage extends AppModel {
  * belongsTo associations
  *
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @var     array
  */
 	public $belongsTo = array(
@@ -70,7 +65,6 @@ class MenuPage extends AppModel {
  * @param int $roomId rooms.id
  * @param int $langId languages.id
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
- * @since   NetCommons 3.0.0.0
  * @return  int
  */
 	public function getMenuData($roomId, $langId) {
