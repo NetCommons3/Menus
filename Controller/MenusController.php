@@ -70,14 +70,16 @@ class MenusController extends MenusAppController {
 		//フレームIDからコンテナーIDを取得
 		$frame = $this->Frame->findById($frameId);
 		if (! $frame) {
-			return;
+			$this->autoRender = false;
+			return '';
 		}
 		//コンテナータイプを取得(Configure)
 		$containerId = $frame['Box']['container_id'];
 		$conainerTypes = array_flip(Configure::read('Containers.type'));
 
 		if (! isset($conainerTypes[$containerId])) {
-			return $this->render('Menus/index');
+			$this->autoRender = false;
+			return '';
 		}
 
 		//リンクの設定
