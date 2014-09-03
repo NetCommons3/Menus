@@ -11,6 +11,7 @@
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
+App::uses('Container', 'Containers.Model');
 
 /**
  * Menus Controller
@@ -75,7 +76,13 @@ class MenusController extends MenusAppController {
 		}
 		//コンテナータイプを取得(Configure)
 		$containerId = $frame['Box']['container_id'];
-		$conainerTypes = array_flip(Configure::read('Containers.type'));
+		$conainerTypes = array(
+			Container::TYPE_HEADER => 'header',
+			Container::TYPE_MAJOR => 'major',
+			Container::TYPE_MAIN => 'main',
+			Container::TYPE_MINOR => 'minor',
+			Container::TYPE_FOOTER => 'footer',
+		);
 
 		if (! isset($conainerTypes[$containerId])) {
 			$this->autoRender = false;

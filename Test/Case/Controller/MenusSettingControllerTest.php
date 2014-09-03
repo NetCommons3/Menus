@@ -11,7 +11,6 @@
  */
 
 App::uses('MenusController', 'Menus.Controller');
-Configure::load('Containers.config');
 
 /**
  * MenusController Test Case
