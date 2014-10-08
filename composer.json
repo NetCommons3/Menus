@@ -20,7 +20,8 @@
 		"netcommons/users":       "dev-master",
 		"netcommons/containers":  "dev-master",
 		"netcommons/frames":      "dev-master",
-		"netcommons/boxes":       "dev-master"
+		"netcommons/boxes":       "dev-master",
+		"netcommons/pages":       "dev-master"
 	},
 	"license": "NetCommons License",
 	"authors": [
