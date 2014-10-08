@@ -6,7 +6,6 @@
  * @link          http://www.netcommons.org NetCommons Project
  * @author        Noriko Arai <arai@nii.ac.jp>
  * @author        Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package       app.Plugin.Menus.Test.Case
  * @license       http://www.netcommons.org/license.txt NetCommons License
  */
 
@@ -14,7 +13,7 @@
  * Menus All Test Case
  *
  * @author        Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package       app.Plugin.Menus.Test.Case
+ * @package       Menus\Test\Case
  * @codeCoverageIgnore
  */
 class AllMenusTest extends CakeTestSuite {

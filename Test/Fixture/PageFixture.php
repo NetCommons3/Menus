@@ -7,14 +7,13 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @package     app.Plugin.Menus.Test.Fixture
  */
 
 /**
  * PageFixture
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package     app.Plugin.Menus.Test.Case
+ * @package     Menus\Test\Fixture
  */
 class PageFixture extends CakeTestFixture {
 

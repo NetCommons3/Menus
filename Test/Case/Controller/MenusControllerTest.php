@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @package     app.Plugin.AccessCounters.Test.Controller.Case
  */
 
 App::uses('MenusController', 'Menus.Controller');
@@ -16,7 +15,7 @@ App::uses('MenusController', 'Menus.Controller');
  * MenusController Test Case
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package     app.Plugin.Menus.Test.Controller.Case
+ * @package     Menus\Test\Case\Controller
  */
 class MenusControllerTest extends ControllerTestCase {
 
@@ -29,7 +28,7 @@ class MenusControllerTest extends ControllerTestCase {
 	public $fixtures = array(
 		'app.Session',
 		'app.SiteSetting',
-		'app.SiteSettingValue',
+		//'app.SiteSettingValue',
 		'plugin.menus.languages_page',
 		'plugin.menus.page',
 		'plugin.menus.frame',
@@ -37,7 +36,7 @@ class MenusControllerTest extends ControllerTestCase {
 		'plugin.menus.box',
 		'plugin.menus.plugin',
 		'plugin.menus.language',
-		'plugin.menus.frames_language',
+		//'plugin.menus.frames_language',
 	);
 
 /**

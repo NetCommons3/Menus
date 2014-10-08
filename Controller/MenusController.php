@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @package     app.Plugin.Menus.Controller
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
@@ -17,7 +16,7 @@ App::uses('Container', 'Containers.Model');
  * Menus Controller
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package     app.Plugin.Menus.Controller
+ * @package     Menus\Controller
  */
 class MenusController extends MenusAppController {
 
@@ -91,8 +90,8 @@ class MenusController extends MenusAppController {
 
 		//リンクの設定
 		$requestUri = env('REQUEST_URI');
-		if (Configure::read('Pages.isSetting')) {
-			$requestUri = mb_substr($requestUri, mb_strlen(Configure::read('Pages.settingModeWord')) + 1);
+		if (Page::isSetting()) {
+			$requestUri = mb_substr($requestUri, mb_strlen(Page::SETTING_MODE_WORD) + 1);
 		}
 		if (mb_substr($requestUri, 0, 1) == '/') {
 			$requestUri = mb_substr($requestUri, 1);

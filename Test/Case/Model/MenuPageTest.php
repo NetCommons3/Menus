@@ -7,7 +7,6 @@
  * @link        http://www.netcommons.org NetCommons Project
  * @license     http://www.netcommons.org/license.txt NetCommons License
  * @copyright   Copyright 2014, NetCommons Project
- * @package     app.Plugin.AccessCounters.Test.Model.Case
  */
 
 App::uses('MenuPage', 'Menus.Model');
@@ -16,7 +15,7 @@ App::uses('MenuPage', 'Menus.Model');
  * AccessCounter Test Case
  *
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package     app.Plugin.AccessCounters.Test.Model.Case
+ * @package     Menus\Test\Case\Model
  */
 class MenuPageTest extends CakeTestCase {
 
