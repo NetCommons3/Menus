@@ -36,6 +36,7 @@ class MenusControllerTest extends ControllerTestCase {
 		'plugin.menus.plugin',
 		'plugin.menus.language',
 		//'plugin.menus.frames_language',
+		'plugin.users.user',
 	);
 
 /**
