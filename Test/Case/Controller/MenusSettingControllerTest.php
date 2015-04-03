@@ -27,8 +27,7 @@ class MenusSettingControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.Session',
-		'app.SiteSetting',
-		//'app.SiteSettingValue',
+		'plugin.net_commons.site_setting',
 		'plugin.menus.languages_page',
 		'plugin.menus.page',
 		'plugin.menus.frame',
