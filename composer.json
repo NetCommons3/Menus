@@ -15,13 +15,14 @@
 		"components/jquery":            "~2.1"
 	},
 	"require-dev": {
-		"mustangostang/spyc":     "dev-master",
-		"satooshi/php-coveralls": "dev-master",
-		"netcommons/users":       "dev-master",
+		"netcommons/blocks":      "dev-master",
+		"netcommons/boxes":       "dev-master",
 		"netcommons/containers":  "dev-master",
 		"netcommons/frames":      "dev-master",
-		"netcommons/boxes":       "dev-master",
-		"netcommons/pages":       "dev-master"
+		"netcommons/pages":       "dev-master",
+		"netcommons/users":       "dev-master",
+		"mustangostang/spyc":     "dev-master",
+		"satooshi/php-coveralls": "dev-master"
 	},
 	"license": "NetCommons License",
 	"authors": [
