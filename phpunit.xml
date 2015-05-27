@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendors/autoload.php">
     <filter>
-        <blacklist>
+        <whitelist>
             <directory suffix=".php">app/Plugin/Menus</directory>
             <directory suffix=".ctp">app/Plugin/Menus</directory>
-        </blacklist>
+        </whitelist>
     </filter>
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
