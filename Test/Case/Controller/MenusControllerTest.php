@@ -26,16 +26,16 @@ class MenusControllerTest extends ControllerTestCase {
  * @var     array
  */
 	public $fixtures = array(
-		'app.Session',
+		'plugin.blocks.block',
+		'plugin.boxes.box',
+		'plugin.containers.container',
+		'plugin.containers.containers_page',
+		'plugin.frames.frame',
+		'plugin.pages.languages_page',
+		'plugin.pages.page',
+		'plugin.m17n.language',
 		'plugin.net_commons.site_setting',
-		'plugin.menus.languages_page',
-		'plugin.menus.page',
-		'plugin.menus.frame',
-		'plugin.menus.block',
-		'plugin.menus.box',
-		'plugin.menus.plugin',
-		'plugin.menus.language',
-		//'plugin.menus.frames_language',
+		'plugin.net_commons.plugin',
 		'plugin.users.user',
 	);
 
@@ -157,7 +157,7 @@ class MenusControllerTest extends ControllerTestCase {
  * @return  void
  */
 	public function testNoFrameId() {
-		$frameId = 7;
+		$frameId = 99999;
 		$this->testAction('/menus/menus/index/' . $frameId . '/', array('method' => 'get'));
 
 		$this->assertTextNotContains('ERROR', $this->view);

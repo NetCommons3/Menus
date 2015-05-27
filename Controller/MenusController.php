@@ -10,7 +10,6 @@
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
-App::uses('Container', 'Containers.Model');
 
 /**
  * Menus Controller
@@ -45,19 +44,9 @@ class MenusController extends MenusAppController {
 	public $uses = array(
 		'Menus.MenuPage',
 		'Frames.Frame',
-		'Pages.Page'
+		'Pages.Page',
+		'Containers.Container',
 	);
-
-/**
- * beforeFilter
- *
- * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @return   void
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->Auth->allow();
-	}
 
 /**
  * index
@@ -73,8 +62,14 @@ class MenusController extends MenusAppController {
 			$this->autoRender = false;
 			return '';
 		}
+
 		//コンテナータイプを取得(Configure)
 		$containerId = $frame['Box']['container_id'];
+		if (! $container = $this->Container->findById($containerId)) {
+			$this->autoRender = false;
+			return '';
+		}
+
 		$conainerTypes = array(
 			Container::TYPE_HEADER => 'header',
 			Container::TYPE_MAJOR => 'major',
@@ -82,11 +77,6 @@ class MenusController extends MenusAppController {
 			Container::TYPE_MINOR => 'minor',
 			Container::TYPE_FOOTER => 'footer',
 		);
-
-		if (! isset($conainerTypes[$containerId])) {
-			$this->autoRender = false;
-			return '';
-		}
 
 		//リンクの設定
 		$requestUri = env('REQUEST_URI');
@@ -106,6 +96,6 @@ class MenusController extends MenusAppController {
 		$this->set('menus', $menus);
 
 		//Viewの指定
-		return $this->render('Menus/' . $conainerTypes[$containerId] . '/index');
+		$this->view = 'Menus/' . $conainerTypes[$container['Container']['type']] . '/index';
 	}
 }

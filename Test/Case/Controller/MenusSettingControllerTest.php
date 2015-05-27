@@ -26,16 +26,14 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * @var     array
  */
 	public $fixtures = array(
-		'app.Session',
+		'plugin.blocks.block',
+		'plugin.boxes.box',
+		'plugin.frames.frame',
+		'plugin.pages.languages_page',
+		'plugin.pages.page',
+		'plugin.m17n.language',
+		'plugin.net_commons.plugin',
 		'plugin.net_commons.site_setting',
-		'plugin.menus.languages_page',
-		'plugin.menus.page',
-		'plugin.menus.frame',
-		'plugin.menus.block',
-		'plugin.menus.box',
-		'plugin.menus.plugin',
-		'plugin.menus.language',
-		//'plugin.menus.frames_language',
 		'plugin.users.user',
 	);
 
@@ -160,7 +158,7 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * @return  void
  */
 	public function testNoFrameId() {
-		$frameId = 7;
+		$frameId = 99999;
 		$this->testAction('/menus/menus/index/' . $frameId . '/', array('method' => 'get'));
 
 		$this->assertTextNotContains('ERROR', $this->view);
@@ -174,10 +172,10 @@ class MenusSettingControllerTest extends ControllerTestCase {
  */
 	public function testSlugs() {
 		$slugs = array(
-			'/' . Configure::read('Pages.settingModeWord'),
-			'/' . Configure::read('Pages.settingModeWord') . '/',
-			'/' . Configure::read('Pages.settingModeWord') . '/test',
-			'/' . Configure::read('Pages.settingModeWord') . '/test/',
+			'/' . Page::SETTING_MODE_WORD,
+			'/' . Page::SETTING_MODE_WORD . '/',
+			'/' . Page::SETTING_MODE_WORD . '/test',
+			'/' . Page::SETTING_MODE_WORD . '/test/',
 		);
 
 		$frameId = 1;
