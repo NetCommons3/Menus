@@ -30,6 +30,8 @@ class MenusSettingControllerTest extends ControllerTestCase {
 		'plugin.blocks.block_role_permission',
 		'plugin.boxes.box',
 		'plugin.boxes.boxes_page',
+		'plugin.containers.container',
+		'plugin.containers.containers_page',
 		'plugin.frames.frame',
 		'plugin.m17n.language',
 		'plugin.net_commons.site_setting',
@@ -166,8 +168,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * @return  void
  */
 	public function testNoFrameId() {
-		$this->setExpectedException('InternalErrorException');
-
 		$frameId = 99999;
 		$this->testAction('/menus/menus/index/' . $frameId . '/', array('method' => 'get'));
 
