@@ -1,6 +1,6 @@
 <?php
 /**
- * minor index template
+ * header index template
  *
  * @author      Noriko Arai <arai@nii.ac.jp>
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,21 +10,23 @@
  */
 ?>
 
-<div class="list-group" style="margin-bottom: 0px;">
+<ul class="list-group nav nav-pills" style="margin-bottom: 0px;">
 	<?php
 		foreach ($menus as $menu) {
 			//本文の表示
-			$class = 'list-group-item';
+			$class = '';
 			if ($curSlug == $menu['Pages']['slug']) {
-				$class .= ' active';
+				$class = 'active';
 			}
+			echo '<li class="' . $class . '">';
 
-			echo $this->element("Menus.index/link", array(
+			echo $this->element('Menus/link', array(
 					'menu' => $menu,
 					'class' => $class,
 				)
 			);
+
+			echo '</li>';
 		}
 	?>
-</div>
-
+</ul>

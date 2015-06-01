@@ -1,6 +1,6 @@
 <?php
 /**
- * major index template
+ * main index template
  *
  * @author      Noriko Arai <arai@nii.ac.jp>
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -19,7 +19,7 @@
 				$class .= ' active';
 			}
 
-			echo $this->element("Menus.index/link", array(
+			echo $this->element('Menus/link', array(
 					'menu' => $menu,
 					'class' => $class,
 				)

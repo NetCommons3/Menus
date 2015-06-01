@@ -27,15 +27,23 @@ class MenusControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'plugin.blocks.block',
+		'plugin.blocks.block_role_permission',
 		'plugin.boxes.box',
+		'plugin.boxes.boxes_page',
 		'plugin.containers.container',
 		'plugin.containers.containers_page',
 		'plugin.frames.frame',
-		'plugin.pages.languages_page',
-		'plugin.pages.page',
 		'plugin.m17n.language',
 		'plugin.net_commons.site_setting',
-		'plugin.net_commons.plugin',
+		'plugin.pages.languages_page',
+		'plugin.pages.page',
+		'plugin.pages.space',
+		'plugin.plugin_manager.plugin',
+		'plugin.roles.default_role_permission',
+		'plugin.rooms.roles_room',
+		'plugin.rooms.roles_rooms_user',
+		'plugin.rooms.room',
+		'plugin.rooms.room_role_permission',
 		'plugin.users.user',
 	);
 
@@ -157,6 +165,8 @@ class MenusControllerTest extends ControllerTestCase {
  * @return  void
  */
 	public function testNoFrameId() {
+		$this->setExpectedException('InternalErrorException');
+
 		$frameId = 99999;
 		$this->testAction('/menus/menus/index/' . $frameId . '/', array('method' => 'get'));
 

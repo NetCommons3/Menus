@@ -10,7 +10,7 @@
  */
 ?>
 
-<ul class="list-group nav nav-pills nav-justified" style="margin-bottom: 0px;">
+<ul class="list-group nav nav-tabs" role="tablist" style="margin-bottom: 0px;">
 	<?php
 		foreach ($menus as $menu) {
 			//本文の表示
@@ -20,7 +20,7 @@
 			}
 			echo '<li class="' . $class . '">';
 
-			echo $this->element("Menus.index/link", array(
+			echo $this->element('Menus/link', array(
 					'menu' => $menu,
 					'class' => $class,
 				)
@@ -30,3 +30,4 @@
 		}
 	?>
 </ul>
+

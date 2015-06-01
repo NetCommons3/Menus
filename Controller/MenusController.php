@@ -2,38 +2,33 @@
 /**
  * Menus Controller
  *
- * @author      Noriko Arai <arai@nii.ac.jp>
- * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @link        http://www.netcommons.org NetCommons Project
- * @license     http://www.netcommons.org/license.txt NetCommons License
- * @copyright   Copyright 2014, NetCommons Project
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
+App::uses('PageLayoutHelper', 'Pages.View/Helper');
 
 /**
  * Menus Controller
  *
- * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package     Menus\Controller
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Menus\Controller
  */
 class MenusController extends MenusAppController {
 
 /**
- * Language ID
+ * use components
  *
- * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @var       int
+ * @var array
  */
-	public $langId = 2;
-
-/**
- * Room Id
- *
- * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @var       bool
- */
-	public $roomId = 1;
+	public $components = array(
+		'NetCommons.NetCommonsFrame',
+		'NetCommons.NetCommonsRoomRole' => array(),
+	);
 
 /**
  * Model name
@@ -51,13 +46,11 @@ class MenusController extends MenusAppController {
 /**
  * index
  *
- * @param int $frameId frames.id
- * @author   Shohei Nakajima <nakajimashouhei@gmail.com>
- * @return   CakeResponse
+ * @return void
  */
-	public function index($frameId = 0) {
+	public function index() {
 		//フレームIDからコンテナーIDを取得
-		$frame = $this->Frame->findById($frameId);
+		$frame = $this->Frame->findById($this->viewVars['frameId']);
 		if (! $frame) {
 			$this->autoRender = false;
 			return '';
@@ -77,25 +70,16 @@ class MenusController extends MenusAppController {
 			Container::TYPE_MINOR => 'minor',
 			Container::TYPE_FOOTER => 'footer',
 		);
+		$this->set('containerType', $conainerTypes[$container['Container']['type']]);
 
-		//リンクの設定
-		$requestUri = env('REQUEST_URI');
-		if (Page::isSetting()) {
-			$requestUri = mb_substr($requestUri, mb_strlen(Page::SETTING_MODE_WORD) + 1);
+		if (isset(PageLayoutHelper::$page)) {
+			$roomId = PageLayoutHelper::$page['roomId'];
+		} else {
+			$roomId = $this->viewVars['roomId'];
 		}
-		if (mb_substr($requestUri, 0, 1) == '/') {
-			$requestUri = mb_substr($requestUri, 1);
-		}
-		if (mb_substr($requestUri, -1, 1) == '/') {
-			$requestUri = mb_substr($requestUri, 0, -1);
-		}
-		$this->set('curSlug', $requestUri);
 
 		//メニューデータ取得
-		$menus = $this->MenuPage->getMenuData($this->roomId, $this->langId);
+		$menus = $this->MenuPage->getMenuData($roomId, $this->viewVars['languageId']);
 		$this->set('menus', $menus);
-
-		//Viewの指定
-		$this->view = 'Menus/' . $conainerTypes[$container['Container']['type']] . '/index';
 	}
 }
