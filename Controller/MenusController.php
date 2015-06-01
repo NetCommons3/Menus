@@ -26,7 +26,7 @@ class MenusController extends MenusAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsFrame',
+		//'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole' => array(),
 	);
 
@@ -46,11 +46,12 @@ class MenusController extends MenusAppController {
 /**
  * index
  *
+ * @param int $frameId frames.id
  * @return void
  */
-	public function index() {
+	public function index($frameId = null) {
 		//フレームIDからコンテナーIDを取得
-		$frame = $this->Frame->findById($this->viewVars['frameId']);
+		$frame = $this->Frame->findById($frameId);
 		if (! $frame) {
 			$this->autoRender = false;
 			return '';
@@ -75,11 +76,11 @@ class MenusController extends MenusAppController {
 		if (isset(PageLayoutHelper::$page)) {
 			$roomId = PageLayoutHelper::$page['roomId'];
 		} else {
-			$roomId = $this->viewVars['roomId'];
+			$roomId = $frame['Frame']['room_id'];
 		}
 
 		//メニューデータ取得
-		$menus = $this->MenuPage->getMenuData($roomId, $this->viewVars['languageId']);
+		$menus = $this->MenuPage->getMenuData($roomId, $frame['Frame']['language_id']);
 		$this->set('menus', $menus);
 	}
 }

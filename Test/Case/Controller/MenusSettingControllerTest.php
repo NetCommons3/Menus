@@ -166,8 +166,6 @@ class MenusSettingControllerTest extends ControllerTestCase {
  * @return  void
  */
 	public function testNoFrameId() {
-		$this->setExpectedException('InternalErrorException');
-
 		$frameId = 99999;
 		$this->testAction('/menus/menus/index/' . $frameId . '/', array('method' => 'get'));
 
