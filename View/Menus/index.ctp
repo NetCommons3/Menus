@@ -8,7 +8,10 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+?>
 
-echo $this->element('Menus.Menus/' . $containerType . '/index', array(
+<nav>
+	<?php echo $this->element('Menus.Menus/' . $containerType . '/index', array(
 		'curSlug' => PageLayoutHelper::$page['permalink']
-	));
+		)); ?>
+</nav>
