@@ -26,9 +26,9 @@ class MenuPageTest extends CakeTestCase {
  * @var     array
  */
 	public $fixtures = array(
-		'plugin.pages.languages_page',
-		'plugin.pages.page',
-		'plugin.users.user',
+		//'plugin.pages.languages_page',
+		//'plugin.pages.page',
+		//'plugin.users.user',
 	);
 
 /**
