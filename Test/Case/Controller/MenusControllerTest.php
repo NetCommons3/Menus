@@ -10,6 +10,7 @@
  */
 
 App::uses('MenusController', 'Menus.Controller');
+App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
 
 /**
  * MenusController Test Case
@@ -17,7 +18,7 @@ App::uses('MenusController', 'Menus.Controller');
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package     Menus\Test\Case\Controller
  */
-class MenusControllerTest extends ControllerTestCase {
+class MenusControllerTest extends YAControllerTestCase {
 
 /**
  * Fixtures
