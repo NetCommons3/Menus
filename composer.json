@@ -6,8 +6,8 @@
         "installer-paths": {
             "app/Plugin/{$name}": ["type:cakephp-plugin"]
         }
-	},
-	"require": {
+    },
+    "require": {
         "cakephp/cakephp":              "~2.6.9",
         "cakephp/debug_kit":            "~2.2",
         "cakedc/migrations":            "~2.2",
