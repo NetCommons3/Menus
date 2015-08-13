@@ -28,8 +28,6 @@ class MenuPageTest extends YACakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.pages.languages_page',
-		//'plugin.pages.page',
-		//'plugin.users.user',
 	);
 
 /**
