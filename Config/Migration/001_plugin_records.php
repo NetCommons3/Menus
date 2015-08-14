@@ -1,28 +1,28 @@
 <?php
 /**
- * Migration file
+ * Add plugin migration
  *
- * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
+
 /**
- * Migration CakeMigration
+ * Add plugin migration
  *
- * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Menus\Config\Migration
+ * @package NetCommons\PluginManager\Config\Migration
  */
-class MenusInit extends CakeMigration {
+class PluginRecords extends NetCommonsMigration {
 
 /**
  * Migration description
  *
  * @var string
  */
-	public $description = '';
+	public $description = 'plugin_records';
 
 /**
  * Actions to be performed
@@ -35,33 +35,46 @@ class MenusInit extends CakeMigration {
 	);
 
 /**
- * recodes
+ * plugin data
  *
  * @var array $migration
  */
 	public $records = array(
 		'Plugin' => array(
+			//日本語
 			array(
-				'language_id' => 2,
+				'language_id' => '2',
 				'key' => 'menus',
 				'namespace' => 'netcommons/menus',
 				'name' => 'メニュー',
 				'type' => 1,
+				//'default_action' => 'menus/index',
+				//'default_setting_action' => 'menu_frame_settings/edit',
+			),
+			//英語
+			array(
+				'language_id' => '1',
+				'key' => 'menus',
+				'namespace' => 'netcommons/menus',
+				'name' => 'Menu',
+				'type' => 1,
+				//'default_action' => 'menus/index',
+				//'default_setting_action' => 'menu_frame_settings/edit',
 			),
 		),
-
 		'PluginsRole' => array(
 			array(
 				'role_key' => 'room_administrator',
 				'plugin_key' => 'menus'
 			),
 		),
-
 		'PluginsRoom' => array(
-			array(
-				'room_id' => '1',
-				'plugin_key' => 'menus'
-			),
+			//パブリックスペース
+			array('room_id' => '1', 'plugin_key' => 'menus', ),
+			//プライベートスペース
+			array('room_id' => '2', 'plugin_key' => 'menus', ),
+			//グループスペース
+			array('room_id' => '3', 'plugin_key' => 'menus', ),
 		),
 	);
 
@@ -82,7 +95,12 @@ class MenusInit extends CakeMigration {
  * @return bool Should process continue
  */
 	public function after($direction) {
+		$this->loadModels([
+			'Plugin' => 'PluginManager.Plugin',
+		]);
+
 		if ($direction === 'down') {
+			$this->Plugin->uninstallPlugin($this->records['Plugin'][0]['key']);
 			return true;
 		}
 
@@ -91,28 +109,6 @@ class MenusInit extends CakeMigration {
 				return false;
 			}
 		}
-
 		return true;
 	}
-
-/**
- * Update model records
- *
- * @param string $model model name to update
- * @param string $records records to be stored
- * @param string $scope ?
- * @return bool Should process continue
- */
-	public function updateRecords($model, $records, $scope = null) {
-		$Model = $this->generateModel($model);
-		foreach ($records as $record) {
-			$Model->create();
-			if (!$Model->save($record, false)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 }

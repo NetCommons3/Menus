@@ -10,6 +10,7 @@
  */
 
 App::uses('MenuPage', 'Menus.Model');
+App::uses('YACakeTestCase', 'NetCommons.TestSuite');
 
 /**
  * AccessCounter Test Case
@@ -17,7 +18,7 @@ App::uses('MenuPage', 'Menus.Model');
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package     Menus\Test\Case\Model
  */
-class MenuPageTest extends CakeTestCase {
+class MenuPageTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -27,8 +28,6 @@ class MenuPageTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.pages.languages_page',
-		'plugin.pages.page',
-		'plugin.users.user',
 	);
 
 /**
