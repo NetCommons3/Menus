@@ -24,11 +24,11 @@
 			'label' => __d('menus', 'Display type'),
 			'class' => 'form-control',
 			'options' => array_combine(MenuFrameSetting::$menuTypes, array(
-				__d('mensu', 'Header type'),
-				__d('mensu', 'Left type'),
-				__d('mensu', 'Main type'),
-				__d('mensu', 'Right type'),
-				__d('mensu', 'Footer type'),
+				__d('menus', 'Header type'),
+				__d('menus', 'Left type'),
+				__d('menus', 'Main type'),
+				__d('menus', 'Right type'),
+				__d('menus', 'Footer type'),
 			))
 		)); ?>
 </div>
