@@ -25,7 +25,7 @@ class MenusAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsFrame',
+		//'NetCommons.NetCommonsFrame',
 		'Pages.PageLayout',
 		'Security'
 	);
