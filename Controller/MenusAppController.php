@@ -19,4 +19,15 @@ App::uses('AppController', 'Controller');
  */
 class MenusAppController extends AppController {
 
+/**
+ * use component
+ *
+ * @var array
+ */
+	public $components = array(
+		'NetCommons.NetCommonsFrame',
+		'Pages.PageLayout',
+		'Security'
+	);
+
 }

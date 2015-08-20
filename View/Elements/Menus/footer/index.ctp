@@ -13,9 +13,13 @@
 <ul class="list-group nav nav-pills" style="margin-bottom: 0px;">
 	<?php
 		foreach ($menus as $menu) {
+			if ($menu['MenuFramesPage']['is_hidden']) {
+				continue;
+			}
+
 			//本文の表示
 			$class = '';
-			if ($curSlug == $menu['Pages']['slug']) {
+			if ($curSlug == $menu['Page']['slug']) {
 				$class = 'active';
 			}
 			echo '<li class="' . $class . '">';

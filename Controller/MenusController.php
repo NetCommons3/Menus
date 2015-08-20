@@ -26,7 +26,6 @@ class MenusController extends MenusAppController {
  * @var array
  */
 	public $components = array(
-		//'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole' => array(),
 	);
 
@@ -37,8 +36,9 @@ class MenusController extends MenusAppController {
  * @var       array
  */
 	public $uses = array(
-		'Menus.MenuPage',
 		'Frames.Frame',
+		'Menus.MenuFrameSetting',
+		'Menus.MenuFramesPage',
 		'Pages.Page',
 		'Containers.Container',
 	);
@@ -50,28 +50,15 @@ class MenusController extends MenusAppController {
  * @return void
  */
 	public function index($frameId = null) {
-		//フレームIDからコンテナーIDを取得
-		$frame = $this->Frame->findById($frameId);
+		//フレームデータ取得
+		$frame = $this->Frame->find('first', array(
+			'recursive' => -1,
+			'conditions' => array('id' => $frameId)
+		));
 		if (! $frame) {
 			$this->autoRender = false;
-			return '';
+			return;
 		}
-
-		//コンテナータイプを取得(Configure)
-		$containerId = $frame['Box']['container_id'];
-		if (! $container = $this->Container->findById($containerId)) {
-			$this->autoRender = false;
-			return '';
-		}
-
-		$conainerTypes = array(
-			Container::TYPE_HEADER => 'header',
-			Container::TYPE_MAJOR => 'major',
-			Container::TYPE_MAIN => 'main',
-			Container::TYPE_MINOR => 'minor',
-			Container::TYPE_FOOTER => 'footer',
-		);
-		$this->set('containerType', $conainerTypes[$container['Container']['type']]);
 
 		if (isset(PageLayoutHelper::$page)) {
 			$roomId = PageLayoutHelper::$page['roomId'];
@@ -79,8 +66,23 @@ class MenusController extends MenusAppController {
 			$roomId = $frame['Frame']['room_id'];
 		}
 
+		//メニュー設定データ取得
+		$menuFrameSetting = $this->MenuFrameSetting->find('first', array(
+			'recursive' => -1,
+			'conditions' => array('frame_key' => $frame['Frame']['key'])
+		));
+		if (! $menuFrameSetting) {
+			$menuFrameSetting = $this->MenuFrameSetting->create(array(
+				'display_type' => 'main'
+			));
+		}
+		$this->set('menuFrameSetting', $menuFrameSetting);
+
 		//メニューデータ取得
-		$menus = $this->MenuPage->getMenuData($roomId, $frame['Frame']['language_id']);
+		$menus = $this->MenuFramesPage->getMenuData($roomId, $frame['Frame']['key']);
+
 		$this->set('menus', $menus);
 	}
+
+
 }
