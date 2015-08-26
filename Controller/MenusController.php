@@ -84,5 +84,4 @@ class MenusController extends MenusAppController {
 		$this->set('menus', $menus);
 	}
 
-
 }

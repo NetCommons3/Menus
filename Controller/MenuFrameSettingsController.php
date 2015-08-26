@@ -1,6 +1,6 @@
 <?php
 /**
- * Menus Controller
+ * MenuFrameSettings Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -13,7 +13,7 @@ App::uses('MenusAppController', 'Menus.Controller');
 App::uses('PageLayoutHelper', 'Pages.View/Helper');
 
 /**
- * Menus Controller
+ * MenuFrameSettings Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Menus\Controller
@@ -55,9 +55,8 @@ class MenuFrameSettingsController extends MenusAppController {
 	);
 
 /**
- * index
+ * edit
  *
- * @param int $frameId frames.id
  * @return void
  */
 	public function edit() {
