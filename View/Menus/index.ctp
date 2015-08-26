@@ -11,7 +11,7 @@
 ?>
 
 <nav>
-	<?php echo $this->element('Menus.Menus/' . $containerType . '/index', array(
+	<?php echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
 		'curSlug' => PageLayoutHelper::$page['permalink']
 		)); ?>
 </nav>

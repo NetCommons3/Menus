@@ -1,0 +1,43 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:24
+msgid "Display type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:27
+msgid "Header type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:28
+msgid "Left type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
+msgid "Main type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:30
+msgid "Right type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:31
+msgid "Footer type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:37
+msgid "Display page"
+msgstr ""
+

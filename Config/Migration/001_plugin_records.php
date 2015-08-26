@@ -48,8 +48,8 @@ class PluginRecords extends NetCommonsMigration {
 				'namespace' => 'netcommons/menus',
 				'name' => 'メニュー',
 				'type' => 1,
-				//'default_action' => 'menus/index',
-				//'default_setting_action' => 'menu_frame_settings/edit',
+				'default_action' => 'menus/index',
+				'default_setting_action' => 'menu_frame_settings/edit',
 			),
 			//英語
 			array(
@@ -58,8 +58,8 @@ class PluginRecords extends NetCommonsMigration {
 				'namespace' => 'netcommons/menus',
 				'name' => 'Menu',
 				'type' => 1,
-				//'default_action' => 'menus/index',
-				//'default_setting_action' => 'menu_frame_settings/edit',
+				'default_action' => 'menus/index',
+				'default_setting_action' => 'menu_frame_settings/edit',
 			),
 		),
 		'PluginsRole' => array(

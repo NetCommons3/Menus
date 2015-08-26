@@ -13,9 +13,13 @@
 <div class="list-group" style="margin-bottom: 0px;">
 	<?php
 		foreach ($menus as $menu) {
+			if ($menu['MenuFramesPage']['is_hidden']) {
+				continue;
+			}
+
 			//本文の表示
 			$class = 'list-group-item';
-			if ($curSlug == $menu['Pages']['slug']) {
+			if ($curSlug == $menu['Page']['slug']) {
 				$class .= ' active';
 			}
 

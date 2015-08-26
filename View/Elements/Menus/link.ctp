@@ -16,6 +16,6 @@ if (Page::isSetting()) {
 ?>
 
 <a class="<?php echo $class; ?>"
-   href="/<?php echo $setting . ($menu['Pages']['slug'] != '' ? h($menu['Pages']['slug']) . '/' : ''); ?>">
-	<?php echo $menu['MenuPage']['name']; ?>
+   href="/<?php echo $setting . ($menu['Page']['slug'] != '' ? h($menu['Page']['slug']) . '/' : ''); ?>">
+	<?php echo $menu['LanguagesPage']['name']; ?>
 </a>
