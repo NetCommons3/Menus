@@ -26,7 +26,10 @@ class MenusControllerTest extends YAControllerTestCase {
  * @author  Shohei Nakajima <nakajimashouhei@gmail.com>
  * @var     array
  */
-	public $fixtures = array();
+	public $fixtures = array(
+		'plugin.menus.menu_frame_setting',
+		'plugin.menus.menu_frames_page',
+	);
 
 /**
  * setUp
