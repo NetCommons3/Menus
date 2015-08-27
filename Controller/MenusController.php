@@ -61,7 +61,7 @@ class MenusController extends MenusAppController {
 		}
 
 		if (isset(PageLayoutHelper::$page)) {
-			$roomId = PageLayoutHelper::$page['roomId'];
+			$roomId = PageLayoutHelper::$page['room_id'];
 		} else {
 			$roomId = $frame['Frame']['room_id'];
 		}
