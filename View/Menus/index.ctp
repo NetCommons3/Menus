@@ -12,6 +12,6 @@
 
 <nav>
 	<?php echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
-		'curSlug' => PageLayoutHelper::$page['permalink']
+		'curSlug' => Current::read('Page.permalink')
 		)); ?>
 </nav>
