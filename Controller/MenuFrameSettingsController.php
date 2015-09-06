@@ -79,8 +79,8 @@ class MenuFrameSettingsController extends MenusAppController {
 			return;
 		}
 
-		if (isset(PageLayoutHelper::$page)) {
-			$roomId = PageLayoutHelper::$page['roomId'];
+		if (Current::read('Page.room_id')) {
+			$roomId = Current::read('Page.room_id');
 		} else {
 			$roomId = $this->request->data['Frame']['room_id'];
 		}
