@@ -33,11 +33,10 @@ class MenuFrameSettingsController extends MenusAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsFrame',
-		'NetCommons.NetCommonsRoomRole' => array(
-			//コンテンツの権限設定
-			'allowedActions' => array(
-				'blockEditable' => array('edit'),
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'edit' => 'block_editable',
 			),
 		),
 	);
@@ -49,7 +48,6 @@ class MenuFrameSettingsController extends MenusAppController {
  * @var       array
  */
 	public $uses = array(
-		'Frames.Frame',
 		'Menus.MenuFrameSetting',
 		'Menus.MenuFramesPage',
 	);
@@ -60,29 +58,10 @@ class MenuFrameSettingsController extends MenusAppController {
  * @return void
  */
 	public function edit() {
-		//登録処理の場合、URLよりPOSTパラメータでチェックする
-		if ($this->request->is(array('post', 'put'))) {
-			$frameId = $this->data['Frame']['id'];
-		} else {
-			$frameId = $this->viewVars['frameId'];
-		}
-
-		//フレームデータ取得
-		$this->request->data = Hash::merge($this->request->data,
-			$this->Frame->find('first', array(
-				'recursive' => -1,
-				'conditions' => array('id' => $frameId)
-			)
-		));
-		if (! isset($this->request->data['Frame']) || ! $this->request->data['Frame']) {
+		//フレームなしの場合、
+		if (! Current::read('Frame.id')) {
 			$this->autoRender = false;
 			return;
-		}
-
-		if (Current::read('Page.room_id')) {
-			$roomId = Current::read('Page.room_id');
-		} else {
-			$roomId = $this->request->data['Frame']['room_id'];
 		}
 
 		if ($this->request->is(array('post', 'put'))) {
@@ -91,7 +70,7 @@ class MenuFrameSettingsController extends MenusAppController {
 			unset($data['save']);
 
 			if ($this->MenuFrameSetting->saveMenuFrameSetting($data)) {
-				$this->redirectByFrameId();
+				$this->redirect(Current::backToPageUrl());
 				return;
 			}
 
@@ -102,11 +81,12 @@ class MenuFrameSettingsController extends MenusAppController {
 			$this->request->data = Hash::merge($this->request->data,
 				$this->MenuFrameSetting->find('first', array(
 					'recursive' => -1,
-					'conditions' => array('frame_key' => $this->request->data['Frame']['key'])
+					'conditions' => array('frame_key' => Current::read('Frame.key'))
 				)
 			));
 
-			$this->request->data['Menus'] = $this->MenuFramesPage->getMenuData($roomId, $this->request->data['Frame']['key']);
+			$this->request->data['Frame'] = Current::read('Frame');
+			$this->request->data['Menus'] = $this->MenuFramesPage->getMenuData();
 		}
 	}
 

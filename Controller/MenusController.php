@@ -21,15 +21,6 @@ App::uses('PageLayoutHelper', 'Pages.View/Helper');
 class MenusController extends MenusAppController {
 
 /**
- * use components
- *
- * @var array
- */
-	public $components = array(
-		'NetCommons.NetCommonsRoomRole' => array(),
-	);
-
-/**
  * Model name
  *
  * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -46,25 +37,20 @@ class MenusController extends MenusAppController {
 /**
  * index
  *
- * @param int $frameId frames.id
  * @return void
  */
-	public function index($frameId = null) {
+	public function index() {
 		//フレームデータ取得
 		$frame = $this->Frame->find('first', array(
 			'recursive' => -1,
-			'conditions' => array('id' => $frameId)
+			'conditions' => array('id' => Current::read('Frame.id'))
 		));
 		if (! $frame) {
 			$this->autoRender = false;
 			return;
 		}
 
-		if (Current::read('Page.room_id')) {
-			$roomId = Current::read('Page.room_id');
-		} else {
-			$roomId = $frame['Frame']['room_id'];
-		}
+		$roomId = Current::read('Page.room_id');
 
 		//メニュー設定データ取得
 		$menuFrameSetting = $this->MenuFrameSetting->find('first', array(
@@ -79,8 +65,7 @@ class MenusController extends MenusAppController {
 		$this->set('menuFrameSetting', $menuFrameSetting);
 
 		//メニューデータ取得
-		$menus = $this->MenuFramesPage->getMenuData($roomId, $frame['Frame']['key']);
-
+		$menus = $this->MenuFramesPage->getMenuData();
 		$this->set('menus', $menus);
 	}
 
