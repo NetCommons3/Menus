@@ -39,8 +39,8 @@ class MenuFrameSetting extends MenusAppModel {
  */
 	public $validate = array(
 		'frame_key' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+			'notBlank' => array(
+				'rule' => array('notBlank'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -49,8 +49,8 @@ class MenuFrameSetting extends MenusAppModel {
 			),
 		),
 		'display_type' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+			'notBlank' => array(
+				'rule' => array('notBlank'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
