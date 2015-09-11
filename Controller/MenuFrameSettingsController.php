@@ -74,7 +74,7 @@ class MenuFrameSettingsController extends MenusAppController {
 				return;
 			}
 
-			$this->handleValidationError($this->MenuFrameSetting->validationErrors);
+			$this->NetCommons->handleValidationError($this->MenuFrameSetting->validationErrors);
 			$this->request->data = $data;
 
 		} else {
