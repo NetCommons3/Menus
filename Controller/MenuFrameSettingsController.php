@@ -70,7 +70,7 @@ class MenuFrameSettingsController extends MenusAppController {
 			unset($data['save']);
 
 			if ($this->MenuFrameSetting->saveMenuFrameSetting($data)) {
-				$this->redirect(Current::backToPageUrl());
+				$this->redirect(NetCommonsUrl::backToPageUrl());
 				return;
 			}
 
