@@ -59,8 +59,6 @@ class MenuFramesPage extends MenusAppModel {
 /**
  * Get menu data
  *
- * @param int $roomId rooms.id
- * @param string $frameKey frames.key
  * @return array Menu data
  */
 	public function getMenuData() {
