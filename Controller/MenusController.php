@@ -50,8 +50,6 @@ class MenusController extends MenusAppController {
 			return;
 		}
 
-		$roomId = Current::read('Page.room_id');
-
 		//メニュー設定データ取得
 		$menuFrameSetting = $this->MenuFrameSetting->find('first', array(
 			'recursive' => -1,
