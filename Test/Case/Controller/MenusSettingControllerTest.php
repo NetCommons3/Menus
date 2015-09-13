@@ -166,10 +166,10 @@ class MenusSettingControllerTest extends YAControllerTestCase {
  */
 	public function testSlugs() {
 		$slugs = array(
-			'/' . Page::SETTING_MODE_WORD,
-			'/' . Page::SETTING_MODE_WORD . '/',
-			'/' . Page::SETTING_MODE_WORD . '/test',
-			'/' . Page::SETTING_MODE_WORD . '/test/',
+			'/' . Current::SETTING_MODE_WORD,
+			'/' . Current::SETTING_MODE_WORD . '/',
+			'/' . Current::SETTING_MODE_WORD . '/test',
+			'/' . Current::SETTING_MODE_WORD . '/test/',
 		);
 
 		$frameId = 1;

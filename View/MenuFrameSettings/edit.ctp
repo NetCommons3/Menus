@@ -20,15 +20,7 @@
 	</div>
 
 	<div class="panel-footer text-center">
-		<a class="btn btn-default btn-workflow" href="<?php echo $this->Html->url('/' . $cancelUrl); ?>">
-			<span class="glyphicon glyphicon-remove"></span>
-			<?php echo __d('net_commons', 'Cancel'); ?>
-		</a>
-
-		<?php echo $this->Form->button(__d('net_commons', 'OK'), array(
-				'class' => 'btn btn-primary btn-workflow',
-				'name' => 'save',
-			)); ?>
+		<?php echo $this->Button->cancelAndSave(__d('net_commons', 'Cancel'), __d('net_commons', 'OK')); ?>
 	</div>
 
 	<?php echo $this->Form->end(); ?>

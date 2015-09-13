@@ -10,8 +10,8 @@
  */
 
 $setting = '';
-if (Page::isSetting()) {
-	$setting = Page::SETTING_MODE_WORD . '/';
+if (Current::isSettingMode()) {
+	$setting = Current::SETTING_MODE_WORD . '/';
 }
 ?>
 

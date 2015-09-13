@@ -28,8 +28,8 @@ class MenuFramesPage extends MenusAppModel {
  */
 	public $validate = array(
 		'frame_key' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+			'notBlank' => array(
+				'rule' => array('notBlank'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -59,11 +59,9 @@ class MenuFramesPage extends MenusAppModel {
 /**
  * Get menu data
  *
- * @param int $roomId rooms.id
- * @param string $frameKey frames.key
  * @return array Menu data
  */
-	public function getMenuData($roomId, $frameKey) {
+	public function getMenuData() {
 		$this->LanguagesPage = ClassRegistry::init('Pages.LanguagesPage');
 
 		//Menuデータ取得
@@ -75,7 +73,7 @@ class MenuFramesPage extends MenusAppModel {
 				$this->alias . '.*',
 			),
 			'conditions' => array(
-				$this->Page->alias . '.room_id' => $roomId,
+				$this->Page->alias . '.room_id' => Current::read('Room.id'),
 				//$this->LanguagesPage->alias . '.language_id' => Configure::read('Config.languageId'),
 				//'OR' => array(
 				//	$this->alias . '.is_hidden' => false,
@@ -89,7 +87,7 @@ class MenuFramesPage extends MenusAppModel {
 					'type' => 'INNER',
 					'conditions' => array(
 						$this->Page->alias . '.id' . ' = ' . $this->LanguagesPage->alias . ' .page_id',
-						$this->LanguagesPage->alias . '.language_id' => Configure::read('Config.languageId'),
+						$this->LanguagesPage->alias . '.language_id' => Current::read('Language.id'),
 					),
 				),
 				array(
@@ -98,7 +96,7 @@ class MenuFramesPage extends MenusAppModel {
 					'type' => 'LEFT',
 					'conditions' => array(
 						$this->Page->alias . '.id' . ' = ' . $this->alias . ' .page_id',
-						$this->alias . '.frame_key' => $frameKey
+						$this->alias . '.frame_key' => Current::read('Frame.key')
 					),
 				),
 			),
