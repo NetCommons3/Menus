@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="list-group" style="margin-bottom: 0px;">
+<div class="list-group menu-major-list">
 	<?php
 		foreach ($menus as $menu) {
 			if ($menu['MenuFramesPage']['is_hidden']) {
