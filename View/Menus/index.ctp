@@ -13,7 +13,12 @@ echo $this->NetCommonsHtml->css('/menus/css/style.css');
 ?>
 
 <nav>
-	<?php echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
-		'curSlug' => Current::read('Page.permalink')
-		)); ?>
+	<?php
+		foreach ($menuFrameRooms as $menuFrameRoom) {
+			var_dump($menuFrameRoom['Room']['id']);
+			echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
+				'menus' => Hash::get($menus, $menuFrameRoom['Room']['id'])
+			));
+		}
+	?>
 </nav>

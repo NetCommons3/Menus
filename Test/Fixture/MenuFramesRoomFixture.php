@@ -1,6 +1,6 @@
 <?php
 /**
- * MenuFramesPageFixture
+ * MenuFramesRoomFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,12 +10,12 @@
  */
 
 /**
- * Summary for MenuFramesPageFixture
+ * Summary for MenuFramesRoomFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Menus\Test\Fixture
  */
-class MenuFramesPageFixture extends CakeTestFixture {
+class MenuFramesRoomFixture extends CakeTestFixture {
 
 /**
  * Fields
@@ -25,13 +25,13 @@ class MenuFramesPageFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
 		'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'page_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'room_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'is_hidden' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'weight' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
-		'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => 'created user | 作成者 | users.id | '),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'created datetime | 作成日時 |  | '),
-		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => 'modified user | 更新者 | users.id | '),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'modified datetime | 更新日時 |  | '),
+		'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者 | users.id | '),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
+		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者 | users.id | '),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -47,13 +47,13 @@ class MenuFramesPageFixture extends CakeTestFixture {
 		array(
 			'id' => 1,
 			'frame_key' => 'Lorem ipsum dolor sit amet',
-			'page_id' => 1,
+			'room_id' => 1,
 			'is_hidden' => 1,
 			'weight' => 1,
 			'created_user' => 1,
-			'created' => '2015-08-20 03:41:49',
+			'created' => '2015-11-15 06:51:30',
 			'modified_user' => 1,
-			'modified' => '2015-08-20 03:41:49'
+			'modified' => '2015-11-15 06:51:30'
 		),
 	);
 

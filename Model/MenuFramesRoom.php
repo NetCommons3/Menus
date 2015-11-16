@@ -1,8 +1,8 @@
 <?php
 /**
- * MenuFramesPage Model
+ * MenuFramesRoom Model
  *
- * @property Page $Page
+ * @property Room $Room
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -14,12 +14,12 @@
 App::uses('MenusAppModel', 'Menus.Model');
 
 /**
- * Summary for MenuFramesPage Model
+ * Summary for MenuFramesRoom Model
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Menus\Model
  */
-class MenuFramesPage extends MenusAppModel {
+class MenuFramesRoom extends MenusAppModel {
 
 /**
  * Validation rules
@@ -36,9 +36,9 @@ class MenuFramesPage extends MenusAppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Page' => array(
-			'className' => 'Pages.Page',
-			'foreignKey' => 'page_id',
+		'Room' => array(
+			'className' => 'Room',
+			'foreignKey' => 'room_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -72,40 +72,37 @@ class MenuFramesPage extends MenusAppModel {
 	}
 
 /**
- * メニューデータ取得処理
+ * メニューのルームデータ取得処理
  *
  * @param array $options Findのオプション
  * @return array Menu data
  */
-	public function getMenuData($options = array()) {
+	public function getMenuFrameRooms($options = array()) {
 		$this->loadModels([
-			'LanguagesPage' => 'Pages.LanguagesPage',
+			'Room' => 'Rooms.Room',
+			'RoomsLanguage' => 'Rooms.RoomsLanguage',
 		]);
 
 		//Menuデータ取得
 		$options = Hash::merge(array(
 			'recursive' => -1,
 			'fields' => array(
-				$this->Page->alias . '.*',
-				$this->LanguagesPage->alias . '.*',
+				$this->Room->alias . '.*',
+				$this->RoomsLanguage->alias . '.*',
 				$this->alias . '.*',
 			),
 			'conditions' => array(
-				$this->Page->alias . '.room_id' => Current::read('Room.id'),
-				//$this->LanguagesPage->alias . '.language_id' => Current::read('Language.id'),
-				//'OR' => array(
-				//	$this->alias . '.is_hidden' => false,
-				//	$this->alias . '.is_hidden IS NULL',
-				//)
+				$this->Room->alias . '.id' => Current::read('Room.id'),
+				$this->Room->alias . '.page_id_top NOT' => null,
 			),
 			'joins' => array(
 				array(
-					'table' => $this->LanguagesPage->table,
-					'alias' => $this->LanguagesPage->alias,
+					'table' => $this->RoomsLanguage->table,
+					'alias' => $this->RoomsLanguage->alias,
 					'type' => 'INNER',
 					'conditions' => array(
-						$this->Page->alias . '.id' . ' = ' . $this->LanguagesPage->alias . ' .page_id',
-						$this->LanguagesPage->alias . '.language_id' => Current::read('Language.id'),
+						$this->Room->alias . '.id' . ' = ' . $this->RoomsLanguage->alias . ' .room_id',
+						$this->RoomsLanguage->alias . '.language_id' => Current::read('Language.id'),
 					),
 				),
 				array(
@@ -113,19 +110,19 @@ class MenuFramesPage extends MenusAppModel {
 					'alias' => $this->alias,
 					'type' => 'LEFT',
 					'conditions' => array(
-						$this->Page->alias . '.id' . ' = ' . $this->alias . ' .page_id',
+						$this->Room->alias . '.id' . ' = ' . $this->alias . ' .room_id',
 						$this->alias . '.frame_key' => Current::read('Frame.key')
 					),
 				),
 			),
 			'order' => array(
 				$this->alias . '.weight' => 'asc',
-				$this->Page->alias . '.lft' => 'asc',
+				$this->Room->alias . '.lft' => 'asc',
 			)
 		), $options);
 
-		$menus = $this->Page->find('all', $options);
-		return $menus;
+		$menuFrameRooms = $this->Room->find('all', $options);
+		return $menuFrameRooms;
 	}
 
 }

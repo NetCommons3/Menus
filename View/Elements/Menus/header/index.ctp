@@ -19,7 +19,7 @@
 
 			//本文の表示
 			$class = '';
-			if ($curSlug == $menu['Page']['slug']) {
+			if (Current::read('Page.permalink') === (string)$menu['Page']['slug']) {
 				$class = 'active';
 			}
 			echo '<li class="' . $class . '">';

@@ -27,44 +27,51 @@ class MenusController extends MenusAppController {
  * @var       array
  */
 	public $uses = array(
-		'Frames.Frame',
 		'Menus.MenuFrameSetting',
 		'Menus.MenuFramesPage',
+		'Menus.MenuFramesRoom',
 		'Pages.Page',
-		'Containers.Container',
+		'Rooms.Room',
 	);
 
 /**
- * index
+ * indexアクション
  *
  * @return void
  */
 	public function index() {
-		//フレームデータ取得
-		$frame = $this->Frame->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('id' => Current::read('Frame.id'))
-		));
-		if (! $frame) {
-			$this->autoRender = false;
-			return;
-		}
+		//ルームデータ取得
+		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsCondtions());
+		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
+		$this->set('rooms', $rooms);
 
 		//メニュー設定データ取得
-		$menuFrameSetting = $this->MenuFrameSetting->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('frame_key' => $frame['Frame']['key'])
-		));
-		if (! $menuFrameSetting) {
-			$menuFrameSetting = $this->MenuFrameSetting->create(array(
-				'display_type' => 'main'
-			));
-		}
+		$menuFrameSetting = $this->MenuFrameSetting->getMenuFrameSetting();
 		$this->set('menuFrameSetting', $menuFrameSetting);
 
+		$roomsIds = Hash::extract($rooms, '{n}.Room.id');
+//var_dump($roomsIds);
+
 		//メニューデータ取得
-		$menus = $this->MenuFramesPage->getMenuData();
+		$menus = $this->MenuFramesPage->getMenuData(array(
+			'conditions' => array(
+				$this->Page->alias . '.room_id' => $roomsIds
+			)
+		));
+		$menus = Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id');
+
 		$this->set('menus', $menus);
+//		var_dump($menus);
+
+		//ルームデータ取得処理
+		$menuFrameRooms = $this->MenuFramesRoom->getMenuFrameRooms(array(
+			'conditions' => array(
+				$this->Room->alias . '.id' => $roomsIds
+			)
+		));
+		$this->set('menuFrameRooms', $menuFrameRooms);
+
+//		var_dump($menuFrameRooms);
 	}
 
 }
