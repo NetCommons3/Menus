@@ -23,8 +23,7 @@ class MenusController extends MenusAppController {
 /**
  * Model name
  *
- * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @var       array
+ * @var array
  */
 	public $uses = array(
 		'Menus.MenuFrameSetting',
