@@ -9,16 +9,4 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css('/menus/css/style.css');
-?>
-
-<nav>
-	<?php
-		foreach ($menuFrameRooms as $menuFrameRoom) {
-			var_dump($menuFrameRoom['Room']['id']);
-			echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
-				'menus' => Hash::get($menus, $menuFrameRoom['Room']['id'])
-			));
-		}
-	?>
-</nav>
+echo $this->Menu->render();

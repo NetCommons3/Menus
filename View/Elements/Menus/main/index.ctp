@@ -10,25 +10,8 @@
  */
 ?>
 
-<div class="list-group" style="margin-bottom: 0px;">
-	<?php
-		foreach ($menus as $menu) {
-			if ($menu['MenuFramesPage']['is_hidden']) {
-				continue;
-			}
-
-			//本文の表示
-			$class = 'list-group-item';
-			if (Current::read('Page.permalink') === (string)$menu['Page']['slug']) {
-				$class .= ' active';
-			}
-
-			echo $this->element('Menus/link', array(
-					'menu' => $menu,
-					'class' => $class,
-				)
-			);
-		}
-	?>
-</div>
-
+<?php foreach ($menuFrameRooms as $menuFrameRoom) : ?>
+	<div class="list-group">
+		<?php echo $this->Menu->renderList(Hash::get($menus, $menuFrameRoom['Room']['id']), false); ?>
+	</div>
+<?php endforeach;
