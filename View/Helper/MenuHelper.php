@@ -35,7 +35,7 @@ class MenuHelper extends AppHelper {
 		$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 
 		//スタイルシートの読み込み
-		$html .= $this->NetCommonsHtml->css('/menus/css/style.css');
+		//$html .= $this->NetCommonsHtml->css('/menus/css/style.css');
 		$cssPath = App::pluginPath($this->plugin) . DS . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
 		if (file_exists($cssPath)) {
 			$html .= $this->NetCommonsHtml->css('/menus/css/' . $displayType . '/style.css');
