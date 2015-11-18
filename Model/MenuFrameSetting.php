@@ -23,7 +23,7 @@ class MenuFrameSetting extends MenusAppModel {
 /**
  * メニューのリスト
  *
- * View/Elements/Menusのディレクトリを__constructで取得する
+ * View/Elements/Menusのディレクトリを__constructでセットする
  *
  * @var array
  */
