@@ -116,7 +116,6 @@ class MenuFramesRoom extends MenusAppModel {
 				),
 			),
 			'order' => array(
-				$this->alias . '.weight' => 'asc',
 				$this->Room->alias . '.lft' => 'asc',
 			)
 		), $options);

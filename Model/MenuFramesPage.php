@@ -119,7 +119,6 @@ class MenuFramesPage extends MenusAppModel {
 				),
 			),
 			'order' => array(
-				$this->alias . '.weight' => 'asc',
 				$this->Page->alias . '.lft' => 'asc',
 			)
 		), $options);
