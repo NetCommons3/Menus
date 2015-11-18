@@ -27,7 +27,7 @@ class MenuFrameSetting extends MenusAppModel {
  *
  * @var array
  */
-	static public $menuTypes = array();
+	public static $menuTypes = array();
 
 /**
  * Validation rules
