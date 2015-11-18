@@ -52,7 +52,29 @@ class MenuFrameSetting extends MenusAppModel {
 
 		//カテゴリ間の区切り線
 		$dirs = (new Folder($pluginDir))->read();
-		self::$menuTypes = $dirs[0];
+
+		foreach ($dirs[0] as $dir) {
+			switch ($dir) {
+				case 'footer':
+					$label = __d('menus', 'Footer type');
+					break;
+				case 'header':
+					$label = __d('menus', 'Header type');
+					break;
+				case 'main':
+					$label = __d('menus', 'Main type');
+					break;
+				case 'major':
+					$label = __d('menus', 'Left type');
+					break;
+				case 'minor':
+					$label = __d('menus', 'Right type');
+					break;
+				default:
+					$label = __d('menus', $dir);
+			}
+			self::$menuTypes[$dir] = $label;
+		}
 	}
 
 /**
