@@ -10,6 +10,7 @@
  */
 
 App::uses('MenusAppModel', 'Menus.Model');
+App::uses('Folder', 'Utility');
 
 /**
  * MenuFrameSetting Model
@@ -20,48 +21,150 @@ App::uses('MenusAppModel', 'Menus.Model');
 class MenuFrameSetting extends MenusAppModel {
 
 /**
- * Menu types
+ * メニューのリスト
+ *
+ * View/Elements/Menusのディレクトリを__constructでセットする
  *
  * @var array
  */
-	static public $menuTypes = array(
-		'header',
-		'major',
-		'main',
-		'minor',
-		'footer',
-	);
+	public static $menuTypes = array();
 
 /**
  * Validation rules
  *
  * @var array
  */
-	public $validate = array(
-		'frame_key' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'display_type' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+	public $validate = array();
 
 /**
- * Save menu frame setting
+ * Constructor. Binds the model's database table to the object.
+ *
+ * @param bool|int|string|array $id Set this ID for this model on startup,
+ * can also be an array of options, see above.
+ * @param string $table Name of database table to use.
+ * @param string $ds DataSource connection name.
+ * @see Model::__construct()
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		$pluginDir = APP . 'Plugin' . DS . $this->plugin . DS . 'View' . DS . 'Elements' . DS . 'Menus';
+
+		//カテゴリ間の区切り線
+		$dirs = (new Folder($pluginDir))->read();
+
+		foreach ($dirs[0] as $dir) {
+			switch ($dir) {
+				case 'footer':
+					$label = __d('menus', 'Footer type');
+					break;
+				case 'header':
+					$label = __d('menus', 'Header type');
+					break;
+				case 'main':
+					$label = __d('menus', 'Main type');
+					break;
+				case 'major':
+					$label = __d('menus', 'Left type');
+					break;
+				case 'minor':
+					$label = __d('menus', 'Right type');
+					break;
+				default:
+					$label = __d('menus', $dir);
+			}
+			self::$menuTypes[$dir] = $label;
+		}
+	}
+
+/**
+ * Called during validation operations, before validation. Please note that custom
+ * validation rules can be defined in $validate.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if validate operation should continue, false to abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
+ * @see Model::save()
+ */
+	public function beforeValidate($options = array()) {
+		$this->validate = Hash::merge($this->validate, array(
+			'frame_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+			'display_type' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+		));
+
+		if (! $this->MenuFramesPage->validateMany($this->data['Menus'])) {
+			$this->validationErrors = Hash::merge(
+				$this->validationErrors,
+				$this->MenuFramesPage->validationErrors
+			);
+			return false;
+		}
+
+		return parent::beforeValidate($options);
+	}
+
+/**
+ * Called after each successful save operation.
+ *
+ * @param bool $created True if this save created a new record
+ * @param array $options Options passed from Model::save().
+ * @return void
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#aftersave
+ * @see Model::save()
+ * @throws InternalErrorException
+ */
+	public function afterSave($created, $options = array()) {
+		//MenuFramesPage登録
+		if (isset($this->data['Menus'])) {
+			//MenuFramesPage登録処理
+			foreach ($this->data['Menus'] as $menu) {
+				if (! $this->MenuFramesPage->save($menu['MenuFramesPage'], false)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+			}
+		}
+
+		parent::afterSave($created, $options);
+	}
+
+/**
+ * メニュー設定データの取得処理
+ *
+ * @return array Menu data
+ */
+	public function getMenuFrameSetting() {
+		$menuFrameSetting = $this->find('first', array(
+			'recursive' => -1,
+			'conditions' => array('frame_key' => Current::read('Frame.key'))
+		));
+		if (! $menuFrameSetting) {
+			$menuFrameSetting = $this->create(array(
+				'display_type' => 'main'
+			));
+		}
+		return $menuFrameSetting;
+	}
+
+/**
+ * メニュー設定データの登録処理
  *
  * @param array $data received post data
  * @return bool True on success, false on failure
@@ -74,56 +177,26 @@ class MenuFrameSetting extends MenusAppModel {
 		]);
 
 		//トランザクションBegin
-		$this->setDataSource('master');
-		$dataSource = $this->getDataSource();
-		$dataSource->begin();
+		$this->begin();
 
-		if (! $this->validateMenuFrameSetting($data['MenuFrameSetting'])) {
-			return false;
-		}
-		if (! $this->MenuFramesPage->validateMany($data['Menus'])) {
-			$this->validationErrors = Hash::merge($this->validationErrors, $this->MenuFramesPage->validationErrors);
+		//バリデーション
+		$this->set($data);
+		if (! $this->validates()) {
 			return false;
 		}
 
 		try {
-			//MenuFrameSetting登録処理
-			if (! $this->save($data['MenuFrameSetting'], false)) {
+			//登録処理
+			if (! $this->save($data, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			//MenuFramesPage登録処理
-			foreach ($data['Menus'] as $menu) {
-				if (! $this->MenuFramesPage->save($menu['MenuFramesPage'], false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
-			}
-
 			//トランザクションCommit
-			$dataSource->commit();
+			$this->commit();
 
 		} catch (Exception $ex) {
 			//トランザクションRollback
-			$dataSource->rollback();
-			//エラー出力
-			CakeLog::error($ex);
-			throw $ex;
-		}
-
-		return true;
-	}
-
-/**
- * Validate MenuFrameSetting
- *
- * @param array $data received post data
- * @return bool True on success, false on validation error
- */
-	public function validateMenuFrameSetting($data) {
-		$this->set($data);
-		$this->validates();
-		if ($this->validationErrors) {
-			return false;
+			$this->rollback($ex);
 		}
 
 		return true;

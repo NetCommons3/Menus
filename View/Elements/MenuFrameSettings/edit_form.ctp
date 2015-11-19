@@ -23,13 +23,7 @@
 			'type' => 'select',
 			'label' => __d('menus', 'Display type'),
 			'class' => 'form-control',
-			'options' => array_combine(MenuFrameSetting::$menuTypes, array(
-				__d('menus', 'Header type'),
-				__d('menus', 'Left type'),
-				__d('menus', 'Main type'),
-				__d('menus', 'Right type'),
-				__d('menus', 'Footer type'),
-			))
+			'options' => MenuFrameSetting::$menuTypes
 		)); ?>
 </div>
 

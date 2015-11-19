@@ -8,10 +8,5 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
-?>
 
-<nav>
-	<?php echo $this->element('Menus.Menus/' . $menuFrameSetting['MenuFrameSetting']['display_type'] . '/index', array(
-		'curSlug' => Current::read('Page.permalink')
-		)); ?>
-</nav>
+echo $this->Menu->render();

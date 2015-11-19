@@ -10,7 +10,7 @@
  */
 
 App::uses('MenusController', 'Menus.Controller');
-App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
  * MenusController Test Case
@@ -18,7 +18,7 @@ App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
  * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package     Menus\Test\Case\Controller
  */
-class MenusSettingControllerTest extends YAControllerTestCase {
+class MenusSettingControllerTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -29,6 +29,7 @@ class MenusSettingControllerTest extends YAControllerTestCase {
 	public $fixtures = array(
 		'plugin.menus.menu_frame_setting',
 		'plugin.menus.menu_frames_page',
+		'plugin.menus.menu_frames_room',
 	);
 
 /**

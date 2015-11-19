@@ -10,27 +10,10 @@
  */
 ?>
 
-<ul class="list-group nav nav-pills" style="margin-bottom: 0px;">
+<ul class="list-group nav nav-pills">
 	<?php
-		foreach ($menus as $menu) {
-			if ($menu['MenuFramesPage']['is_hidden']) {
-				continue;
-			}
-
-			//本文の表示
-			$class = '';
-			if ($curSlug == $menu['Page']['slug']) {
-				$class = 'active';
-			}
-			echo '<li class="' . $class . '">';
-
-			echo $this->element('Menus/link', array(
-					'menu' => $menu,
-					'class' => $class,
-				)
-			);
-
-			echo '</li>';
+		foreach ($menuFrameRooms as $menuFrameRoom) {
+			echo $this->Menu->renderList(Hash::get($menus, $menuFrameRoom['Room']['id']), true);
 		}
 	?>
 </ul>

@@ -23,48 +23,56 @@ class MenusController extends MenusAppController {
 /**
  * Model name
  *
- * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @var       array
+ * @var array
  */
 	public $uses = array(
-		'Frames.Frame',
 		'Menus.MenuFrameSetting',
 		'Menus.MenuFramesPage',
+		'Menus.MenuFramesRoom',
 		'Pages.Page',
-		'Containers.Container',
+		'Rooms.Room',
 	);
 
 /**
- * index
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Menus.Menu'
+	);
+
+/**
+ * indexアクション
  *
  * @return void
  */
 	public function index() {
-		//フレームデータ取得
-		$frame = $this->Frame->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('id' => Current::read('Frame.id'))
-		));
-		if (! $frame) {
-			$this->autoRender = false;
-			return;
-		}
+		//ルームデータ取得
+		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsCondtions());
+		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
+		$this->set('rooms', $rooms);
+		$roomsIds = Hash::extract($rooms, '{n}.Room.id');
 
 		//メニュー設定データ取得
-		$menuFrameSetting = $this->MenuFrameSetting->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('frame_key' => $frame['Frame']['key'])
-		));
-		if (! $menuFrameSetting) {
-			$menuFrameSetting = $this->MenuFrameSetting->create(array(
-				'display_type' => 'main'
-			));
-		}
+		$menuFrameSetting = $this->MenuFrameSetting->getMenuFrameSetting();
 		$this->set('menuFrameSetting', $menuFrameSetting);
 
 		//メニューデータ取得
-		$menus = $this->MenuFramesPage->getMenuData();
-		$this->set('menus', $menus);
+		$menus = $this->MenuFramesPage->getMenuData(array(
+			'conditions' => array(
+				$this->Page->alias . '.room_id' => $roomsIds
+			)
+		));
+		$this->set('menus', Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id'));
+
+		//ルームデータ取得処理
+		$menuFrameRooms = $this->MenuFramesRoom->getMenuFrameRooms(array(
+			'conditions' => array(
+				$this->Room->alias . '.id' => $roomsIds
+			)
+		));
+		$this->set('menuFrameRooms', Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}'));
 	}
 
 }
