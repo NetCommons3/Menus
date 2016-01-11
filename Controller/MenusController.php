@@ -49,7 +49,7 @@ class MenusController extends MenusAppController {
  */
 	public function index() {
 		//ルームデータ取得
-		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsCondtions());
+		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
 		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
 		$this->set('rooms', $rooms);
 		$roomsIds = Hash::extract($rooms, '{n}.Room.id');
