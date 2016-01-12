@@ -26,6 +26,21 @@ class MenuHelper extends AppHelper {
 	);
 
 /**
+ * After render file callback.
+ * Called after any view fragment is rendered.
+ *
+ * Overridden in subclasses.
+ *
+ * @param string $viewFile The file just be rendered.
+ * @param string $content The content that was rendered.
+ * @return void
+ */
+	public function afterRenderFile($viewFile, $content) {
+		$content = $this->NetCommonsHtml->css('/menus/css/style.css') . $content;
+		parent::afterRenderFile($viewFile, $content);
+	}
+
+/**
  * メニューの表示
  *
  * @return string HTMLタグ
@@ -68,7 +83,7 @@ class MenuHelper extends AppHelper {
 				continue;
 			}
 
-			if (Current::read('Page.permalink') === (string)$menu['Page']['slug']) {
+			if (Current::read('Page.permalink') === (string)$menu['Page']['permalink']) {
 				$activeClass = 'active';
 			} else {
 				$activeClass = '';
@@ -78,10 +93,12 @@ class MenuHelper extends AppHelper {
 			if ($listTag) {
 				$html .= '<li class="' . $activeClass . '">';
 			} else {
-				$class .= 'list-group-item';
+				$class .= 'list-group-item ';
 			}
+			$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
+			$class .= 'menus-tree-' . $nest . ' ';
 
-			$html .= $this->link($menu, $class . ' ' . $activeClass);
+			$html .= $this->link($menu, $class . $activeClass);
 
 			if ($listTag) {
 				$html .= '</li>';
@@ -107,15 +124,16 @@ class MenuHelper extends AppHelper {
 
 		$url = $setting;
 		if ($menu['Page']['slug'] != '') {
-			$url .= h($menu['Page']['slug']);
+			$url .= h($menu['Page']['permalink']);
 		} else {
 			$url .= '';
 		}
 
-		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $room['Room']['space_id'] !== Space::PUBLIC_SPACE_ID) {
-			$title = Hash::get($room, 'RoomsLanguage.name');
+		$title = '';
+		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $menu['Page']['permalink']) {
+			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
-			$title = $menu['LanguagesPage']['name'];
+			$title .= h($menu['LanguagesPage']['name']);
 		}
 
 		return $this->NetCommonsHtml->link($title, '/' . $url, array('class' => $class));

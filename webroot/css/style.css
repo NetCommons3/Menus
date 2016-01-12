@@ -1,0 +1,39 @@
+/**
+ * menus/css/style.css
+ *
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
+ */
+
+.menus-tree-0 {
+}
+.menus-tree-1 {
+	margin-left: 10px;
+}
+.menus-tree-2 {
+	margin-left: 20px;
+}
+.menus-tree-3 {
+	margin-left: 30px;
+}
+.menus-tree-4 {
+	margin-left: 40px;
+}
+.menus-tree-5 {
+	margin-left: 50px;
+}
+.menus-tree-6 {
+	margin-left: 60px;
+}
+.menus-tree-7 {
+	margin-left: 70px;
+}
+.menus-tree-8 {
+	margin-left: 80px;
+}
+.menus-tree-9 {
+	margin-left: 90px;
+}
