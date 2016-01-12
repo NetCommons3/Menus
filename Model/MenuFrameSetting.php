@@ -75,6 +75,12 @@ class MenuFrameSetting extends MenusAppModel {
 			}
 			self::$menuTypes[$dir] = $label;
 		}
+
+		$this->loadModels([
+			'MenuFrameSetting' => 'Menus.MenuFrameSetting',
+			'MenuFramesPage' => 'Menus.MenuFramesPage',
+			'MenuFramesRoom' => 'Menus.MenuFramesRoom',
+		]);
 	}
 
 /**
@@ -135,10 +141,15 @@ class MenuFrameSetting extends MenusAppModel {
 		//MenuFramesPage登録
 		if (isset($this->data['Menus'])) {
 			//MenuFramesPage登録処理
-			foreach ($this->data['Menus'] as $menu) {
-				if (! $this->MenuFramesPage->save($menu['MenuFramesPage'], false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
+			$data = Hash::combine($this->data['Menus'], '{n}.{n}.MenuFramesPage.page_id', '{n}.{n}');
+			if (! $this->MenuFramesPage->saveMany($data, ['validate' => false])) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+		if (isset($this->data['MenuRooms'])) {
+			//MenuFramesRoom登録処理
+			if (! $this->MenuFramesRoom->saveMany($this->data['MenuRooms'], ['validate' => false])) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		}
 
@@ -171,11 +182,6 @@ class MenuFrameSetting extends MenusAppModel {
  * @throws InternalErrorException
  */
 	public function saveMenuFrameSetting($data) {
-		$this->loadModels([
-			'MenuFrameSetting' => 'Menus.MenuFrameSetting',
-			'MenuFramesPage' => 'Menus.MenuFramesPage',
-		]);
-
 		//トランザクションBegin
 		$this->begin();
 

@@ -13,7 +13,9 @@
 <ul class="list-group nav nav-tabs" role="tablist">
 	<?php
 		foreach ($menuFrameRooms as $menuFrameRoom) {
-			echo $this->Menu->renderList(Hash::get($menus, $menuFrameRoom['Room']['id']), true);
+			foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
+				echo $this->Menu->render($menu, true);
+			}
 		}
 	?>
 </ul>

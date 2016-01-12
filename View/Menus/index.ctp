@@ -9,4 +9,4 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->Menu->render();
+echo $this->Menu->renderMain();

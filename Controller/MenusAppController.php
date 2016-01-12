@@ -25,9 +25,43 @@ class MenusAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		//'NetCommons.NetCommonsFrame',
 		'Pages.PageLayout',
 		'Security'
 	);
+
+/**
+ * Model name
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Menus.MenuFramesPage',
+		'Pages.Page',
+		'Rooms.Room',
+	);
+
+/**
+ * beforeRender
+ *
+ * @return void
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		//ルームデータ取得
+		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
+		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
+		if (! $rooms) {
+			$this->setAction('throwBadRequest');
+			return;
+		}
+		$this->set('rooms', $rooms);
+
+		//メニューデータ取得
+		$menus = $this->MenuFramesPage->getMenuData(array(
+			'conditions' => array($this->Page->alias . '.room_id' => array_keys($rooms))
+		));
+		$this->set('menus', $menus);
+	}
 
 }

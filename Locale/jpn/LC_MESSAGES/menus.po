@@ -41,3 +41,7 @@ msgstr "フッタータイプ"
 msgid "Display page"
 msgstr "ページの表示有無"
 
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:37
+msgid "Folder type"
+msgstr "フォルダ形式"
+

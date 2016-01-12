@@ -34,9 +34,8 @@ class MenuFrameSettingsController extends MenusAppController {
  */
 	public $components = array(
 		'NetCommons.Permission' => array(
-			//アクセスの権限
 			'allow' => array(
-				'edit' => 'block_editable',
+				'edit' => 'page_editable',
 			),
 		),
 	);
@@ -49,7 +48,16 @@ class MenuFrameSettingsController extends MenusAppController {
  */
 	public $uses = array(
 		'Menus.MenuFrameSetting',
-		'Menus.MenuFramesPage',
+		'Menus.MenuFramesRoom',
+	);
+
+/**
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Menus.Menu'
 	);
 
 /**
@@ -64,30 +72,34 @@ class MenuFrameSettingsController extends MenusAppController {
 			return;
 		}
 
+		$roomIds = array_keys($this->viewVars['rooms']);
+
 		if ($this->request->is(array('post', 'put'))) {
 			//不要パラメータ除去
-			$data = $this->data;
-			unset($data['save']);
-
-			if ($this->MenuFrameSetting->saveMenuFrameSetting($data)) {
+			unset($this->request->data['save']);
+			//登録処理
+			if ($this->MenuFrameSetting->saveMenuFrameSetting($this->request->data)) {
 				$this->redirect(NetCommonsUrl::backToPageUrl());
 				return;
 			}
-
 			$this->NetCommons->handleValidationError($this->MenuFrameSetting->validationErrors);
-			$this->request->data = $data;
 
 		} else {
 			$this->request->data = Hash::merge($this->request->data,
-				$this->MenuFrameSetting->find('first', array(
-					'recursive' => -1,
-					'conditions' => array('frame_key' => Current::read('Frame.key'))
-				)
-			));
+				$this->MenuFrameSetting->getMenuFrameSetting()
+			);
 
 			$this->request->data['Frame'] = Current::read('Frame');
-			$this->request->data['Menus'] = $this->MenuFramesPage->getMenuData();
+			$this->request->data['Menus'] = $this->viewVars['menus'];
+			$this->request->data['MenuRooms'] = $this->MenuFramesRoom->getMenuFrameRooms(array(
+				'conditions' => array($this->Room->alias . '.id' => $roomIds)
+			));
 		}
+
+		//Treeリスト取得
+		$pageTreeList = $this->Page->generateTreeList(
+				array('Page.room_id' => $roomIds), null, null, Page::$treeParser);
+		$this->set('pageTreeList', $pageTreeList);
 	}
 
 }

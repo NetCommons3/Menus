@@ -12,6 +12,8 @@
 
 <?php foreach ($menuFrameRooms as $menuFrameRoom) : ?>
 	<div class="list-group">
-		<?php echo $this->Menu->renderList(Hash::get($menus, $menuFrameRoom['Room']['id']), false); ?>
+		<?php foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) : ?>
+			<?php echo $this->Menu->render($menu, false); ?>
+		<?php endforeach; ?>
 	</div>
 <?php endforeach;

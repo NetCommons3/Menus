@@ -10,16 +10,12 @@
  */
 ?>
 
-<?php echo $this->Form->hidden('Frame.id'); ?>
-
-<?php echo $this->Form->hidden('MenuFrameSetting.id'); ?>
-
-<?php echo $this->Form->hidden('MenuFrameSetting.frame_key', array(
-		'value' => $this->data['Frame']['key']
-	)); ?>
+<?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('MenuFrameSetting.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('MenuFrameSetting.frame_key'); ?>
 
 <div class="form-group">
-	<?php echo $this->Form->input('MenuFrameSetting.display_type', array(
+	<?php echo $this->NetCommonsForm->input('MenuFrameSetting.display_type', array(
 			'type' => 'select',
 			'label' => __d('menus', 'Display type'),
 			'class' => 'form-control',
@@ -28,29 +24,21 @@
 </div>
 
 <div class="form-group">
-	<?php echo $this->Form->label(null, __d('menus', 'Display page')); ?>
+	<?php echo $this->NetCommonsForm->label(null, __d('menus', 'Display page')); ?>
 
-	<ul class="list-group">
-		<?php foreach ($this->data['Menus'] as $index => $menu) : ?>
-			<li class="list-group-item">
-				<?php echo $this->Form->hidden('Menus.' . $index . '.MenuFramesPage.id'); ?>
-				<?php echo $this->Form->hidden('Menus.' . $index . '.MenuFramesPage.frame_key', array(
-						'value' => $this->data['Frame']['key']
-					)); ?>
-				<?php echo $this->Form->hidden('Menus.' . $index . '.MenuFramesPage.page_id', array(
-						'value' => $menu['Page']['id']
-					)); ?>
+	<?php foreach ($rooms as $roomId => $room) : ?>
+		<div class="panel panel-default">
+			<div class="panel-heading menu-list-item">
+				<?php echo $this->Menu->checkboxMenuFramesRoom($roomId, $room); ?>
+			</div>
 
-				<?php echo $this->Form->checkbox('Menus.' . $index . '.MenuFramesPage.is_hidden', array(
-						'div' => false,
-						'value' => '0',
-						'hiddenField' => '1',
-						'checked' => ! (bool)$menu['MenuFramesPage']['is_hidden']
-					)); ?>
-				<?php echo $this->Form->label('Menus.' . $index . '.MenuFramesPage.is_hidden',
-						$menu['LanguagesPage']['name']
-					); ?>
-			</li>
-		<?php endforeach; ?>
-	</ul>
+			<?php if (Hash::get($this->data, 'Menus.' . $roomId)) : ?>
+				<ul class="list-group">
+					<?php foreach ($this->data['Menus'][$roomId] as $pageId => $menu) : ?>
+						<?php echo $this->Menu->checkboxMenuFramesPage($roomId, $room, $pageId, $menu); ?>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+		</div>
+	<?php endforeach; ?>
 </div>

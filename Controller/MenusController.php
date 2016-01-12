@@ -27,10 +27,7 @@ class MenusController extends MenusAppController {
  */
 	public $uses = array(
 		'Menus.MenuFrameSetting',
-		'Menus.MenuFramesPage',
 		'Menus.MenuFramesRoom',
-		'Pages.Page',
-		'Rooms.Room',
 	);
 
 /**
@@ -49,35 +46,27 @@ class MenusController extends MenusAppController {
  */
 	public function index() {
 		//ルームデータ取得
-		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
-		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
-		$this->set('rooms', $rooms);
-		$roomsIds = Hash::extract($rooms, '{n}.Room.id');
+		$roomIds = array_keys($this->viewVars['rooms']);
 
 		//メニュー設定データ取得
 		$menuFrameSetting = $this->MenuFrameSetting->getMenuFrameSetting();
 		$this->set('menuFrameSetting', $menuFrameSetting);
 
-		//メニューデータ取得
-		$menus = $this->MenuFramesPage->getMenuData(array(
-			'conditions' => array(
-				$this->Page->alias . '.room_id' => $roomsIds
-			)
-		));
-		$this->set('menus', Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id'));
-
 		//ルームデータ取得処理
 		$menuFrameRooms = $this->MenuFramesRoom->getMenuFrameRooms(array(
 			'conditions' => array(
-				$this->Room->alias . '.id' => $roomsIds
+				$this->Room->alias . '.id' => $roomIds
 			)
 		));
 		$this->set('menuFrameRooms', Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}'));
 
 		//Treeリスト取得
 		$pageTreeList = $this->Page->generateTreeList(
-				array('Page.room_id' => $roomsIds), null, null, Page::$treeParser);
+				array('Page.room_id' => $roomIds), null, null, Page::$treeParser);
 		$this->set('pageTreeList', $pageTreeList);
+
+		$pages = $this->Page->getPages($roomIds);
+		$this->set('pages', $pages);
 	}
 
 }
