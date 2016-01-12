@@ -153,6 +153,7 @@ class MenuHelper extends AppHelper {
 			}, Hash::extract($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage.{n}.id', array()));
 
 			$options['ng-init'] = 'initialize(\'' . $domId . '\', ' . json_encode($children) . ')';
+			$options['ng-click'] = 'switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
 		} else {
 			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
