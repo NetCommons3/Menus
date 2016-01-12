@@ -26,6 +26,18 @@ NetCommonsApp.controller('MenusController', function($scope) {
    */
   $scope.initialize = function(key, data) {
     $scope.menus[key] = data;
+    $scope.switchOpenClose(key);
+  };
+
+  /**
+   * 切り替え
+   *
+   * @return {void}
+   */
+  $scope.switchOpenClose = function(key) {
+    angular.forEach($scope.menus[key], function(domId) {
+      $('#' + domId).toggle();
+    });
   };
 
 });
