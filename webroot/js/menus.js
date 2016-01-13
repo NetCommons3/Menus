@@ -24,9 +24,15 @@ NetCommonsApp.controller('MenusController', function($scope) {
    *
    * @return {void}
    */
-  $scope.initialize = function(key, data) {
+  $scope.initialize = function(key, data, togggle) {
     $scope.menus[key] = data;
-    $scope.switchOpenClose(key);
+    angular.forEach($scope.menus[key], function(domId) {
+      if (togggle) {
+        $('#' + domId).show();
+      } else {
+        $('#' + domId).hide();
+      }
+    });
   };
 
   /**

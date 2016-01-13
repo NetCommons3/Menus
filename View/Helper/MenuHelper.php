@@ -21,6 +21,13 @@ class MenuHelper extends AppHelper {
  *
  * @var array
  */
+	public $parentPageIds = array();
+
+/**
+ * Other helpers used by FormHelper
+ *
+ * @var array
+ */
 	public $helpers = array(
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
@@ -63,10 +70,40 @@ class MenuHelper extends AppHelper {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
 
+		$this->parentPageIds = Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array());
+		if (! in_array(Current::read('Page.id'), $this->parentPageIds, true)) {
+			$this->parentPageIds[] = Current::read('Page.id');
+		}
+
 		//メニューHTML表示
 		$html .= '<nav ng-controller="MenusController">';
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/index');
 		$html .= '</nav>';
+
+		return $html;
+	}
+
+/**
+ * メニューの表示
+ *
+ * @param int $roomId Room.id
+ * @param int $pageId Page.id
+ * @param bool $listTag リストタグの有無
+ * @return string HTMLタグ
+ */
+	public function renderChild($roomId, $pageId, $listTag) {
+		$html = '';
+
+		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
+		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) && ! in_array($pageId, $this->parentPageIds, true)) {
+			return $html;
+		}
+
+		foreach ($childPageIds as $childPageId) {
+			$html .= $this->render(Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag);
+			$html .= $this->renderChild($roomId, $childPageId, $listTag);
+		}
 
 		return $html;
 	}
@@ -104,6 +141,7 @@ class MenuHelper extends AppHelper {
 		} else {
 			$class .= 'list-group-item ';
 		}
+
 		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
 		$class .= 'menu-tree-' . $nest . ' ';
 
@@ -117,7 +155,7 @@ class MenuHelper extends AppHelper {
 	}
 
 /**
- * メニューリストの表示
+ * リンクの表示
  *
  * @param array $menu リンクデータ
  * @param string $class CSS定義
@@ -148,22 +186,55 @@ class MenuHelper extends AppHelper {
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
+		$togggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
+
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 			$title = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{\'glyphicon-menu-right\': !' . $domIdIcon . ', \'glyphicon-menu-down\': ' . $domIdIcon . '}"> </span> ' . $title;
 
-			$children = array_map(function($value) {
+			$childPageIds = array();
+			$childPageIds = $this->getRecursiveChildPageId($menu['Page']['room_id'], $menu['Page']['id'], $childPageIds);
+			$childDomIds = array_map(function($value) {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
-			}, Hash::extract($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage.{n}.id', array()));
+			}, $childPageIds);
 
-			$options['ng-init'] = $domIdIcon . '=false; initialize(\'' . $domId . '\', ' . json_encode($children) . ')';
+			$options['ng-init'] = $domIdIcon . '=' . $togggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $togggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
+
+		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
+			if ($togggle) {
+				$title = '<span class="glyphicon glyphicon-menu-down"> </span> ' . $title;
+			} else {
+				$title = '<span class="glyphicon glyphicon-menu-right"> </span> ' . $title;
+			}
+			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
 		} else {
 			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
 		}
 
 		return $html;
+	}
+
+/**
+ * ChildPageのIdを取得する(再帰的に)
+ *
+ * @param int $roomId Room.id
+ * @param int $pageId Page.id
+ * @param array $result 再帰の結果配列
+ * @return string HTMLタグ
+ */
+	public function getRecursiveChildPageId($roomId, $pageId, $result) {
+		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		foreach ($childPageIds as $childPageId) {
+			$result[] = $childPageId;
+
+			$prefixInput = $roomId . '.' . $childPageId . '.MenuFramesPage.folder_type';
+			if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false)) {
+				$result = $this->getRecursiveChildPageId($roomId, $childPageId, $result);
+			}
+		}
+		return $result;
 	}
 
 /**

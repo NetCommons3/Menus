@@ -68,7 +68,8 @@ class MenusController extends MenusAppController {
 		$pages = $this->Page->getPages($roomIds);
 		$this->set('pages', $pages);
 
-		CakeLog::debug(print_r($pages, true));
+		$parentPages = $this->Page->getPath(Current::read('Page.id'));
+		$this->set('parentPages', $parentPages);
 	}
 
 }

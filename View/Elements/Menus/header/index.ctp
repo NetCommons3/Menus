@@ -14,7 +14,11 @@
 	<?php
 		foreach ($menuFrameRooms as $menuFrameRoom) {
 			foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
-				echo $this->Menu->render($menu, true);
+				$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
+				if ($nest === 0) {
+					echo $this->Menu->render($menu, true);
+					echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], true);
+				}
 			}
 		}
 	?>
