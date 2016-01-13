@@ -146,14 +146,18 @@ class MenuHelper extends AppHelper {
 		}
 
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
-		$options = array('class' => $class, 'id' => $domId);
+		$domIdIcon = $domId . 'Icon';
+		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+			$title = '<span class="glyphicon glyphicon-menu-right"' .
+						' ng-class="{\'glyphicon-menu-right\': !' . $domIdIcon . ', \'glyphicon-menu-down\': ' . $domIdIcon . '}"> </span> ' . $title;
+
 			$children = array_map(function($value) {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
 			}, Hash::extract($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage.{n}.id', array()));
 
-			$options['ng-init'] = 'initialize(\'' . $domId . '\', ' . json_encode($children) . ')';
-			$options['ng-click'] = 'switchOpenClose(\'' . $domId . '\')';
+			$options['ng-init'] = $domIdIcon . '=false; initialize(\'' . $domId . '\', ' . json_encode($children) . ')';
+			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
 		} else {
 			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);

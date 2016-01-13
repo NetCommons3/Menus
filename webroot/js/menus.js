@@ -37,11 +37,6 @@ NetCommonsApp.controller('MenusController', function($scope) {
   $scope.switchOpenClose = function(key) {
     angular.forEach($scope.menus[key], function(domId) {
       $('#' + domId).toggle();
-      if ($('#' + domId).is(':visible')) {
-        console.log('visible');
-      } else {
-        console.log('none');
-      }
     });
   };
 
