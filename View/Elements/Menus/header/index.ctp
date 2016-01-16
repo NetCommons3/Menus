@@ -13,7 +13,13 @@
 <ul class="list-group nav nav-tabs" role="tablist">
 	<?php
 		foreach ($menuFrameRooms as $menuFrameRoom) {
-			echo $this->Menu->renderList(Hash::get($menus, $menuFrameRoom['Room']['id']), true);
+			foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
+				$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
+				if ($nest === 0) {
+					echo $this->Menu->render($menu, true);
+					echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], true);
+				}
+			}
 		}
 	?>
 </ul>

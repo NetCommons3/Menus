@@ -124,7 +124,7 @@ class MenuFramesPage extends MenusAppModel {
 		), $options);
 
 		$menus = $this->Page->find('all', $options);
-		return $menus;
+		return Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id');
 	}
 
 }

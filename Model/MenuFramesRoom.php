@@ -121,7 +121,7 @@ class MenuFramesRoom extends MenusAppModel {
 		), $options);
 
 		$menuFrameRooms = $this->Room->find('all', $options);
-		return $menuFrameRooms;
+		return Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}');
 	}
 
 }
