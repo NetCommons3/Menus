@@ -194,7 +194,7 @@ class MenuHelper extends AppHelper {
 
 			$childPageIds = array();
 			$childPageIds = $this->getRecursiveChildPageId($menu['Page']['room_id'], $menu['Page']['id'], $childPageIds);
-			$childDomIds = array_map(function($value) {
+			$childDomIds = array_map(function ($value) {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
 			}, $childPageIds);
 
