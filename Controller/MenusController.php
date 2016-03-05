@@ -10,7 +10,6 @@
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
-App::uses('PageLayoutHelper', 'Pages.View/Helper');
 
 /**
  * Menus Controller

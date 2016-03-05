@@ -11,7 +11,7 @@
 ?>
 
 <div class="panel panel-default">
-	<?php echo $this->Form->create('MenuFrameSetting', array('novalidate' => true)); ?>
+	<?php echo $this->NetCommonsForm->create('MenuFrameSetting'); ?>
 
 	<div class="panel-body">
 		<div class="tab-content">
