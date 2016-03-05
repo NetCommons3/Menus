@@ -98,30 +98,24 @@ class MenuFrameSetting extends MenusAppModel {
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
 			),
 			'display_type' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
 			),
 		));
 
-		if (! $this->MenuFramesPage->validateMany($this->data['Menus'])) {
-			$this->validationErrors = Hash::merge(
-				$this->validationErrors,
-				$this->MenuFramesPage->validationErrors
-			);
-			return false;
+		if (Hash::get($this->data, 'Menus')) {
+			$data = Hash::combine($this->data['Menus'], '{n}.{n}.MenuFramesPage.page_id', '{n}.{n}');
+			if (! $this->MenuFramesPage->validateMany($data)) {
+				$this->validationErrors = Hash::merge(
+					$this->validationErrors, $this->MenuFramesPage->validationErrors
+				);
+				return false;
+			}
 		}
 
 		return parent::beforeValidate($options);
