@@ -61,9 +61,6 @@ class MenuFrameSetting extends MenusAppModel {
 				case 'header':
 					$label = __d('menus', 'Header type');
 					break;
-				case 'main':
-					$label = __d('menus', 'Main type');
-					break;
 				case 'major':
 					$label = __d('menus', 'Left type');
 					break;
@@ -71,7 +68,7 @@ class MenuFrameSetting extends MenusAppModel {
 					$label = __d('menus', 'Right type');
 					break;
 				default:
-					$label = __d('menus', $dir);
+					$label = __d('menus', 'Main type');
 			}
 			self::$menuTypes[$dir] = $label;
 		}
