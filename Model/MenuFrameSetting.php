@@ -27,7 +27,7 @@ class MenuFrameSetting extends MenusAppModel {
  *
  * @var array
  */
-	public static $menuTypes = array();
+	public $menuTypes = array();
 
 /**
  * Validation rules
@@ -70,7 +70,7 @@ class MenuFrameSetting extends MenusAppModel {
 				default:
 					$label = __d('menus', 'Main type');
 			}
-			self::$menuTypes[$dir] = $label;
+			$this->menuTypes[$dir] = $label;
 		}
 
 		$this->loadModels([
@@ -103,7 +103,7 @@ class MenuFrameSetting extends MenusAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 				'inList' => array(
-					'rule' => array('inList', array_keys(self::$menuTypes)),
+					'rule' => array('inList', array_keys($this->menuTypes)),
 					'message' => __d('net_commons', 'Invalid request.'),
 				)
 			),

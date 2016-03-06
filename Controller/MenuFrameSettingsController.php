@@ -24,7 +24,7 @@ class MenuFrameSettingsController extends MenusAppController {
  *
  * @var array
  */
-	public $layout = 'Frames.setting';
+	public $layout = 'NetCommons.setting';
 
 /**
  * use components
