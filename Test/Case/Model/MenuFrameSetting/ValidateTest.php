@@ -74,6 +74,8 @@ class MenuFrameSettingValidateTest extends NetCommonsValidateTest {
 				'message' => __d('net_commons', 'Invalid request.')),
 			array('data' => $data, 'field' => 'display_type', 'value' => '',
 				'message' => __d('net_commons', 'Invalid request.')),
+			array('data' => $data, 'field' => 'display_type', 'value' => 'aaaaa',
+				'message' => __d('net_commons', 'Invalid request.')),
 		);
 	}
 

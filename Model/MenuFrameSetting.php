@@ -102,6 +102,10 @@ class MenuFrameSetting extends MenusAppModel {
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
+				'inList' => array(
+					'rule' => array('inList', array_keys(self::$menuTypes)),
+					'message' => __d('net_commons', 'Invalid request.'),
+				)
 			),
 		));
 
