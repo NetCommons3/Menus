@@ -64,36 +64,6 @@ class MenuFrameSettingSaveMenuFrameSettingTest extends NetCommonsSaveTest {
 				'frame_key' => 'frame_3',
 				'display_type' => 'main',
 			),
-			'Menus' => array(
-				1 => array(
-					1 => array(
-						'MenuFramesPage' => array(
-							'id' => '1',
-							'frame_key' => 'frame_3',
-							'page_id' => '1',
-							'is_hidden' => false,
-						)
-					),
-					2 => array(
-						'MenuFramesPage' => array(
-							'id' => null,
-							'frame_key' => 'frame_3',
-							'page_id' => null,
-							'is_hidden' => null,
-						)
-					)
-				),
-			),
-			'MenuRooms' => array(
-				1 => array(
-					'MenuFramesRoom' => array(
-						'id' => '1',
-						'frame_key' => 'frame_3',
-						'room_id' => '1',
-						'is_hidden' => false,
-					)
-				)
-			)
 		);
 
 		return $data;
