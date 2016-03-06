@@ -52,17 +52,17 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 	protected $_methodName = 'getMenuFrameSetting';
 
 /**
- * ValidationErrorのDataProvider
+ * getMenuFrameSetting()テストのDataProvider
  *
  * ### 戻り値
  *  - frameKey フレームKey
- *  - excepted 期待値
+ *  - expected 期待値
  *
  * @return array テストデータ
  */
 	public function dataProvider() {
 		return array(
-			array('frameKey' => 'frame_2', 'excepted' => array(
+			array('frameKey' => 'frame_2', 'expected' => array(
 				'id' => '2',
 				'frame_key' => 'frame_2',
 				'display_type' => 'major',
@@ -71,7 +71,7 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 				'modified_user' => null,
 				'modified' => null,
 			)),
-			array('frameKey' => 'frame_8', 'excepted' => array(
+			array('frameKey' => 'frame_8', 'expected' => array(
 				'frame_key' => 'frame_8',
 				'display_type' => 'main',
 				'created_user' => null,
@@ -86,11 +86,11 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
  * getMenuFrameSetting()のテスト
  *
  * @param string $frameKey フレームKey
- * @param array $excepted 期待値
+ * @param array $expected 期待値
  * @dataProvider dataProvider
  * @return void
  */
-	public function testGetMenuFrameSetting($frameKey, $excepted) {
+	public function testGetMenuFrameSetting($frameKey, $expected) {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
@@ -101,7 +101,7 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 		$result = $this->$model->$methodName();
 
 		//チェック
-		$this->assertEquals(array('MenuFrameSetting' => $excepted), $result);
+		$this->assertEquals(array('MenuFrameSetting' => $expected), $result);
 	}
 
 }
