@@ -76,6 +76,7 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
 		$this->__assertLink('6', '2', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
 		$this->__assertLink('6', '3', '/page_2', '', 'Page 2');
 		$this->__assertLink('6', '5', '/page_4', '', 'Page 4');
+		$this->__assertLink('6', '6', '/page_5', '', 'Page 5');
 	}
 
 /**
