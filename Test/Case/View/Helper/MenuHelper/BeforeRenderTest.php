@@ -69,7 +69,6 @@ class MenuHelperBeforeRenderTest extends NetCommonsControllerTestCase {
 		//scriptのURLチェック
 		$pattern = '/<script.*?' . preg_quote('/menus/js/menus.js', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->contents);
-
 	}
 
 }

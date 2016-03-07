@@ -82,7 +82,6 @@ class MenusControllerIndexTest extends NetCommonsControllerTestCase {
 		$this->_testGetAction(array('action' => 'index', 'frame_id' => '6'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
-		debug($this->view);
 		$this->assertTextContains('<nav ng-controller="MenusController">', $this->view);
 	}
 

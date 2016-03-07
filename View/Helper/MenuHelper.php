@@ -57,15 +57,15 @@ class MenuHelper extends AppHelper {
 	public function renderMain() {
 		$html = '';
 		$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
+		$plugin = Inflector::camelize($this->_View->params['plugin']);
 
 		//スタイルシートの読み込み
-		//$html .= $this->NetCommonsHtml->css('/menus/css/style.css');
-		$cssPath = App::pluginPath($this->plugin) . DS . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
+		$cssPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
 		if (file_exists($cssPath)) {
 			$html .= $this->NetCommonsHtml->css('/menus/css/' . $displayType . '/style.css');
 		}
 		//JSの読み込み
-		$jsPath = App::pluginPath($this->plugin) . DS . WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
+		$jsPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
 		if (file_exists($jsPath)) {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
@@ -187,7 +187,7 @@ class MenuHelper extends AppHelper {
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
-		$togggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
+		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 			$title = '<span class="glyphicon glyphicon-menu-right"' .
@@ -199,12 +199,12 @@ class MenuHelper extends AppHelper {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
 			}, $childPageIds);
 
-			$options['ng-init'] = $domIdIcon . '=' . $togggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $togggle . ')';
+			$options['ng-init'] = $domIdIcon . '=' . $toggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
 
 		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
-			if ($togggle) {
+			if ($toggle) {
 				$title = '<span class="glyphicon glyphicon-menu-down"> </span> ' . $title;
 			} else {
 				$title = '<span class="glyphicon glyphicon-menu-right"> </span> ' . $title;
