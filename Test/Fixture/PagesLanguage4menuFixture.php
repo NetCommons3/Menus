@@ -52,19 +52,26 @@ class PagesLanguage4menuFixture extends LanguagesPageFixture {
 			'language_id' => '2',
 			'name' => 'Page 1',
 		),
-		//page.permalink=page_1/page_2
+		//page.permalink=page_2
 		array(
 			'id' => '3',
 			'page_id' => '3',
 			'language_id' => '2',
 			'name' => 'Page 2',
 		),
-		//page.permalink=page_3
+		//page.permalink=page_1/page_3
 		array(
 			'id' => '4',
 			'page_id' => '4',
 			'language_id' => '2',
 			'name' => 'Page 3',
+		),
+		//page.permalink=page_1/page_3/page_6
+		array(
+			'id' => '7',
+			'page_id' => '7',
+			'language_id' => '2',
+			'name' => 'Page 6',
 		),
 		//別ルーム(room_id=4)
 		array(
