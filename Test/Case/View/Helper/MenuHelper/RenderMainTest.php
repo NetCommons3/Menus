@@ -45,16 +45,17 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 /**
  * viewVarsのデータ取得
  *
+ * @param int $pageId ページID
  * @return array
  */
-	private function __getViewVars() {
+	private function __getViewVars($pageId) {
 		$MenuFrameSetting = ClassRegistry::init('Menus.MenuFrameSetting');
 		$MenuFramesRoom = ClassRegistry::init('Menus.MenuFramesRoom');
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
 		$roomIds = array('1', '4', '5');
-		Current::$current = Hash::insert(Current::$current, 'Page.id', '2');
+		Current::$current = Hash::insert(Current::$current, 'Page.id', $pageId);
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
@@ -78,9 +79,30 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
  *
  * @return void
  */
-	public function testRenderMain() {
+	public function testRenderMainWithActive() {
 		//Helperロード
-		$viewVars = $this->__getViewVars();
+		$viewVars = $this->__getViewVars('2');
+		$viewVars['parentPages'] = array();
+		$requestData = array();
+		$params = array();
+		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
+
+		//テスト実施
+		$result = $this->Menu->renderMain();
+
+		//チェック
+		$this->assertTextContains('<nav ng-controller="MenusController">', $result);
+		$this->assertEquals(array(Current::read('Page.id')), $this->Menu->parentPageIds);
+	}
+
+/**
+ * renderMain()のテスト
+ *
+ * @return void
+ */
+	public function testRenderMainWithoutActive() {
+		//Helperロード
+		$viewVars = $this->__getViewVars('1');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
@@ -103,7 +125,7 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		NetCommonsCakeTestCase::loadTestPlugin($this, 'Menus', 'TestMenus');
 
 		//Helperロード
-		$viewVars = $this->__getViewVars();
+		$viewVars = $this->__getViewVars('2');
 		$requestData = array();
 		$params = array('plugin' => 'TestMenus');
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
