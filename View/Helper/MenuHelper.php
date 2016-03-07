@@ -9,6 +9,8 @@
  */
 
 App::uses('AppHelper', 'View/Helper');
+App::uses('Room', 'Rooms.Model');
+ClassRegistry::init('Pages.Page');
 
 /**
  * MenuHelper

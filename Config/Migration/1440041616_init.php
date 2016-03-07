@@ -52,7 +52,6 @@ class Init extends CakeMigration {
 					'page_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 					'is_hidden' => array('type' => 'boolean', 'null' => true, 'default' => null),
 					'folder_type' => array('type' => 'boolean', 'null' => true, 'default' => null),
-					'weight' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'comment' => '表示の重み(表示順序)'),
 					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者 | users.id'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
 					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者 | users.id'),
