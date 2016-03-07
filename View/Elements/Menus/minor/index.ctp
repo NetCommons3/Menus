@@ -11,15 +11,15 @@
 ?>
 
 <?php foreach ($menuFrameRooms as $menuFrameRoom) : ?>
-	<div class="list-group">
-		<?php
-			foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
-				$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
-				if ($nest === 0) {
-					echo $this->Menu->render($menu, false);
-					echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], false);
-				}
+	<?php
+		echo '<div class="list-group">';
+		foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
+			$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
+			if ($nest === 0) {
+				echo $this->Menu->render($menu, false);
+				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], false);
 			}
-		?>
-	</div>
+		}
+		echo '</div>';
+	?>
 <?php endforeach;
