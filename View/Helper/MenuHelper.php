@@ -96,7 +96,8 @@ class MenuHelper extends AppHelper {
 
 		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
 		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
-		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) && ! in_array($pageId, $this->parentPageIds, true)) {
+		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
+				! in_array($pageId, $this->parentPageIds, true)) {
 			return $html;
 		}
 
