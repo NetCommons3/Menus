@@ -9,6 +9,8 @@
  */
 
 App::uses('AppHelper', 'View/Helper');
+App::uses('Room', 'Rooms.Model');
+ClassRegistry::init('Pages.Page');
 
 /**
  * MenuHelper
@@ -34,19 +36,17 @@ class MenuHelper extends AppHelper {
 	);
 
 /**
- * After render file callback.
- * Called after any view fragment is rendered.
+ * Before render callback. beforeRender is called before the view file is rendered.
  *
  * Overridden in subclasses.
  *
- * @param string $viewFile The file just be rendered.
- * @param string $content The content that was rendered.
+ * @param string $viewFile The view file that is going to be rendered
  * @return void
  */
-	public function afterRenderFile($viewFile, $content) {
-		$content = $this->NetCommonsHtml->css('/menus/css/style.css') .
-					$this->NetCommonsHtml->script('/menus/js/menus.js') . $content;
-		parent::afterRenderFile($viewFile, $content);
+	public function beforeRender($viewFile) {
+		$this->NetCommonsHtml->css('/menus/css/style.css');
+		$this->NetCommonsHtml->script('/menus/js/menus.js');
+		parent::beforeRender($viewFile);
 	}
 
 /**
@@ -57,15 +57,15 @@ class MenuHelper extends AppHelper {
 	public function renderMain() {
 		$html = '';
 		$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
+		$plugin = Inflector::camelize($this->_View->params['plugin']);
 
 		//スタイルシートの読み込み
-		//$html .= $this->NetCommonsHtml->css('/menus/css/style.css');
-		$cssPath = App::pluginPath($this->plugin) . DS . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
+		$cssPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
 		if (file_exists($cssPath)) {
 			$html .= $this->NetCommonsHtml->css('/menus/css/' . $displayType . '/style.css');
 		}
 		//JSの読み込み
-		$jsPath = App::pluginPath($this->plugin) . DS . WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
+		$jsPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
 		if (file_exists($jsPath)) {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
@@ -96,7 +96,8 @@ class MenuHelper extends AppHelper {
 
 		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
 		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
-		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) && ! in_array($pageId, $this->parentPageIds, true)) {
+		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
+				! in_array($pageId, $this->parentPageIds, true)) {
 			return $html;
 		}
 
@@ -120,32 +121,33 @@ class MenuHelper extends AppHelper {
 		if ($menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
-		$roomId = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room.id');
-		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $roomId . '.Room.parent_id') === Room::PRIVATE_PARENT_ID &&
+		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID &&
 				Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
 			return $html;
 		}
-		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $roomId . '.MenuFramesRoom.is_hidden')) {
+		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '.MenuFramesRoom.is_hidden')) {
 			return $html;
 		}
 
 		if (Current::read('Page.permalink') === (string)$menu['Page']['permalink']) {
-			$activeClass = 'active';
+			$activeClass = ' active';
 		} else {
 			$activeClass = '';
 		}
 
 		$class = '';
 		if ($listTag) {
-			$html .= '<li class="' . $activeClass . '">';
+			$html .= '<li class="' . trim($activeClass) . '">';
+			$activeClass = '';
 		} else {
-			$class .= 'list-group-item ';
+			$class .= ' list-group-item';
 		}
 
 		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
-		$class .= 'menu-tree-' . $nest . ' ';
+		$class .= ' menu-tree-' . $nest;
 
-		$html .= $this->link($menu, $class . $activeClass);
+		$html .= $this->link($menu, trim($class) . $activeClass);
 
 		if ($listTag) {
 			$html .= '</li>';
@@ -186,7 +188,7 @@ class MenuHelper extends AppHelper {
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
-		$togggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
+		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 			$title = '<span class="glyphicon glyphicon-menu-right"' .
@@ -198,12 +200,12 @@ class MenuHelper extends AppHelper {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
 			}, $childPageIds);
 
-			$options['ng-init'] = $domIdIcon . '=' . $togggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $togggle . ')';
+			$options['ng-init'] = $domIdIcon . '=' . $toggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
 
 		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
-			if ($togggle) {
+			if ($toggle) {
 				$title = '<span class="glyphicon glyphicon-menu-down"> </span> ' . $title;
 			} else {
 				$title = '<span class="glyphicon glyphicon-menu-right"> </span> ' . $title;

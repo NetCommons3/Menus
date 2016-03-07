@@ -27,7 +27,7 @@ class MenuFrameSetting extends MenusAppModel {
  *
  * @var array
  */
-	public static $menuTypes = array();
+	public $menuTypes = array();
 
 /**
  * Validation rules
@@ -61,9 +61,6 @@ class MenuFrameSetting extends MenusAppModel {
 				case 'header':
 					$label = __d('menus', 'Header type');
 					break;
-				case 'main':
-					$label = __d('menus', 'Main type');
-					break;
 				case 'major':
 					$label = __d('menus', 'Left type');
 					break;
@@ -71,9 +68,9 @@ class MenuFrameSetting extends MenusAppModel {
 					$label = __d('menus', 'Right type');
 					break;
 				default:
-					$label = __d('menus', $dir);
+					$label = __d('menus', 'Main type');
 			}
-			self::$menuTypes[$dir] = $label;
+			$this->menuTypes[$dir] = $label;
 		}
 
 		$this->loadModels([
@@ -98,30 +95,28 @@ class MenuFrameSetting extends MenusAppModel {
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
 			),
 			'display_type' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
+				'inList' => array(
+					'rule' => array('inList', array_keys($this->menuTypes)),
+					'message' => __d('net_commons', 'Invalid request.'),
+				)
 			),
 		));
 
-		if (! $this->MenuFramesPage->validateMany($this->data['Menus'])) {
-			$this->validationErrors = Hash::merge(
-				$this->validationErrors,
-				$this->MenuFramesPage->validationErrors
-			);
-			return false;
+		if (Hash::get($this->data, 'Menus')) {
+			$data = Hash::combine($this->data['Menus'], '{n}.{n}.MenuFramesPage.page_id', '{n}.{n}');
+			if (! $this->MenuFramesPage->validateMany($data)) {
+				$this->validationErrors = Hash::merge(
+					$this->validationErrors, $this->MenuFramesPage->validationErrors
+				);
+				return false;
+			}
 		}
 
 		return parent::beforeValidate($options);

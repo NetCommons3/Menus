@@ -10,7 +10,6 @@
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
-App::uses('PageLayoutHelper', 'Pages.View/Helper');
 
 /**
  * MenuFrameSettings Controller
@@ -25,7 +24,7 @@ class MenuFrameSettingsController extends MenusAppController {
  *
  * @var array
  */
-	public $layout = 'Frames.setting';
+	public $layout = 'NetCommons.setting';
 
 /**
  * use components
@@ -43,8 +42,7 @@ class MenuFrameSettingsController extends MenusAppController {
 /**
  * Model name
  *
- * @author    Shohei Nakajima <nakajimashouhei@gmail.com>
- * @var       array
+ * @var array
  */
 	public $uses = array(
 		'Menus.MenuFrameSetting',
@@ -68,8 +66,7 @@ class MenuFrameSettingsController extends MenusAppController {
 	public function edit() {
 		//フレームなしの場合、
 		if (! Current::read('Frame.id')) {
-			$this->autoRender = false;
-			return;
+			return $this->emptyRender();
 		}
 
 		$roomIds = array_keys($this->viewVars['rooms']);
@@ -79,8 +76,7 @@ class MenuFrameSettingsController extends MenusAppController {
 			unset($this->request->data['save']);
 			//登録処理
 			if ($this->MenuFrameSetting->saveMenuFrameSetting($this->request->data)) {
-				$this->redirect(NetCommonsUrl::backToPageUrl());
-				return;
+				return $this->redirect(NetCommonsUrl::backToPageUrl());
 			}
 			$this->NetCommons->handleValidationError($this->MenuFrameSetting->validationErrors);
 

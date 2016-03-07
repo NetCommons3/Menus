@@ -50,16 +50,16 @@ class MenusAppController extends AppController {
 
 		//ルームデータ取得
 		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
-		$rooms = Hash::combine($rooms, '{n}.Room.id', '{n}');
 		if (! $rooms) {
-			$this->setAction('throwBadRequest');
-			return;
+			return $this->setAction('throwBadRequest');
 		}
-		$this->set('rooms', $rooms);
+		$this->set('rooms', Hash::combine($rooms, '{n}.Room.id', '{n}'));
 
 		//メニューデータ取得
 		$menus = $this->MenuFramesPage->getMenuData(array(
-			'conditions' => array($this->Page->alias . '.room_id' => array_keys($rooms))
+			'conditions' => array(
+				$this->Page->alias . '.room_id' => array_keys($this->viewVars['rooms'])
+			)
 		));
 		$this->set('menus', $menus);
 	}

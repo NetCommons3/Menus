@@ -8,6 +8,8 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+$MenuFrameSetting = ClassRegistry::init('Menus.MenuFrameSetting');
 ?>
 
 <?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
@@ -19,7 +21,7 @@
 			'type' => 'select',
 			'label' => __d('menus', 'Display type'),
 			'class' => 'form-control',
-			'options' => MenuFrameSetting::$menuTypes
+			'options' => $MenuFrameSetting->menuTypes
 		)); ?>
 </div>
 

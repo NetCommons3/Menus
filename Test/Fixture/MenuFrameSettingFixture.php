@@ -43,13 +43,29 @@ class MenuFrameSettingFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'frame_key' => 'Lorem ipsum dolor sit amet',
-			'display_type' => 'Lorem ipsum dolor sit amet',
-			'created_user' => 1,
-			'created' => '2015-08-20 03:42:00',
-			'modified_user' => 1,
-			'modified' => '2015-08-20 03:42:00'
+			'id' => '1',
+			'frame_key' => 'frame_1',
+			'display_type' => 'header',
+		),
+		array(
+			'id' => '2',
+			'frame_key' => 'frame_2',
+			'display_type' => 'major',
+		),
+		array(
+			'id' => '3',
+			'frame_key' => 'frame_3',
+			'display_type' => 'main',
+		),
+		array(
+			'id' => '4',
+			'frame_key' => 'frame_4',
+			'display_type' => 'minor',
+		),
+		array(
+			'id' => '5',
+			'frame_key' => 'frame_5',
+			'display_type' => 'footer',
 		),
 	);
 

@@ -44,14 +44,10 @@ class MenuFramesRoomFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'frame_key' => 'Lorem ipsum dolor sit amet',
-			'room_id' => 1,
-			'is_hidden' => 1,
-			'created_user' => 1,
-			'created' => '2015-11-15 06:51:30',
-			'modified_user' => 1,
-			'modified' => '2015-11-15 06:51:30'
+			'id' => '1',
+			'frame_key' => 'frame_3',
+			'room_id' => '1',
+			'is_hidden' => false,
 		),
 	);
 
