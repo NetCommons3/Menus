@@ -120,12 +120,12 @@ class MenuHelper extends AppHelper {
 		if ($menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
-		$roomId = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room.id');
-		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $roomId . '.Room.parent_id') === Room::PRIVATE_PARENT_ID &&
+		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID &&
 				Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
 			return $html;
 		}
-		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $roomId . '.MenuFramesRoom.is_hidden')) {
+		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '.MenuFramesRoom.is_hidden')) {
 			return $html;
 		}
 
