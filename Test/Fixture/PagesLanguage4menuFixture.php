@@ -43,7 +43,7 @@ class PagesLanguage4menuFixture extends LanguagesPageFixture {
 			'id' => '1',
 			'page_id' => '1',
 			'language_id' => '2',
-			'name' => 'Top',
+			'name' => 'Home',
 		),
 		//page.permalink=page_1
 		array(
@@ -71,14 +71,14 @@ class PagesLanguage4menuFixture extends LanguagesPageFixture {
 			'id' => '5',
 			'page_id' => '5',
 			'language_id' => '2',
-			'name' => 'Top',
+			'name' => 'Page 4',
 		),
 		//別ルーム(room_id=5、ブロックなし)
 		array(
 			'id' => '6',
 			'page_id' => '6',
 			'language_id' => '2',
-			'name' => 'Top',
+			'name' => 'Page 5',
 		),
 	);
 

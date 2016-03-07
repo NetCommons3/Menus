@@ -130,22 +130,23 @@ class MenuHelper extends AppHelper {
 		}
 
 		if (Current::read('Page.permalink') === (string)$menu['Page']['permalink']) {
-			$activeClass = 'active';
+			$activeClass = ' active';
 		} else {
 			$activeClass = '';
 		}
 
 		$class = '';
 		if ($listTag) {
-			$html .= '<li class="' . $activeClass . '">';
+			$html .= '<li class="' . trim($activeClass) . '">';
+			$activeClass = '';
 		} else {
-			$class .= 'list-group-item ';
+			$class .= ' list-group-item';
 		}
 
 		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
-		$class .= 'menu-tree-' . $nest . ' ';
+		$class .= ' menu-tree-' . $nest;
 
-		$html .= $this->link($menu, $class . $activeClass);
+		$html .= $this->link($menu, trim($class) . $activeClass);
 
 		if ($listTag) {
 			$html .= '</li>';
