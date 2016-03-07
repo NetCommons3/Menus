@@ -67,7 +67,7 @@ class Page4menuFixture extends PageFixture {
 		),
 		//page.permalink=page_2
 		array(
-			'id' => '3',
+			'id' => '5',
 			'room_id' => '1',
 			'parent_id' => null,
 			'lft' => '9',
@@ -81,7 +81,7 @@ class Page4menuFixture extends PageFixture {
 		),
 		//page.permalink=page_1/page_3
 		array(
-			'id' => '4',
+			'id' => '6',
 			'room_id' => '1',
 			'parent_id' => '2',
 			'lft' => '4',
@@ -109,7 +109,7 @@ class Page4menuFixture extends PageFixture {
 		),
 		//別ルーム(room_id=4)
 		array(
-			'id' => '5',
+			'id' => '3',
 			'room_id' => '4',
 			'parent_id' => null,
 			'lft' => '11',
@@ -123,7 +123,7 @@ class Page4menuFixture extends PageFixture {
 		),
 		//別ルーム(room_id=5、ブロックなし)
 		array(
-			'id' => '6',
+			'id' => '4',
 			'room_id' => '5',
 			'parent_id' => null,
 			'lft' => '13',
