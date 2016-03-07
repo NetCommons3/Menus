@@ -1,6 +1,6 @@
 <?php
 /**
- * View/Elements/Menus/footer/indexのテスト
+ * View/Elements/Menus/header/indexのテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
- * View/Elements/Menus/footer/indexのテスト
+ * View/Elements/Menus/header/indexのテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Menus\Test\Case\View\Elements\Menus\footer\Index
+ * @package NetCommons\Menus\Test\Case\View\Elements\Menus\header\Index
  */
-class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase {
+class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -52,24 +52,24 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		//テストプラグインのロード
 		NetCommonsCakeTestCase::loadTestPlugin($this, 'Menus', 'TestMenus');
 		//テストコントローラ生成
-		$this->generateNc('TestMenus.TestViewElementsMenusFooterIndex');
+		$this->generateNc('TestMenus.TestViewElementsMenusHeaderIndex');
 	}
 
 /**
- * View/Elements/Menus/footer/indexのテスト
+ * View/Elements/Menus/header/indexのテスト
  *
  * @return void
  */
 	public function testIndex() {
 		//テスト実行
-		$this->_testGetAction('/test_menus/test_view_elements_menus_footer_index/index?frame_id=6',
+		$this->_testGetAction('/test_menus/test_view_elements_menus_header_index/index?frame_id=6',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
-		$pattern = '/' . preg_quote('View/Elements/Menus/footer/index', '/') . '/';
+		$pattern = '/' . preg_quote('View/Elements/Menus/header/index', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 
-		$pattern = '<ul class="list-group nav nav-pills">';
+		$pattern = '<ul class="list-group nav nav-tabs" role="tablist">';
 		$this->assertTextContains($pattern, $this->view);
 
 		$this->__assertLink('6', '1', '/', 'active', 'Home');
