@@ -104,7 +104,7 @@ class MenuHelperGetRecursiveChildPageIdTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->getRecursiveChildPageId($roomId, $pageId, $result);
 
 		//チェック
-		$this->assertEquals(array('4', '7'), $result);
+		$this->assertEquals(array('6', '7'), $result);
 	}
 
 }

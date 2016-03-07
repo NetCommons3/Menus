@@ -97,7 +97,7 @@ class Page4menuFixture extends PageFixture {
 		array(
 			'id' => '7',
 			'room_id' => '1',
-			'parent_id' => '4',
+			'parent_id' => '6',
 			'lft' => '5',
 			'rght' => '6',
 			'permalink' => 'page_6',

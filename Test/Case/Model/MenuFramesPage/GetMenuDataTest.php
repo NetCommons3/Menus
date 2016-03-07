@@ -110,6 +110,11 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 /**
  * getMenuData()の評価
  *
+ * @param string $result 結果
+ * @param int $roomId ルームID
+ * @param int $pageId ページID
+ * @param string $permalink パーマリンク
+ * @param string $name ページ名
  * @return void
  */
 	private function __assertGetMenuData($result, $roomId, $pageId, $permalink, $name) {

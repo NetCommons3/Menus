@@ -75,17 +75,17 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
 		$pattern = '<div class="list-group">';
 		$pattern .= $this->__getPattern('6', '1', '/', ' active', 'Home');
 		$pattern .= $this->__getPattern('6', '2', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
-		$pattern .= $this->__getPattern('6', '3', '/page_2', '', 'Page 2');
+		$pattern .= $this->__getPattern('6', '5', '/page_2', '', 'Page 2');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern('6', '5', '/page_4', '', 'Page 4');
+		$pattern .= $this->__getPattern('6', '3', '/page_4', '', 'サブルーム１');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern('6', '6', '/page_5', '', 'Page 5');
+		$pattern .= $this->__getPattern('6', '4', '/page_5', '', 'サブルーム２');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 	}

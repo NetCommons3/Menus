@@ -198,7 +198,7 @@ class MenuFrameSettingsControllerEditTest extends NetCommonsControllerTestCase {
 		$this->_testPostAction('put', $this->__data(),
 				array('action' => 'edit', 'frame_id' => $frameId), null, 'view');
 
-		//TODO:必要に応じてassert書く
+		$this->__assertEditGet('6');
 	}
 
 }

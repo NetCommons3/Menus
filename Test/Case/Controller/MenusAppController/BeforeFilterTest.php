@@ -83,12 +83,12 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 
 		$this->assertCount(3, $this->vars['menus']);
 		$this->assertEquals(array('1', '4', '5'), array_keys($this->vars['menus']));
-		$this->assertCount(4, $this->vars['menus']['1']);
-		$this->assertEquals(array('1', '2', '4', '3'), array_keys($this->vars['menus']['1']));
+		$this->assertCount(5, $this->vars['menus']['1']);
+		$this->assertEquals(array('1', '2', '6', '7', '5'), array_keys($this->vars['menus']['1']));
 
 		$this->__assertMenus('1', '1', array(
 			'Page' => array('parent_id' => null, 'permalink' => ''),
-			'LanguagesPage' => array('name' => 'Top'),
+			'LanguagesPage' => array('name' => 'Home'),
 			'MenuFramesPage' => array('id' => '1', 'frame_key' => 'frame_3'),
 		));
 
@@ -98,13 +98,19 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));
 
-		$this->__assertMenus('1', '4', array(
+		$this->__assertMenus('1', '6', array(
 			'Page' => array('parent_id' => '2', 'permalink' => 'page_3'),
 			'LanguagesPage' => array('name' => 'Page 3'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));
 
-		$this->__assertMenus('1', '3', array(
+		$this->__assertMenus('1', '7', array(
+			'Page' => array('parent_id' => '6', 'permalink' => 'page_6'),
+			'LanguagesPage' => array('name' => 'Page 6'),
+			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
+		));
+
+		$this->__assertMenus('1', '5', array(
 			'Page' => array('parent_id' => null, 'permalink' => 'page_2'),
 			'LanguagesPage' => array('name' => 'Page 2'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),

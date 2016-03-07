@@ -76,7 +76,7 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
 			'conditions' => array('Page.room_id' => $roomIds)
 		));
-		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.4.MenuFramesPage.folder_type', true);
+		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.6.MenuFramesPage.folder_type', true);
 
 		$viewVars['menuFrameSetting'] = $MenuFrameSetting->getMenuFrameSetting();
 		$menuFrameRooms = $MenuFramesRoom->getMenuFrameRooms(array(
@@ -107,7 +107,7 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->renderChild($roomId, $pageId, $listTag);
 
 		//チェック
-		$this->assertTextContains('<a href="#" class="list-group-item menu-tree-1" id="MenuFramesPage4"', $result);
+		$this->assertTextContains('<a href="#" class="list-group-item menu-tree-1" id="MenuFramesPage6"', $result);
 		$this->assertTextContains('<a href="/page_6" class="list-group-item menu-tree-2" id="MenuFramesPage7', $result);
 	}
 
