@@ -55,7 +55,6 @@ class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
  * @return array テストデータ
  */
 	public function dataProvider() {
-		$roomId = '1';
 		$pageId = '2';
 
 		return array(
