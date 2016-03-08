@@ -10,7 +10,7 @@
  * @param {string} Controller name
  * @param {function($scope)} Controller
  */
-NetCommonsApp.controller('MenusController', function($scope) {
+NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
 
   /**
    * data
@@ -24,10 +24,10 @@ NetCommonsApp.controller('MenusController', function($scope) {
    *
    * @return {void}
    */
-  $scope.initialize = function(key, data, togggle) {
+  $scope.initialize = function(key, data, toggle) {
     $scope.menus[key] = data;
     angular.forEach($scope.menus[key], function(domId) {
-      if (togggle) {
+      if (toggle) {
         $('#' + domId).show();
       } else {
         $('#' + domId).hide();
@@ -46,4 +46,4 @@ NetCommonsApp.controller('MenusController', function($scope) {
     });
   };
 
-});
+}]);
