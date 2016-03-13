@@ -77,7 +77,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		$result = $this->$model->$methodName($options);
 
 		//チェック
-		$this->__assertGetMenuData($result, $roomId, $pageId, '', 'Home');
+		$this->__assertGetMenuData($result, $roomId, $pageId, 'home', 'Home');
 		$this->assertEquals('1', $result[$roomId][$pageId]['LanguagesPage']['id']);
 		$this->assertEquals('1', $result[$roomId][$pageId]['MenuFramesPage']['id']);
 	}

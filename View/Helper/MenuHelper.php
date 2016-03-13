@@ -171,7 +171,7 @@ class MenuHelper extends AppHelper {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$url = $setting;
-		if ($menu['Page']['slug'] != '') {
+		if ($menu['Page']['lft'] !== '1') {
 			$url .= h($menu['Page']['permalink']);
 		} else {
 			$url .= '';
@@ -179,7 +179,7 @@ class MenuHelper extends AppHelper {
 
 		$title = '';
 		$html = '';
-		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $menu['Page']['permalink']) {
+		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $menu['Page']['lft'] !== '1') {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);

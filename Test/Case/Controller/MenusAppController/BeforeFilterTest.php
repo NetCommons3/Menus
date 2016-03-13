@@ -87,7 +87,7 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 		$this->assertEquals(array('1', '2', '6', '7', '5'), array_keys($this->vars['menus']['1']));
 
 		$this->__assertMenus('1', '1', array(
-			'Page' => array('parent_id' => null, 'permalink' => ''),
+			'Page' => array('parent_id' => null, 'permalink' => 'home'),
 			'LanguagesPage' => array('name' => 'Home'),
 			'MenuFramesPage' => array('id' => '1', 'frame_key' => 'frame_3'),
 		));
