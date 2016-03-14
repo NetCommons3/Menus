@@ -96,23 +96,31 @@ class MenuHelper extends AppHelper {
  * @param bool $listTag リストタグの有無
  * @return string HTMLタグ
  */
-	public function renderChild($roomId, $pageId, $listTag, $defaultFolderType = false) {
+	public function renderChild($roomId, $pageId, $listTag) {
 		$html = '';
 
-		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
 		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
 		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
 				! in_array($pageId, $this->parentPageIds, true)) {
 			return $html;
 		}
 
-		foreach ($childPageIds as $childPageId) {
+		$pageTreeList = array_keys($this->_View->viewVars['pageTreeList']);
+		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		$sortChildPageIds = array();
+		foreach ($childPageIds as $id) {
+			$index = array_search((int)$id, $pageTreeList, true);
+			$sortChildPageIds[$index] = $id;
+		}
+		ksort($sortChildPageIds);
+
+		foreach ($sortChildPageIds as $childPageId) {
 			$html .= $this->render(Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag);
 			$html .= $this->renderChild($roomId, $childPageId, $listTag);
 		}
 
-			return $html;
-		}
+		return $html;
+	}
 
 /**
  * メニューリストの表示
