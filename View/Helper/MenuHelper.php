@@ -70,7 +70,12 @@ class MenuHelper extends AppHelper {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
 
-		$this->parentPageIds = Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array());
+
+		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
+		$this->parentPageIds = array_merge(
+			$this->parentPageIds,
+			Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array())
+		);
 		if (! in_array(Current::read('Page.id'), $this->parentPageIds, true)) {
 			$this->parentPageIds[] = Current::read('Page.id');
 		}
@@ -130,6 +135,10 @@ class MenuHelper extends AppHelper {
 			return $html;
 		}
 
+		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+			return $html;
+		}
+
 		if (Current::read('Page.permalink') === (string)$menu['Page']['permalink']) {
 			$activeClass = ' active';
 		} else {
@@ -145,10 +154,12 @@ class MenuHelper extends AppHelper {
 		}
 
 		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
+		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+			$nest--;
+		}
 		$class .= ' menu-tree-' . $nest;
 
 		$html .= $this->link($menu, trim($class) . $activeClass);
-
 		if ($listTag) {
 			$html .= '</li>';
 		}
@@ -171,15 +182,15 @@ class MenuHelper extends AppHelper {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$url = $setting;
-		if ($menu['Page']['lft'] !== '1') {
-			$url .= h($menu['Page']['permalink']);
-		} else {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] === Room::PUBLIC_PARENT_ID) {
 			$url .= '';
+		} else {
+			$url .= h($menu['Page']['permalink']);
 		}
 
 		$title = '';
 		$html = '';
-		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $menu['Page']['lft'] !== '1') {
+		if (! $menu['Page']['parent_id']) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);
@@ -287,6 +298,9 @@ class MenuHelper extends AppHelper {
 		$html = '';
 		if (Hash::get($room, 'Room.parent_id') === Room::PRIVATE_PARENT_ID ||
 				Hash::get($menu, 'Page.room_id') !== Room::PUBLIC_PARENT_ID && ! Hash::get($menu, 'Page.parent_id')) {
+			return $html;
+		}
+		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			return $html;
 		}
 
