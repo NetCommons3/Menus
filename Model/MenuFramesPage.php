@@ -120,7 +120,6 @@ class MenuFramesPage extends MenusAppModel {
 		), $options);
 
 		$menus = $this->Page->find('all', $options);
-		CakeLog::debug(print_r($menus, true));
 		return Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id');
 	}
 

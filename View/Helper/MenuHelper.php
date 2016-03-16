@@ -70,7 +70,6 @@ class MenuHelper extends AppHelper {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
 
-
 		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
 		$this->parentPageIds = array_merge(
 			$this->parentPageIds,
@@ -198,7 +197,7 @@ class MenuHelper extends AppHelper {
 
 		$title = '';
 		$html = '';
-		if (! $menu['Page']['parent_id']) {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);
