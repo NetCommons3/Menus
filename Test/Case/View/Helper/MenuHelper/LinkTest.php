@@ -30,7 +30,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		'plugin.menus.menu_frames_room',
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
-		'plugin.rooms.room4test',
+		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
 
@@ -54,7 +54,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$Page = ClassRegistry::init('Pages.Page');
 
 		$roomIds = array('1', '4', '5');
-		Current::$current = Hash::insert(Current::$current, 'Page.id', $pageId);
+		Current::write('Page.id', $pageId);
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
@@ -80,21 +80,21 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkWithChildPageWithActive() {
 		//Helperロード
-		$viewVars = $this->__getViewVars('2');
+		$viewVars = $this->__getViewVars('4');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$class = 'menu-tree-1 active';
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
+		$this->Menu->parentPageIds = array('1', '9');
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/page_1" class="menu-tree-1 active" id="MenuFramesPage2">' .
+		$pattern = '<a href="/page_1" class="menu-tree-1 active" id="MenuFramesPage9">' .
 						'<span class="glyphicon glyphicon-menu-down"> </span> Page 1' .
 					'</a>';
 		$this->assertEquals($pattern, $result);
@@ -107,13 +107,13 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkWithChildPageWOActive() {
 		//Helperロード
-		$viewVars = $this->__getViewVars('5');
+		$viewVars = $this->__getViewVars('10');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -121,7 +121,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/page_1" class="menu-tree-1" id="MenuFramesPage2">' .
+		$pattern = '<a href="/page_1" class="menu-tree-1" id="MenuFramesPage9">' .
 						'<span class="glyphicon glyphicon-menu-right"> </span> Page 1' .
 					'</a>';
 		$this->assertEquals($pattern, $result);
@@ -134,13 +134,13 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkTopPage() {
 		//Helperロード
-		$viewVars = $this->__getViewVars('2');
+		$viewVars = $this->__getViewVars('4');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '1');
+		$menu = Hash::get($viewVars['menus']['1'], '4');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -148,8 +148,8 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/" class="menu-tree-1" id="MenuFramesPage1">' .
-						'Home' .
+		$pattern = '<a href="/" class="menu-tree-1" id="MenuFramesPage4">' .
+						'Home ja' .
 					'</a>';
 		$this->assertEquals($pattern, $result);
 	}
@@ -161,13 +161,13 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkRoomTop() {
 		//Helperロード
-		$viewVars = $this->__getViewVars('3');
+		$viewVars = $this->__getViewVars('5');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '3');
+		$menu = Hash::get($viewVars['menus']['4'], '5');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -175,7 +175,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/page_4" class="menu-tree-1" id="MenuFramesPage3">' .
+		$pattern = '<a href="/test2" class="menu-tree-1" id="MenuFramesPage5">' .
 						'サブルーム１' .
 					'</a>';
 		$this->assertEquals($pattern, $result);
@@ -188,14 +188,14 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkToggle() {
 		//Helperロード
-		$viewVars = $this->__getViewVars('5');
-		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.2.MenuFramesPage.folder_type', true);
+		$viewVars = $this->__getViewVars('10');
+		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.9.MenuFramesPage.folder_type', true);
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -203,7 +203,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="#" class="menu-tree-1" id="MenuFramesPage2".*?>' .
+		$pattern = '<a href="#" class="menu-tree-1" id="MenuFramesPage9".*?>' .
 						'<span class="glyphicon glyphicon-menu-right".*?> <\/span> Page 1' .
 					'<\/a>';
 		$this->assertRegExp('/' . $pattern . '/', $result);
@@ -217,21 +217,21 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 	public function testLinkWithSettingMode() {
 		//Helperロード
 		Current::isSettingMode(true);
-		$viewVars = $this->__getViewVars('2');
+		$viewVars = $this->__getViewVars('4');
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$class = 'menu-tree-1 active';
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
+		$this->Menu->parentPageIds = array('1', '9');
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/setting/page_1" class="menu-tree-1 active" id="MenuFramesPage2">' .
+		$pattern = '<a href="/setting/page_1" class="menu-tree-1 active" id="MenuFramesPage9">' .
 						'<span class="glyphicon glyphicon-menu-down"> </span> Page 1' .
 					'</a>';
 		$this->assertEquals($pattern, $result);

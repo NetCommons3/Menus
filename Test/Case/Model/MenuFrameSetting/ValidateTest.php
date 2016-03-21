@@ -96,7 +96,7 @@ class MenuFrameSettingValidateTest extends NetCommonsValidateTest {
 		$this->assertFalse($result);
 
 		$this->assertEquals(
-			$this->$model->MenuFramesPage->validationErrors[1]['frame_key'][0],
+			$this->$model->MenuFramesPage->validationErrors[4]['frame_key'][0],
 			__d('net_commons', 'Invalid request.')
 		);
 	}

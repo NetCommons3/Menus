@@ -96,7 +96,7 @@ class MenusViewElementsMenuFrameSettingsEditFormTest extends NetCommonsControlle
 		$this->assertInput('input', 'data[MenuRooms][1][MenuFramesRoom][id]', '1', $this->view);
 
 		//$this->Menu->checkboxMenuFramesPage()が通っているかチェック
-		$this->assertInput('input', 'data[Menus][1][1][MenuFramesPage][id]', '1', $this->view);
+		$this->assertInput('input', 'data[Menus][1][4][MenuFramesPage][id]', '1', $this->view);
 	}
 
 }

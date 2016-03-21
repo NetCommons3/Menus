@@ -92,7 +92,7 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$this->assertTextContains('<nav ng-controller="MenusController">', $result);
-		$this->assertEquals(array(Current::read('Page.id')), $this->Menu->parentPageIds);
+		$this->assertEquals(array('1', Current::read('Page.id')), $this->Menu->parentPageIds);
 	}
 
 /**

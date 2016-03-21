@@ -67,7 +67,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		//データ生成
 		Current::$current = Hash::insert(Current::$current, 'Room.id', '1');
 		Current::$current = Hash::insert(Current::$current, 'Frame.key', 'frame_3');
-		$pageId = '1';
+		$pageId = '4';
 		$roomId = '1';
 		$options = array(
 			'conditions' => array('Page.id' => $pageId)
@@ -77,8 +77,8 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		$result = $this->$model->$methodName($options);
 
 		//チェック
-		$this->__assertGetMenuData($result, $roomId, $pageId, 'home', 'Home');
-		$this->assertEquals('1', $result[$roomId][$pageId]['LanguagesPage']['id']);
+		$this->__assertGetMenuData($result, $roomId, $pageId, 'home', 'Home ja');
+		$this->assertEquals('8', $result[$roomId][$pageId]['LanguagesPage']['id']);
 		$this->assertEquals('1', $result[$roomId][$pageId]['MenuFramesPage']['id']);
 	}
 
@@ -92,7 +92,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$pageId = '3';
+		$pageId = '5';
 		$roomId = '4';
 		$options = array(
 			'conditions' => array('Page.room_id' => $roomId)
@@ -102,8 +102,8 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		$result = $this->$model->$methodName($options);
 
 		//チェック
-		$this->__assertGetMenuData($result, $roomId, $pageId, 'page_4', 'Page 4');
-		$this->assertEquals('5', $result[$roomId][$pageId]['LanguagesPage']['id']);
+		$this->__assertGetMenuData($result, $roomId, $pageId, 'test2', 'Test page 2');
+		$this->assertEquals('14', $result[$roomId][$pageId]['LanguagesPage']['id']);
 		$this->assertEquals(null, $result[$roomId][$pageId]['MenuFramesPage']['id']);
 	}
 

@@ -30,7 +30,8 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
 		'plugin.menus.menu_frames_room',
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
-		'plugin.rooms.room',
+		'plugin.pages.frame4pages',
+		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
 
@@ -61,8 +62,12 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
  * @return void
  */
 	public function testIndex() {
+		$frameId = '2';
+		Current::write('Page.id', '4');
+		Current::write('Page.permalink', 'home');
+
 		//テスト実行
-		$this->_testGetAction('/test_menus/test_view_elements_menus_major_index/index?frame_id=6',
+		$this->_testGetAction('/test_menus/test_view_elements_menus_major_index/index?frame_id=' . $frameId,
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
@@ -73,19 +78,20 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
 		$this->assertTextContains($pattern, $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern('6', '1', '/', ' active', 'Home');
-		$pattern .= $this->__getPattern('6', '2', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
-		$pattern .= $this->__getPattern('6', '5', '/page_2', '', 'Page 2');
+		$pattern .= $this->__getPattern($frameId, '4', '/', ' active', 'Home ja');
+		$pattern .= $this->__getPattern($frameId, '8', '/test5', '', 'Test page 5');
+		$pattern .= $this->__getPattern($frameId, '9', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
+		$pattern .= $this->__getPattern($frameId, '10', '/page_2', '', 'Page 2');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern('6', '3', '/page_4', '', 'サブルーム１');
+		$pattern .= $this->__getPattern($frameId, '5', '/test2', '', 'サブルーム１');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern('6', '4', '/page_5', '', 'サブルーム２');
+		$pattern .= $this->__getPattern($frameId, '6', '/test3', '', 'サブルーム２');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 	}

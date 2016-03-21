@@ -70,10 +70,15 @@ class MenuHelper extends AppHelper {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
 
-		$this->parentPageIds = Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array());
+		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
+		$this->parentPageIds = array_merge(
+			$this->parentPageIds,
+			Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array())
+		);
 		if (! in_array(Current::read('Page.id'), $this->parentPageIds, true)) {
 			$this->parentPageIds[] = Current::read('Page.id');
 		}
+		$this->parentPageIds = array_unique($this->parentPageIds);
 
 		//メニューHTML表示
 		$html .= '<nav ng-controller="MenusController">';
@@ -94,14 +99,22 @@ class MenuHelper extends AppHelper {
 	public function renderChild($roomId, $pageId, $listTag) {
 		$html = '';
 
-		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
 		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
 		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
 				! in_array($pageId, $this->parentPageIds, true)) {
 			return $html;
 		}
 
-		foreach ($childPageIds as $childPageId) {
+		$pageTreeList = array_keys($this->_View->viewVars['pageTreeList']);
+		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		$sortChildPageIds = array();
+		foreach ($childPageIds as $id) {
+			$index = array_search((int)$id, $pageTreeList, true);
+			$sortChildPageIds[$index] = $id;
+		}
+		ksort($sortChildPageIds);
+
+		foreach ($sortChildPageIds as $childPageId) {
 			$html .= $this->render(Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag);
 			$html .= $this->renderChild($roomId, $childPageId, $listTag);
 		}
@@ -118,15 +131,21 @@ class MenuHelper extends AppHelper {
  */
 	public function render($menu, $listTag) {
 		$html = '';
+
 		if ($menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID &&
 				Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
 			return $html;
 		}
 		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '.MenuFramesRoom.is_hidden')) {
+			return $html;
+		}
+
+		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			return $html;
 		}
 
@@ -138,20 +157,24 @@ class MenuHelper extends AppHelper {
 
 		$class = '';
 		if ($listTag) {
-			$html .= '<li class="' . trim($activeClass) . '">';
+			$listTagStart = '<li class="' . trim($activeClass) . '">';
+			$listTagEnd = '</li>';
 			$activeClass = '';
 		} else {
+			$listTagStart = '';
+			$listTagEnd = '';
 			$class .= ' list-group-item';
 		}
 
 		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
+		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+			$nest--;
+		}
 		$class .= ' menu-tree-' . $nest;
 
+		$html .= $listTagStart;
 		$html .= $this->link($menu, trim($class) . $activeClass);
-
-		if ($listTag) {
-			$html .= '</li>';
-		}
+		$html .= $listTagEnd;
 
 		return $html;
 	}
@@ -171,15 +194,15 @@ class MenuHelper extends AppHelper {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$url = $setting;
-		if ($menu['Page']['lft'] !== '1') {
-			$url .= h($menu['Page']['permalink']);
-		} else {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] === Room::PUBLIC_PARENT_ID) {
 			$url .= '';
+		} else {
+			$url .= h($menu['Page']['permalink']);
 		}
 
 		$title = '';
 		$html = '';
-		if ($menu['Page']['id'] === $room['Room']['page_id_top'] && $menu['Page']['lft'] !== '1') {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);
@@ -287,6 +310,9 @@ class MenuHelper extends AppHelper {
 		$html = '';
 		if (Hash::get($room, 'Room.parent_id') === Room::PRIVATE_PARENT_ID ||
 				Hash::get($menu, 'Page.room_id') !== Room::PUBLIC_PARENT_ID && ! Hash::get($menu, 'Page.parent_id')) {
+			return $html;
+		}
+		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			return $html;
 		}
 

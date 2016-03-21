@@ -13,7 +13,7 @@
 <?php foreach ($menuFrameRooms as $menuFrameRoom) : ?>
 	<?php
 		echo '<div class="list-group">';
-		foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
+		foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $i => $menu) {
 			$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
 			if ($nest === 0) {
 				echo $this->Menu->render($menu, false);
