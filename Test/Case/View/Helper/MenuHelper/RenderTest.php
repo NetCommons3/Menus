@@ -85,17 +85,17 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  */
 	public function dataProvider() {
 		return array(
-			array('curPageId' => '2', 'curPermalink' => 'page_1', 'parentPageIds' => array('2'),
+			array('curPageId' => '9', 'curPermalink' => 'page_1', 'parentPageIds' => array('1', '9'),
 				'listTag' => false, 'active' => ' active'),
-			array('curPageId' => '2', 'curPermalink' => 'page_1', 'parentPageIds' => array('2'),
+			array('curPageId' => '9', 'curPermalink' => 'page_1', 'parentPageIds' => array('1', '9'),
 				'listTag' => true, 'active' => ' active'),
-			array('curPageId' => '3', 'curPermalink' => 'page_2', 'parentPageIds' => array('3'),
+			array('curPageId' => '5', 'curPermalink' => 'test2', 'parentPageIds' => array('3', '5'),
 				'listTag' => false, 'active' => ''),
-			array('curPageId' => '3', 'curPermalink' => 'page_2', 'parentPageIds' => array('3'),
+			array('curPageId' => '5', 'curPermalink' => 'test2', 'parentPageIds' => array('3', '5'),
 				'listTag' => true, 'active' => ''),
-			array('curPageId' => '4', 'curPermalink' => 'page_3', 'parentPageIds' => array('2', '4'),
+			array('curPageId' => '11', 'curPermalink' => 'page_3', 'parentPageIds' => array('1', '9', '11'),
 				'listTag' => false, 'active' => ''),
-			array('curPageId' => '4', 'curPermalink' => 'page_3', 'parentPageIds' => array('2', '4'),
+			array('curPageId' => '11', 'curPermalink' => 'page_3', 'parentPageIds' => array('1', '9', '11'),
 				'listTag' => true, 'active' => ''),
 		);
 	}
@@ -113,9 +113,9 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  */
 	public function testRender($curPageId, $curPermalink, $parentPageIds, $listTag, $active) {
 		//データ生成
-		Current::$current = Hash::insert(Current::$current, 'Page.id', $curPageId);
-		Current::$current = Hash::insert(Current::$current, 'Page.permalink', $curPermalink);
-		if (in_array($curPageId, ['2', '4'], true)) {
+		Current::write('Page.id', $curPageId);
+		Current::write('Page.permalink', $curPermalink);
+		if (in_array($curPageId, ['9', '11'], true)) {
 			$icon = 'glyphicon-menu-down';
 		} else {
 			$icon = 'glyphicon-menu-right';
@@ -129,11 +129,11 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//テスト実施
 		$this->Menu->parentPageIds = $parentPageIds;
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$result = $this->Menu->render($menu, $listTag);
 
 		//チェック
-		$pageId = '2';
+		$pageId = '9';
 		$permalink = 'page_1';
 		$pageName = 'Page 1';
 		if ($listTag) {
@@ -159,8 +159,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  */
 	public function testRenderPageHidden() {
 		//データ生成
-		Current::$current = Hash::insert(Current::$current, 'Page.id', '2');
-		Current::$current = Hash::insert(Current::$current, 'Page.permalink', 'page_1');
+		Current::write('Page.id', '9');
+		Current::write('Page.permalink', 'page_1');
 
 		//Helperロード
 		$viewVars = $this->__getViewVars();
@@ -169,8 +169,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$this->Menu->parentPageIds = array('1', '9');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$menu['MenuFramesPage']['is_hidden'] = true;
 		$result = $this->Menu->render($menu, true);
 
@@ -185,8 +185,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  */
 	public function testRenderPrivateRoomHidden() {
 		//データ生成
-		Current::$current = Hash::insert(Current::$current, 'Page.id', '2');
-		Current::$current = Hash::insert(Current::$current, 'Page.permalink', 'page_1');
+		Current::write('Page.id', '9');
+		Current::write('Page.permalink', 'page_1');
 
 		//Helperロード
 		$viewVars = $this->__getViewVars();
@@ -200,8 +200,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$this->Menu->parentPageIds = array('1', '9');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
 		$menu['Page']['room_id'] = '9';
 		$result = $this->Menu->render($menu, true);
 
@@ -216,8 +216,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  */
 	public function testRenderRoomHidden() {
 		//データ生成
-		Current::$current = Hash::insert(Current::$current, 'Page.id', '2');
-		Current::$current = Hash::insert(Current::$current, 'Page.permalink', 'page_1');
+		Current::write('Page.id', '9');
+		Current::write('Page.permalink', 'page_1');
 
 		//Helperロード
 		$viewVars = $this->__getViewVars();
@@ -227,8 +227,33 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
-		$menu = Hash::get($viewVars['menus']['1'], '2');
+		$this->Menu->parentPageIds = array('1', '9');
+		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$result = $this->Menu->render($menu, true);
+
+		//チェック
+		$this->assertEmpty($result);
+	}
+
+/**
+ * render()のテスト(パブリックスペースのページ)
+ *
+ * @return void
+ */
+	public function testRenderPublicSpacePage() {
+		//データ生成
+		Current::write('Page.id', '9');
+		Current::write('Page.permalink', 'page_1');
+
+		//Helperロード
+		$viewVars = $this->__getViewVars();
+		$requestData = array();
+		$params = array();
+		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
+
+		//テスト実施
+		$this->Menu->parentPageIds = array('1', '9');
+		$menu = Hash::get($viewVars['menus']['1'], '1');
 		$result = $this->Menu->render($menu, true);
 
 		//チェック

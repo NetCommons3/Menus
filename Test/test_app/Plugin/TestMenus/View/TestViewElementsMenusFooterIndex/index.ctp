@@ -9,6 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+$this->Menu->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
+
 ?>
 
 View/Elements/Menus/footer/index

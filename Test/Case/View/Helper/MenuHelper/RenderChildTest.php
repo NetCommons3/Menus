@@ -70,13 +70,13 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 		$Page = ClassRegistry::init('Pages.Page');
 
 		$roomIds = array('1', '4', '5');
-		Current::$current = Hash::insert(Current::$current, 'Page.id', '2');
+		Current::write('Page.id', '9');
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
 			'conditions' => array('Page.room_id' => $roomIds)
 		));
-		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.6.MenuFramesPage.folder_type', true);
+		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.11.MenuFramesPage.folder_type', true);
 
 		$viewVars['menuFrameSetting'] = $MenuFrameSetting->getMenuFrameSetting();
 		$menuFrameRooms = $MenuFramesRoom->getMenuFrameRooms(array(
@@ -99,16 +99,16 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 	public function testRenderChild() {
 		//データ生成
 		$roomId = '1';
-		$pageId = '2';
+		$pageId = '9';
 		$listTag = false;
 
 		//テスト実施
-		$this->Menu->parentPageIds = array('2');
+		$this->Menu->parentPageIds = array('1', '9', '11');
 		$result = $this->Menu->renderChild($roomId, $pageId, $listTag);
 
 		//チェック
-		$this->assertTextContains('<a href="#" class="list-group-item menu-tree-1" id="MenuFramesPage6"', $result);
-		$this->assertTextContains('<a href="/page_6" class="list-group-item menu-tree-2" id="MenuFramesPage7', $result);
+		$this->assertTextContains('<a href="#" class="list-group-item menu-tree-1" id="MenuFramesPage11"', $result);
+		$this->assertTextContains('<a href="/page_6" class="list-group-item menu-tree-2" id="MenuFramesPage12', $result);
 	}
 
 }

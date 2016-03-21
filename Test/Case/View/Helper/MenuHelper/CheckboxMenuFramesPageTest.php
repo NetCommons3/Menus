@@ -55,7 +55,7 @@ class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
  * @return array テストデータ
  */
 	public function dataProvider() {
-		$pageId = '2';
+		$pageId = '4';
 
 		return array(
 			// * ネスト無し、MenuFramesPageデータあり
@@ -64,8 +64,8 @@ class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
 					'Room' => array('id' => '1', 'parent_id' => null)
 				),
 				'menu' => array(
-					'Page' => (new Page4menuFixture())->records[1],
-					'LanguagesPage' => (new PagesLanguage4menuFixture())->records[1],
+					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
+					'LanguagesPage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
 					'MenuFramesPage' => (new MenuFramesPageFixture())->records[0],
 				),
 				'pageTreeList' => array($pageId => $pageId),
@@ -77,8 +77,8 @@ class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
 					'Room' => array('id' => '1', 'parent_id' => null)
 				),
 				'menu' => array(
-					'Page' => (new Page4menuFixture())->records[1],
-					'LanguagesPage' => (new PagesLanguage4menuFixture())->records[1],
+					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
+					'LanguagesPage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
 					'MenuFramesPage' => array(),
 				),
 				'pageTreeList' => array($pageId => chr(9) . $pageId),

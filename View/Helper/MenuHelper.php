@@ -78,6 +78,7 @@ class MenuHelper extends AppHelper {
 		if (! in_array(Current::read('Page.id'), $this->parentPageIds, true)) {
 			$this->parentPageIds[] = Current::read('Page.id');
 		}
+		$this->parentPageIds = array_unique($this->parentPageIds);
 
 		//メニューHTML表示
 		$html .= '<nav ng-controller="MenusController">';
@@ -130,10 +131,12 @@ class MenuHelper extends AppHelper {
  */
 	public function render($menu, $listTag) {
 		$html = '';
+
 		if ($menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID &&
 				Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
 			return $html;
@@ -154,9 +157,12 @@ class MenuHelper extends AppHelper {
 
 		$class = '';
 		if ($listTag) {
-			$html .= '<li class="' . trim($activeClass) . '">';
+			$listTagStart = '<li class="' . trim($activeClass) . '">';
+			$listTagEnd = '</li>';
 			$activeClass = '';
 		} else {
+			$listTagStart = '';
+			$listTagEnd = '';
 			$class .= ' list-group-item';
 		}
 
@@ -166,10 +172,9 @@ class MenuHelper extends AppHelper {
 		}
 		$class .= ' menu-tree-' . $nest;
 
+		$html .= $listTagStart;
 		$html .= $this->link($menu, trim($class) . $activeClass);
-		if ($listTag) {
-			$html .= '</li>';
-		}
+		$html .= $listTagEnd;
 
 		return $html;
 	}

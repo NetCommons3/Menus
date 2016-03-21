@@ -30,7 +30,8 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		'plugin.menus.menu_frames_room',
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
-		'plugin.rooms.room',
+		'plugin.pages.frame4pages',
+		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
 
@@ -61,8 +62,12 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
  * @return void
  */
 	public function testIndex() {
+		$frameId = '4';
+		Current::write('Page.id', '4');
+		Current::write('Page.permalink', 'home');
+
 		//テスト実行
-		$this->_testGetAction('/test_menus/test_view_elements_menus_footer_index/index?frame_id=6',
+		$this->_testGetAction('/test_menus/test_view_elements_menus_footer_index/index?frame_id=' . $frameId,
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
@@ -72,11 +77,12 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		$pattern = '<ul class="list-group nav nav-pills">';
 		$this->assertTextContains($pattern, $this->view);
 
-		$this->__assertLink('6', '1', '/', 'active', 'Home');
-		$this->__assertLink('6', '2', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
-		$this->__assertLink('6', '5', '/page_2', '', 'Page 2');
-		$this->__assertLink('6', '3', '/page_4', '', 'サブルーム１');
-		$this->__assertLink('6', '4', '/page_5', '', 'サブルーム２');
+		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja');
+		$this->__assertLink($frameId, '8', '/test5', '', 'Test page 5');
+		$this->__assertLink($frameId, '9', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
+		$this->__assertLink($frameId, '10', '/page_2', '', 'Page 2');
+		$this->__assertLink($frameId, '5', '/test2', '', 'サブルーム１');
+		$this->__assertLink($frameId, '6', '/test3', '', 'サブルーム２');
 	}
 
 /**

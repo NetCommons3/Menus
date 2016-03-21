@@ -83,35 +83,35 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 
 		$this->assertCount(3, $this->vars['menus']);
 		$this->assertEquals(array('1', '4', '5'), array_keys($this->vars['menus']));
-		$this->assertCount(5, $this->vars['menus']['1']);
-		$this->assertEquals(array('1', '2', '6', '7', '5'), array_keys($this->vars['menus']['1']));
+		$this->assertCount(7, $this->vars['menus']['1']);
+		$this->assertEquals(array('1', '4', '8', '9', '11', '12', '10'), array_keys($this->vars['menus']['1']));
 
-		$this->__assertMenus('1', '1', array(
-			'Page' => array('parent_id' => null, 'permalink' => 'home'),
-			'LanguagesPage' => array('name' => 'Home'),
+		$this->__assertMenus('1', '4', array(
+			'Page' => array('parent_id' => '1', 'permalink' => 'home'),
+			'LanguagesPage' => array('name' => 'Home ja'),
 			'MenuFramesPage' => array('id' => '1', 'frame_key' => 'frame_3'),
 		));
 
-		$this->__assertMenus('1', '2', array(
-			'Page' => array('parent_id' => null, 'permalink' => 'page_1'),
+		$this->__assertMenus('1', '9', array(
+			'Page' => array('parent_id' => '1', 'permalink' => 'page_1'),
 			'LanguagesPage' => array('name' => 'Page 1'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));
 
-		$this->__assertMenus('1', '6', array(
-			'Page' => array('parent_id' => '2', 'permalink' => 'page_3'),
+		$this->__assertMenus('1', '11', array(
+			'Page' => array('parent_id' => '9', 'permalink' => 'page_3'),
 			'LanguagesPage' => array('name' => 'Page 3'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));
 
-		$this->__assertMenus('1', '7', array(
-			'Page' => array('parent_id' => '6', 'permalink' => 'page_6'),
+		$this->__assertMenus('1', '12', array(
+			'Page' => array('parent_id' => '11', 'permalink' => 'page_6'),
 			'LanguagesPage' => array('name' => 'Page 6'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));
 
-		$this->__assertMenus('1', '5', array(
-			'Page' => array('parent_id' => null, 'permalink' => 'page_2'),
+		$this->__assertMenus('1', '10', array(
+			'Page' => array('parent_id' => '1', 'permalink' => 'page_2'),
 			'LanguagesPage' => array('name' => 'Page 2'),
 			'MenuFramesPage' => array('id' => null, 'frame_key' => null),
 		));

@@ -47,7 +47,7 @@ class MenuFramesPageFixture extends CakeTestFixture {
 		array(
 			'id' => '1',
 			'frame_key' => 'frame_3',
-			'page_id' => '1',
+			'page_id' => '4',
 			'is_hidden' => false,
 			'folder_type' => false,
 		),
