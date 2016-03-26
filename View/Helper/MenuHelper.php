@@ -338,7 +338,7 @@ class MenuHelper extends AppHelper {
 			'div' => false,
 			'value' => '0',
 			'hiddenField' => '1',
-			'checked' => ! (bool)Hash::get($menu, $prefixInput . '.is_hidden')
+			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.is_hidden')
 		));
 		$html .= $this->NetCommonsForm->label($prefixInput . '.is_hidden', Hash::get($menu, 'LanguagesPage.name'));
 
