@@ -162,8 +162,29 @@ class MenuFrameSetting extends MenusAppModel {
 			'conditions' => array('frame_key' => Current::read('Frame.key'))
 		));
 		if (! $menuFrameSetting) {
+			$this->loadModels([
+				'Container' => 'Containers.Container',
+			]);
+
+			$container = $this->Container->find('first', array(
+				'recursive' => -1,
+				'fields' => array('id', 'type'),
+				'conditions' => array('id' => Current::read('Box.container_id'))
+			));
+			if (Hash::get($container, 'Container.type') === Container::TYPE_HEADER) {
+				$displayType = 'header';
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MAJOR) {
+				$displayType = 'major';
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MINOR) {
+				$displayType = 'minor';
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_FOOTER) {
+				$displayType = 'footer';
+			} else {
+				$displayType = 'main';
+			}
+
 			$menuFrameSetting = $this->create(array(
-				'display_type' => 'main'
+				'display_type' => $displayType
 			));
 		}
 		return $menuFrameSetting;
