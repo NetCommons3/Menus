@@ -52,11 +52,14 @@ class MenuHelper extends AppHelper {
 /**
  * メニューの表示
  *
+ * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
-	public function renderMain() {
+	public function renderMain($displayType = null) {
 		$html = '';
-		$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
+		if (! $displayType) {
+			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
+		}
 		$plugin = Inflector::camelize($this->_View->params['plugin']);
 
 		//スタイルシートの読み込み
