@@ -135,7 +135,8 @@ class MenuHelper extends AppHelper {
 	public function render($menu, $listTag) {
 		$html = '';
 
-		if ($menu['MenuFramesPage']['is_hidden']) {
+		if ($menu['MenuFramesPage']['is_hidden'] ||
+				$this->_View->viewVars['defaultHidden'] && ! $menu['MenuFramesPage']['id']) {
 			return $html;
 		}
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
@@ -144,7 +145,9 @@ class MenuHelper extends AppHelper {
 				Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
 			return $html;
 		}
-		if (Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '.MenuFramesRoom.is_hidden')) {
+		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '');
+		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
+				$this->_View->viewVars['defaultHidden'] && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
 			return $html;
 		}
 
