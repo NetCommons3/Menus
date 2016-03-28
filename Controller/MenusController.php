@@ -75,23 +75,25 @@ class MenusController extends MenusAppController {
 
 		//メニューデータの有無
 		$count1 = $this->MenuFramesRoom->find('count', array('recursive' => -1,
-			'confitions' => array(
+			'conditions' => array(
 				$this->MenuFramesRoom->alias . '.frame_key' => Current::read('Frame.key')
 			)
 		));
 		$count2 = $this->MenuFramesPage->find('count', array('recursive' => -1,
-			'confitions' => array(
+			'conditions' => array(
 				$this->MenuFramesPage->alias . '.frame_key' => Current::read('Frame.key')
 			)
 		));
-		$options = array(
-			MenuFrameSetting::DISPLAY_TYPE_HEADER,
-			MenuFrameSetting::DISPLAY_TYPE_FOOTER,
-		);
-		$displayType = in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true);
-		//$isPublicSpace = (Current::read('Room.space_id') === Space::PUBLIC_SPACE_ID);
 
-		$defaultHidden = ($displayType && $count1 && $count2);
+		if ($count1 && $count2) {
+			$options = array(
+				MenuFrameSetting::DISPLAY_TYPE_HEADER,
+				MenuFrameSetting::DISPLAY_TYPE_FOOTER,
+			);
+		} else {
+			$options = array();
+		}
+		$defaultHidden = in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true);
 		$this->set('defaultHidden', $defaultHidden);
 	}
 

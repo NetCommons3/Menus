@@ -31,13 +31,13 @@ $MenuFrameSetting = ClassRegistry::init('Menus.MenuFrameSetting');
 	<?php foreach ($rooms as $roomId => $room) : ?>
 		<div class="panel panel-default">
 			<div class="panel-heading menu-list-item">
-				<?php echo $this->Menu->checkboxMenuFramesRoom($roomId, $room); ?>
+				<?php echo $this->MenuForm->checkboxMenuFramesRoom($roomId, $room); ?>
 			</div>
 
 			<?php if (Hash::get($this->data, 'Menus.' . $roomId)) : ?>
 				<ul class="list-group">
 					<?php foreach ($this->data['Menus'][$roomId] as $pageId => $menu) : ?>
-						<?php echo $this->Menu->checkboxMenuFramesPage($roomId, $room, $pageId, $menu); ?>
+						<?php echo $this->MenuForm->checkboxMenuFramesPage($roomId, $room, $pageId, $menu); ?>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>

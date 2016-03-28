@@ -1,6 +1,6 @@
 <?php
 /**
- * MenuHelper::checkboxMenuFramesPage()のテスト
+ * MenuFormHelper::checkboxMenuFramesPage()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -15,12 +15,12 @@ App::uses('Page4menuFixture', 'Menus.Test/Fixture');
 App::uses('PagesLanguage4menuFixture', 'Menus.Test/Fixture');
 
 /**
- * MenuHelper::checkboxMenuFramesPage()のテスト
+ * MenuFormHelper::checkboxMenuFramesPage()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Menus\Test\Case\View\Helper\MenuHelper
+ * @package NetCommons\Menus\Test\Case\View\Helper\MenuFormHelper
  */
-class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
+class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
 
 /**
  * Fixtures
@@ -139,10 +139,10 @@ class MenuHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase {
 			)
 		);
 		$params = array();
-		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
+		$this->loadHelper('Menus.MenuForm', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$result = $this->Menu->checkboxMenuFramesPage($roomId, $room, $pageId, $menu);
+		$result = $this->MenuForm->checkboxMenuFramesPage($roomId, $room, $pageId, $menu);
 
 		//チェック
 		if ($nest === false) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * MenuHelper::checkboxMenuFramesRoom()のテスト
+ * MenuFormHelper::checkboxMenuFramesRoom()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -14,12 +14,12 @@ App::uses('MenuFramesRoomFixture', 'Menus.Test/Fixture');
 App::uses('MenuFrameSettingFixture', 'Menus.Test/Fixture');
 
 /**
- * MenuHelper::checkboxMenuFramesRoom()のテスト
+ * MenuFormHelper::checkboxMenuFramesRoom()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Menus\Test\Case\View\Helper\MenuHelper
+ * @package NetCommons\Menus\Test\Case\View\Helper\MenuFormHelper
  */
-class MenuHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase {
+class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase {
 
 /**
  * Fixtures
@@ -101,10 +101,10 @@ class MenuHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase {
 			)
 		);
 		$params = array();
-		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
+		$this->loadHelper('Menus.MenuForm', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$result = $this->Menu->checkboxMenuFramesRoom($roomId, $room);
+		$result = $this->MenuForm->checkboxMenuFramesRoom($roomId, $room);
 
 		//チェック
 		$this->assertTextContains('Room name', $result);
