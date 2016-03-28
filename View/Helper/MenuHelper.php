@@ -137,8 +137,11 @@ class MenuHelper extends AppHelper {
 
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID) {
-			if ($room['parent_id'] === Room::PRIVATE_PARENT_ID &&
-					Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
+			if (Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
+				return $html;
+			}
+			if ($room['page_id_top'] !== $menu['Page']['id'] &&
+					$this->_View->viewVars['defaultHidden'] && ! $menu['MenuFramesPage']['id']) {
 				return $html;
 			}
 		} else {
@@ -147,10 +150,11 @@ class MenuHelper extends AppHelper {
 					$this->_View->viewVars['defaultHidden'] && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
 				return $html;
 			}
+			if ($this->_View->viewVars['defaultHidden'] && ! $menu['MenuFramesPage']['id']) {
+				return $html;
+			}
 		}
-		if ($menu['MenuFramesPage']['is_hidden'] ||
-				$room['page_id_top'] !== $menu['Page']['id'] &&
-				$this->_View->viewVars['defaultHidden'] && ! $menu['MenuFramesPage']['id']) {
+		if ($menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
 

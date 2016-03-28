@@ -28,6 +28,8 @@ class MenusController extends MenusAppController {
 		'Menus.MenuFrameSetting',
 		'Menus.MenuFramesPage',
 		'Menus.MenuFramesRoom',
+		'Pages.Page',
+		'Rooms.Room',
 	);
 
 /**
@@ -82,12 +84,14 @@ class MenusController extends MenusAppController {
 				$this->MenuFramesPage->alias . '.frame_key' => Current::read('Frame.key')
 			)
 		));
-
 		$options = array(
 			MenuFrameSetting::DISPLAY_TYPE_HEADER,
 			MenuFrameSetting::DISPLAY_TYPE_FOOTER,
 		);
-		$defaultHidden = (in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true) && $count1 && $count2);
+		$displayType = in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true);
+		//$isPublicSpace = (Current::read('Room.space_id') === Space::PUBLIC_SPACE_ID);
+
+		$defaultHidden = ($displayType && $count1 && $count2);
 		$this->set('defaultHidden', $defaultHidden);
 	}
 
