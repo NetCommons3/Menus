@@ -206,7 +206,7 @@ class MenuHelper extends AppHelper {
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID) {
 			return false;
 		}
-		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'] . '');
+		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id']);
 		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
 				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
 			return false;
