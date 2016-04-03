@@ -55,7 +55,8 @@ class MenuFrameSettingsController extends MenusAppController {
  * @var array
  */
 	public $helpers = array(
-		'Menus.Menu'
+		'Menus.Menu',
+		'Menus.MenuForm'
 	);
 
 /**

@@ -46,3 +46,18 @@
 	padding-top: 6px;
 	padding-bottom: 6px;
 }
+
+.plugin-menus .menu-header.navbar-default {
+	background-color: transparent;
+	border: none;
+}
+
+.plugin-menus .menu-header.navbar-default .navbar-toggle {
+	margin-right: 0px;
+}
+
+.plugin-menus .menu-header.navbar-default > .navbar-collapse {
+	padding-left: 0px;
+	padding-right: 0px;
+	border-color: transparent;
+}

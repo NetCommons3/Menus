@@ -21,6 +21,41 @@ App::uses('Folder', 'Utility');
 class MenuFrameSetting extends MenusAppModel {
 
 /**
+ * ヘッダータイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_HEADER = 'header';
+
+/**
+ * レフトタイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_LEFT = 'major';
+
+/**
+ * ライトタイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_RIGHT = 'minor';
+
+/**
+ * フッタータイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_FOOTER = 'footer';
+
+/**
+ * メインタイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_MAIN = 'main';
+
+/**
  * メニューのリスト
  *
  * View/Elements/Menusのディレクトリを__constructでセットする
@@ -55,16 +90,16 @@ class MenuFrameSetting extends MenusAppModel {
 
 		foreach ($dirs[0] as $dir) {
 			switch ($dir) {
-				case 'footer':
+				case self::DISPLAY_TYPE_FOOTER:
 					$label = __d('menus', 'Footer type');
 					break;
-				case 'header':
+				case self::DISPLAY_TYPE_HEADER:
 					$label = __d('menus', 'Header type');
 					break;
-				case 'major':
+				case self::DISPLAY_TYPE_LEFT:
 					$label = __d('menus', 'Left type');
 					break;
-				case 'minor':
+				case self::DISPLAY_TYPE_RIGHT:
 					$label = __d('menus', 'Right type');
 					break;
 				default:
@@ -162,8 +197,29 @@ class MenuFrameSetting extends MenusAppModel {
 			'conditions' => array('frame_key' => Current::read('Frame.key'))
 		));
 		if (! $menuFrameSetting) {
+			$this->loadModels([
+				'Container' => 'Containers.Container',
+			]);
+
+			$container = $this->Container->find('first', array(
+				'recursive' => -1,
+				'fields' => array('id', 'type'),
+				'conditions' => array('id' => Current::read('Box.container_id'))
+			));
+			if (Hash::get($container, 'Container.type') === Container::TYPE_HEADER) {
+				$displayType = self::DISPLAY_TYPE_HEADER;
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MAJOR) {
+				$displayType = self::DISPLAY_TYPE_LEFT;
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MINOR) {
+				$displayType = self::DISPLAY_TYPE_RIGHT;
+			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_FOOTER) {
+				$displayType = self::DISPLAY_TYPE_FOOTER;
+			} else {
+				$displayType = self::DISPLAY_TYPE_MAIN;
+			}
+
 			$menuFrameSetting = $this->create(array(
-				'display_type' => 'main'
+				'display_type' => $displayType
 			));
 		}
 		return $menuFrameSetting;

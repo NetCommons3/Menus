@@ -26,7 +26,10 @@ class MenusController extends MenusAppController {
  */
 	public $uses = array(
 		'Menus.MenuFrameSetting',
+		'Menus.MenuFramesPage',
 		'Menus.MenuFramesRoom',
+		'Pages.Page',
+		'Rooms.Room',
 	);
 
 /**
@@ -69,6 +72,29 @@ class MenusController extends MenusAppController {
 
 		$parentPages = $this->Page->getPath(Current::read('Page.id'));
 		$this->set('parentPages', $parentPages);
+
+		//メニューデータの有無
+		$count1 = $this->MenuFramesRoom->find('count', array('recursive' => -1,
+			'conditions' => array(
+				$this->MenuFramesRoom->alias . '.frame_key' => Current::read('Frame.key')
+			)
+		));
+		$count2 = $this->MenuFramesPage->find('count', array('recursive' => -1,
+			'conditions' => array(
+				$this->MenuFramesPage->alias . '.frame_key' => Current::read('Frame.key')
+			)
+		));
+
+		if ($count1 && $count2) {
+			$options = array(
+				MenuFrameSetting::DISPLAY_TYPE_HEADER,
+				MenuFrameSetting::DISPLAY_TYPE_FOOTER,
+			);
+		} else {
+			$options = array();
+		}
+		$defaultHidden = in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true);
+		$this->set('defaultHidden', $defaultHidden);
 	}
 
 }
