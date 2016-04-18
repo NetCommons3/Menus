@@ -78,8 +78,12 @@ class MenuFormHelper extends AppHelper {
 			'hiddenField' => '1',
 			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.' . $isFidden)
 		));
-		$html .= $this->NetCommonsForm->label($prefixInput . '.' . $isFidden,
-				Hash::get(Hash::extract($room, 'RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . ']'), '0.name'));
+		$extract = Hash::extract(
+			$room, 'RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . ']'
+		);
+		$html .= $this->NetCommonsForm->label(
+			$prefixInput . '.' . $isFidden, Hash::get($extract, '0.name')
+		);
 
 		return $html;
 	}
@@ -96,7 +100,9 @@ class MenuFormHelper extends AppHelper {
 	public function checkboxMenuFramesPage($roomId, $room, $pageId, $menu) {
 		$html = '';
 		if (Hash::get($room, 'Room.parent_id') === Room::PRIVATE_PARENT_ID ||
-				Hash::get($menu, 'Page.room_id') !== Room::PUBLIC_PARENT_ID && ! Hash::get($menu, 'Page.parent_id')) {
+				Hash::get($menu, 'Page.room_id') !== Room::PUBLIC_PARENT_ID &&
+					! Hash::get($menu, 'Page.parent_id')) {
+
 			return $html;
 		}
 		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
@@ -110,10 +116,13 @@ class MenuFormHelper extends AppHelper {
 
 		//フォルダタイプの初期値セット
 		$folderTypeDomId = $this->domId($prefixInput . '.folder_type');
-		$html .= '<div class="col-xs-9" ng-init="' . $folderTypeDomId . ' = ' . ((int)Hash::get($menu, 'MenuFramesPage.folder_type')) . '">';
+		$folderType = (int)Hash::get($menu, 'MenuFramesPage.folder_type');
+		$html .= '<div class="col-xs-9" ng-init="' . $folderTypeDomId . ' = ' . $folderType . '">';
 
 		//ページ名のネスト
-		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $pageId), Page::$treeParser);
+		$nest = substr_count(
+			Hash::get($this->_View->viewVars['pageTreeList'], $pageId), Page::$treeParser
+		);
 		$html .= str_repeat('<span class="menu-edit-tree"> </span>', $nest);
 
 		//MenuFramesPageのinput
@@ -127,7 +136,9 @@ class MenuFormHelper extends AppHelper {
 			'hiddenField' => '1',
 			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.is_hidden')
 		));
-		$html .= $this->NetCommonsForm->label($prefixInput . '.is_hidden', Hash::get($menu, 'LanguagesPage.name'));
+		$html .= $this->NetCommonsForm->label(
+			$prefixInput . '.is_hidden', Hash::get($menu, 'LanguagesPage.name')
+		);
 
 		//フォルダタイプのinput
 		if ($menu['Page']['lft'] + 1 !== (int)$menu['Page']['rght']) {

@@ -63,12 +63,14 @@ class MenuHelper extends AppHelper {
 		$plugin = Inflector::camelize($this->_View->params['plugin']);
 
 		//スタイルシートの読み込み
-		$cssPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
+		$cssPath = App::pluginPath($plugin) .
+					WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
 		if (file_exists($cssPath)) {
 			$html .= $this->NetCommonsHtml->css('/menus/css/' . $displayType . '/style.css');
 		}
 		//JSの読み込み
-		$jsPath = App::pluginPath($plugin) . WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
+		$jsPath = App::pluginPath($plugin) .
+					WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
 		if (file_exists($jsPath)) {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
@@ -109,7 +111,9 @@ class MenuHelper extends AppHelper {
 		}
 
 		$pageTreeList = array_keys($this->_View->viewVars['pageTreeList']);
-		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		$childPageIds = Hash::extract(
+			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
+		);
 		$sortChildPageIds = array();
 		foreach ($childPageIds as $id) {
 			$index = array_search((int)$id, $pageTreeList, true);
@@ -118,7 +122,9 @@ class MenuHelper extends AppHelper {
 		ksort($sortChildPageIds);
 
 		foreach ($sortChildPageIds as $childPageId) {
-			$html .= $this->render(Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag);
+			$html .= $this->render(
+				Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag
+			);
 			$html .= $this->renderChild($roomId, $childPageId, $listTag);
 		}
 
@@ -135,7 +141,8 @@ class MenuHelper extends AppHelper {
 	public function render($menu, $listTag) {
 		$html = '';
 
-		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) || $menu['MenuFramesPage']['is_hidden']) {
+		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) ||
+				$menu['MenuFramesPage']['is_hidden']) {
 			return $html;
 		}
 
@@ -160,7 +167,9 @@ class MenuHelper extends AppHelper {
 			$class .= ' list-group-item';
 		}
 
-		$nest = substr_count(Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser);
+		$nest = substr_count(
+			Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser
+		);
 		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			$nest--;
 		}
@@ -185,10 +194,15 @@ class MenuHelper extends AppHelper {
 		if ($room['parent_id'] !== Room::PRIVATE_PARENT_ID) {
 			return false;
 		}
-		if (Hash::get($this->_View->viewVars['menuFrameSetting'], 'MenuFrameSetting.is_private_room_hidden')) {
+
+		$pathKey = 'MenuFrameSetting.is_private_room_hidden';
+		if (Hash::get($this->_View->viewVars['menuFrameSetting'], $pathKey)) {
 			return false;
 		}
-		if ($room['page_id_top'] !== $menu['Page']['id'] && $defaultHidden && ! $menu['MenuFramesPage']['id']) {
+
+		if ($room['page_id_top'] !== $menu['Page']['id'] &&
+				$defaultHidden &&
+				! $menu['MenuFramesPage']['id']) {
 			return false;
 		}
 		return true;
@@ -232,7 +246,8 @@ class MenuHelper extends AppHelper {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$url = $setting;
-		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] === Room::PUBLIC_PARENT_ID) {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
+				$room['Room']['id'] === Room::PUBLIC_PARENT_ID) {
 			$url .= '';
 		} else {
 			$url .= h($menu['Page']['permalink']);
@@ -240,7 +255,8 @@ class MenuHelper extends AppHelper {
 
 		$title = '';
 		$html = '';
-		if ($room['Room']['page_id_top'] === $menu['Page']['id'] && $room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
+		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
+				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);
@@ -253,15 +269,22 @@ class MenuHelper extends AppHelper {
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 			$title = '<span class="glyphicon glyphicon-menu-right"' .
-						' ng-class="{\'glyphicon-menu-right\': !' . $domIdIcon . ', \'glyphicon-menu-down\': ' . $domIdIcon . '}"> </span> ' . $title;
+						' ng-class="{' .
+							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
+							'\'glyphicon-menu-down\': ' . $domIdIcon . '' .
+						'}"> ' .
+					'</span> ' . $title;
 
 			$childPageIds = array();
-			$childPageIds = $this->getRecursiveChildPageId($menu['Page']['room_id'], $menu['Page']['id'], $childPageIds);
+			$childPageIds = $this->getRecursiveChildPageId(
+				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
+			);
 			$childDomIds = array_map(function ($value) {
 				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
 			}, $childPageIds);
 
-			$options['ng-init'] = $domIdIcon . '=' . $toggle . '; initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
+			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
+					' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
 
@@ -288,7 +311,9 @@ class MenuHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function getRecursiveChildPageId($roomId, $pageId, $result) {
-		$childPageIds = Hash::extract($this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array());
+		$childPageIds = Hash::extract(
+			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
+		);
 		foreach ($childPageIds as $childPageId) {
 			$result[] = $childPageId;
 
