@@ -220,7 +220,7 @@ class MenuHelper extends AppHelper {
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID) {
 			return false;
 		}
-		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id']);
+		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'], array());
 		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
 				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
 			return false;
@@ -255,9 +255,9 @@ class MenuHelper extends AppHelper {
 
 		$title = '';
 		$html = '';
-		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
+		if ($room && $room['Room']['page_id_top'] === $menu['Page']['id'] &&
 				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
-			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
+			$title .= h(Hash::get($room, 'RoomsLanguage.name', ''));
 		} else {
 			$title .= h($menu['LanguagesPage']['name']);
 		}
@@ -267,6 +267,9 @@ class MenuHelper extends AppHelper {
 		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
+		if (! $menu) {
+			return $html;
+		}
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 			$title = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{' .
