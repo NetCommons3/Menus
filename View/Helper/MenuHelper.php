@@ -220,7 +220,7 @@ class MenuHelper extends AppHelper {
 		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID) {
 			return false;
 		}
-		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id']);
+		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'], array());
 		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
 				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
 			return false;
@@ -239,6 +239,11 @@ class MenuHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function link($menu, $class) {
+		$html = '';
+		if (! $menu) {
+			return $html;
+		}
+
 		$setting = '';
 		if (Current::isSettingMode()) {
 			$setting = Current::SETTING_MODE_WORD . '/';
@@ -253,28 +258,13 @@ class MenuHelper extends AppHelper {
 			$url .= h($menu['Page']['permalink']);
 		}
 
-		$title = '';
-		$html = '';
-		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
-				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
-			$title .= h(Hash::get($room, 'RoomsLanguage.name'));
-		} else {
-			$title .= h($menu['LanguagesPage']['name']);
-		}
-
+		$title = $this->__getTitle($menu);
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
-			$title = '<span class="glyphicon glyphicon-menu-right"' .
-						' ng-class="{' .
-							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
-							'\'glyphicon-menu-down\': ' . $domIdIcon . '' .
-						'}"> ' .
-					'</span> ' . $title;
-
 			$childPageIds = array();
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
@@ -287,6 +277,41 @@ class MenuHelper extends AppHelper {
 					' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$html .= $this->NetCommonsHtml->link($title, '#', $options);
+		} else {
+			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
+		}
+
+		return $html;
+	}
+
+/**
+ * リンクのタイトル表示
+ *
+ * @param array $menu リンクデータ
+ * @return string タイトル
+ */
+	private function __getTitle($menu) {
+		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
+
+		$title = '';
+		if ($room && Hash::get($room['Room'], 'page_id_top', false) === $menu['Page']['id'] &&
+				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
+			$title .= h(Hash::get($room, 'RoomsLanguage.name', ''));
+		} else {
+			$title .= h(Hash::get($menu, 'LanguagesPage.name', ''));
+		}
+
+		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
+		$domIdIcon = $domId . 'Icon';
+		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
+
+		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+			$title = '<span class="glyphicon glyphicon-menu-right"' .
+						' ng-class="{' .
+							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
+							'\'glyphicon-menu-down\': ' . $domIdIcon . '' .
+						'}"> ' .
+					'</span> ' . $title;
 
 		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
 			if ($toggle) {
@@ -294,12 +319,9 @@ class MenuHelper extends AppHelper {
 			} else {
 				$title = '<span class="glyphicon glyphicon-menu-right"> </span> ' . $title;
 			}
-			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
-		} else {
-			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
 		}
 
-		return $html;
+		return $title;
 	}
 
 /**
