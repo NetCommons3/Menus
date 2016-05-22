@@ -10,7 +10,6 @@
  */
 
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
-App::uses('UserRole', 'UserRoles.Model');
 
 /**
  * MenusAppController::beforeFilter()のテスト

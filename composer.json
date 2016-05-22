@@ -1,6 +1,7 @@
 {
     "name": "netcommons/menus",
     "description": "MenusPlugin for Cakephp",
+    "type": "cakephp-plugin",
     "homepage": "http://www.netcommons.org/",
     "extra": {
         "installer-paths": {
@@ -8,16 +9,12 @@
         }
     },
     "require": {
-        "cakephp/cakephp":              "~2.6",
-        "cakephp/debug_kit":            "~2.2",
         "cakedc/migrations":            "~2.2",
-        "twbs/bootstrap":               "~3.1",
-        "components/jquery":            "~2.1"
-    },
-    "require-dev": {
-        "mustangostang/spyc":     "dev-master",
-        "netcommons/net-commons": "dev-master",
-        "satooshi/php-coveralls": "dev-master"
+        "netcommons/containers":        "dev-master",
+        "netcommons/net-commons":       "dev-master",
+        "netcommons/pages":             "dev-master",
+        "netcommons/plugin-manager":    "dev-master",
+        "netcommons/rooms":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
@@ -26,8 +23,7 @@
             "homepage": "https://github.com/NetCommons3/Menus/graphs/contributors"
         }
     ],
-    "type":        "cakephp-plugin",
-    "keywords":    ["cakephp", "menu"],
+    "keywords": ["cakephp", "menu"],
     "config": {
         "vendor-dir": "vendors"
     }
