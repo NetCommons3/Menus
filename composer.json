@@ -20,7 +20,11 @@
     "authors": [
         {
             "name": "NetCommons Community",
-            "homepage": "https://github.com/NetCommons3/Menus/graphs/contributors"
+            "homepage": "http://www.netcommons.org"
+        },
+        {
+            "name": "NaKaZii Co., Ltd.",
+            "homepage": "https://github.com/s-nakajima"
         }
     ],
     "keywords": ["cakephp", "menu"],
