@@ -10,11 +10,11 @@
     },
     "require": {
         "cakedc/migrations":            "~2.2",
-        "netcommons/containers":        "dev-master",
-        "netcommons/net-commons":       "dev-master",
-        "netcommons/pages":             "dev-master",
-        "netcommons/plugin-manager":    "dev-master",
-        "netcommons/rooms":             "dev-master"
+        "netcommons/containers":        "@dev",
+        "netcommons/net-commons":       "@dev",
+        "netcommons/pages":             "@dev",
+        "netcommons/plugin-manager":    "@dev",
+        "netcommons/rooms":             "@dev"
     },
     "license": "NetCommons License",
     "authors": [
