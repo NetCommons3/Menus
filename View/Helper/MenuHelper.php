@@ -122,8 +122,11 @@ class MenuHelper extends AppHelper {
 		ksort($sortChildPageIds);
 
 		foreach ($sortChildPageIds as $childPageId) {
+			$childRoomId = Hash::get(
+				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id', $roomId
+			);
 			$html .= $this->render(
-				Hash::get($this->_View->viewVars['menus'], $roomId . '.' . $childPageId), $listTag
+				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $listTag
 			);
 			$html .= $this->renderChild($roomId, $childPageId, $listTag);
 		}
