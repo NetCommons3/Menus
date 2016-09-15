@@ -82,7 +82,7 @@ class MenuFormHelper extends AppHelper {
 			$room, 'RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . ']'
 		);
 		$html .= $this->NetCommonsForm->label(
-			$prefixInput . '.' . $isFidden, Hash::get($extract, '0.name')
+			$prefixInput . '.' . $isFidden, h(Hash::get($extract, '0.name'))
 		);
 
 		return $html;
@@ -137,7 +137,7 @@ class MenuFormHelper extends AppHelper {
 			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.is_hidden')
 		));
 		$html .= $this->NetCommonsForm->label(
-			$prefixInput . '.is_hidden', Hash::get($menu, 'LanguagesPage.name')
+			$prefixInput . '.is_hidden', h(Hash::get($menu, 'LanguagesPage.name'))
 		);
 
 		//フォルダタイプのinput
