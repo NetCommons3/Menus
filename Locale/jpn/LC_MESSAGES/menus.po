@@ -27,7 +27,7 @@ msgstr "左タイプ"
 
 #: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
 msgid "Main type"
-msgstr "メインタイプ"
+msgstr "センタータイプ"
 
 #: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:30
 msgid "Right type"
