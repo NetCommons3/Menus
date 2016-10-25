@@ -137,7 +137,7 @@ class MenuFormHelper extends AppHelper {
 			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.is_hidden')
 		));
 		$html .= $this->NetCommonsForm->label(
-			$prefixInput . '.is_hidden', h(Hash::get($menu, 'LanguagesPage.name'))
+			$prefixInput . '.is_hidden', h(Hash::get($menu, 'PagesLanguage.name'))
 		);
 
 		//フォルダタイプのinput

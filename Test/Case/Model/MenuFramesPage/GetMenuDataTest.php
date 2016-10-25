@@ -78,7 +78,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 
 		//チェック
 		$this->__assertGetMenuData($result, $roomId, $pageId, 'home', 'Home ja');
-		$this->assertEquals('8', $result[$roomId][$pageId]['LanguagesPage']['id']);
+		$this->assertEquals('8', $result[$roomId][$pageId]['PagesLanguage']['id']);
 		$this->assertEquals('1', $result[$roomId][$pageId]['MenuFramesPage']['id']);
 	}
 
@@ -103,7 +103,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 
 		//チェック
 		$this->__assertGetMenuData($result, $roomId, $pageId, 'test2', 'Test page 2');
-		$this->assertEquals('14', $result[$roomId][$pageId]['LanguagesPage']['id']);
+		$this->assertEquals('14', $result[$roomId][$pageId]['PagesLanguage']['id']);
 		$this->assertEquals(null, $result[$roomId][$pageId]['MenuFramesPage']['id']);
 	}
 
@@ -120,14 +120,14 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 	private function __assertGetMenuData($result, $roomId, $pageId, $permalink, $name) {
 		//チェック
 		$this->assertEquals(
-			array('Page', 'LanguagesPage', 'MenuFramesPage'), array_keys($result[$roomId][$pageId])
+			array('Page', 'PagesLanguage', 'MenuFramesPage'), array_keys($result[$roomId][$pageId])
 		);
 		$this->assertEquals($pageId, $result[$roomId][$pageId]['Page']['id']);
 		$this->assertEquals($roomId, $result[$roomId][$pageId]['Page']['room_id']);
 		$this->assertEquals($permalink, $result[$roomId][$pageId]['Page']['permalink']);
 
-		$this->assertEquals($pageId, $result[$roomId][$pageId]['LanguagesPage']['page_id']);
-		$this->assertEquals($name, $result[$roomId][$pageId]['LanguagesPage']['name']);
+		$this->assertEquals($pageId, $result[$roomId][$pageId]['PagesLanguage']['page_id']);
+		$this->assertEquals($name, $result[$roomId][$pageId]['PagesLanguage']['name']);
 	}
 
 }
