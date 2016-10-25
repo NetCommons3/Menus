@@ -65,10 +65,10 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		Current::$current = Hash::insert(Current::$current, 'Room.id', '1');
+		Current::$current = Hash::insert(Current::$current, 'Room.id', '2');
 		Current::$current = Hash::insert(Current::$current, 'Frame.key', 'frame_3');
 		$pageId = '4';
-		$roomId = '1';
+		$roomId = '2';
 		$options = array(
 			'conditions' => array('Page.id' => $pageId)
 		);
@@ -93,7 +93,7 @@ class MenuFramesPageGetMenuDataTest extends NetCommonsGetTest {
 
 		//データ生成
 		$pageId = '5';
-		$roomId = '4';
+		$roomId = '5';
 		$options = array(
 			'conditions' => array('Page.room_id' => $roomId)
 		);

@@ -90,7 +90,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 					'Room' => array('id' => '9', 'parent_id' => '2')
 				),
 				'menu' => array(
-					'Page' => array('id' => '9', 'room_id' => '9', 'parent_id' => null),
+					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
 					'LanguagesPage' => array(),
 					'MenuFramesPage' => array(),
 				),
@@ -103,7 +103,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 					'Room' => array('id' => '9', 'parent_id' => '3')
 				),
 				'menu' => array(
-					'Page' => array('id' => '9', 'room_id' => '9', 'parent_id' => null),
+					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
 					'LanguagesPage' => array(),
 					'MenuFramesPage' => array(),
 				),

@@ -54,7 +54,7 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 		Current::$current = Hash::insert(Current::$current, 'Page.id', $pageId);
 
 		$viewVars = array();

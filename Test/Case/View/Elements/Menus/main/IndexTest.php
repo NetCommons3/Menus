@@ -78,7 +78,7 @@ class MenusViewElementsMenusMainIndexTest extends NetCommonsControllerTestCase {
 		$this->assertTextContains($pattern, $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern($frameId, '4', '/', '', 'Home ja');
+		$pattern .= $this->__getPattern($frameId, '4', '/', ' active', 'Home ja');
 		$pattern .= $this->__getPattern($frameId, '8', '/test5', '', 'Test page 5');
 		$pattern .= $this->__getPattern($frameId, '9', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
 		$pattern .= $this->__getPattern($frameId, '10', '/page_2', '', 'Page 2');

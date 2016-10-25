@@ -53,7 +53,7 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 		Current::write('Page.id', $pageId);
 
 		$viewVars = array();
@@ -86,7 +86,7 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -103,14 +103,14 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
 
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -127,7 +127,7 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testHiddenPrivateRoomOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
 		$viewVars = Hash::insert($viewVars, 'menuFrameSetting.MenuFrameSetting.is_private_room_hidden', true);
 
 		$requestData = array();
@@ -135,7 +135,7 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -152,17 +152,17 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testHiddenPrivatePageOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.page_id_top', '99');
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
-		$viewVars = Hash::insert($viewVars, 'menus.4.5.MenuFramesPage.id', null);
+		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
 
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -179,17 +179,17 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testSamePageIdTopOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.page_id_top', '5');
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '5');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
-		$viewVars = Hash::insert($viewVars, 'menus.4.5.MenuFramesPage.id', null);
+		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
 
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -206,17 +206,17 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testWODefaultHiddenOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.page_id_top', '99');
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		//$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
-		$viewVars = Hash::insert($viewVars, 'menus.4.5.MenuFramesPage.id', null);
+		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
 
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);
@@ -233,17 +233,17 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testWMenuFramesPageIdOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.parent_id', Room::PRIVATE_PARENT_ID);
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.4.Room.page_id_top', '99');
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
-		$viewVars = Hash::insert($viewVars, 'menus.4.5.MenuFramesPage.id', '999');
+		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', '999');
 
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 
 		//テスト実施
 		$result = $this->Menu->showPrivateRoom($menu);

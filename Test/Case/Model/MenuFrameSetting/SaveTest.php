@@ -89,7 +89,7 @@ class MenuFrameSettingSaveTest extends NetCommonsModelTestCase {
 					'MenuFramesRoom' => array(
 						'id' => '1',
 						'frame_key' => 'frame_3',
-						'room_id' => '1',
+						'room_id' => '2',
 						'is_hidden' => true,
 					)
 				),
@@ -97,7 +97,7 @@ class MenuFrameSettingSaveTest extends NetCommonsModelTestCase {
 					'MenuFramesRoom' => array(
 						'id' => null,
 						'frame_key' => 'frame_3',
-						'room_id' => '4',
+						'room_id' => '5',
 						'is_hidden' => false,
 					)
 				)

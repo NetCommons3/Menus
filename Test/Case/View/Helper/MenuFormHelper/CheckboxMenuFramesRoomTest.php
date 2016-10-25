@@ -49,7 +49,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			// * ネスト無し、MenuFramesPageデータあり
 			array(
 				'room' => array(
-					'Room' => array('id' => '1', 'parent_id' => null),
+					'Room' => array('id' => '2', 'parent_id' => null),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(
@@ -59,7 +59,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			// * ネストあり、MenuFramesPageデータなし
 			array(
 				'room' => array(
-					'Room' => array('id' => '4', 'parent_id' => '1'),
+					'Room' => array('id' => '5', 'parent_id' => '1'),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(
@@ -69,7 +69,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			// * プライベートルーム
 			array(
 				'room' => array(
-					'Room' => array('id' => '9', 'parent_id' => '2'),
+					'Room' => array('id' => '10', 'parent_id' => '2'),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(

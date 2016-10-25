@@ -69,7 +69,7 @@ class MenuFramesRoomGetMenuFrameRoomsTest extends NetCommonsGetTest {
 			)),
 			array('frameKey' => 'frame_3', 'expected' => array(
 				'MenuFramesRoom' => array(
-					'id' => '1', 'frame_key' => 'frame_3', 'room_id' => '1', 'is_hidden' => false
+					'id' => '1', 'frame_key' => 'frame_3', 'room_id' => '2', 'is_hidden' => false
 				),
 			)),
 		);
@@ -88,7 +88,7 @@ class MenuFramesRoomGetMenuFrameRoomsTest extends NetCommonsGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$roomId = '1';
+		$roomId = '2';
 		Current::$current = Hash::insert(Current::$current, 'Frame.key', $frameKey);
 		$options = array('conditions' => array(
 			'Room.id' => $roomId
