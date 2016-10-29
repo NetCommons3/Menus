@@ -70,11 +70,11 @@ class PluginRecords extends NetCommonsMigration {
 		),
 		'PluginsRoom' => array(
 			//パブリックスペース
-			array('room_id' => '1', 'plugin_key' => 'menus', ),
-			//プライベートスペース
 			array('room_id' => '2', 'plugin_key' => 'menus', ),
-			//グループスペース
+			//プライベートスペース
 			array('room_id' => '3', 'plugin_key' => 'menus', ),
+			//グループスペース
+			array('room_id' => '4', 'plugin_key' => 'menus', ),
 		),
 	);
 
