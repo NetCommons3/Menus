@@ -75,7 +75,7 @@ class MenuFramesPage extends MenusAppModel {
  */
 	public function getMenuData($options = array()) {
 		$this->loadModels([
-			'LanguagesPage' => 'Pages.LanguagesPage',
+			'PagesLanguage' => 'Pages.PagesLanguage',
 		]);
 
 		//Menuデータ取得
@@ -83,12 +83,12 @@ class MenuFramesPage extends MenusAppModel {
 			'recursive' => -1,
 			'fields' => array(
 				$this->Page->alias . '.*',
-				$this->LanguagesPage->alias . '.*',
+				$this->PagesLanguage->alias . '.*',
 				$this->alias . '.*',
 			),
 			'conditions' => array(
 				$this->Page->alias . '.room_id' => Current::read('Room.id'),
-				//$this->LanguagesPage->alias . '.language_id' => Current::read('Language.id'),
+				//$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
 				//'OR' => array(
 				//	$this->alias . '.is_hidden' => false,
 				//	$this->alias . '.is_hidden IS NULL',
@@ -96,12 +96,12 @@ class MenuFramesPage extends MenusAppModel {
 			),
 			'joins' => array(
 				array(
-					'table' => $this->LanguagesPage->table,
-					'alias' => $this->LanguagesPage->alias,
+					'table' => $this->PagesLanguage->table,
+					'alias' => $this->PagesLanguage->alias,
 					'type' => 'INNER',
 					'conditions' => array(
-						$this->Page->alias . '.id' . ' = ' . $this->LanguagesPage->alias . ' .page_id',
-						$this->LanguagesPage->alias . '.language_id' => Current::read('Language.id'),
+						$this->Page->alias . '.id' . ' = ' . $this->PagesLanguage->alias . ' .page_id',
+						$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
 					),
 				),
 				array(

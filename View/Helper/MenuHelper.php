@@ -301,7 +301,7 @@ class MenuHelper extends AppHelper {
 				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name', ''));
 		} else {
-			$title .= h(Hash::get($menu, 'LanguagesPage.name', ''));
+			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));
 		}
 
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);

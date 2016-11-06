@@ -69,7 +69,7 @@ class MenuHelperGetRecursiveChildPageIdTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 		Current::write('Page.id', '9');
 
 		$viewVars = array();
@@ -96,7 +96,7 @@ class MenuHelperGetRecursiveChildPageIdTest extends NetCommonsHelperTestCase {
  */
 	public function testGetRecursiveChildPageId() {
 		//データ生成
-		$roomId = '1';
+		$roomId = '2';
 		$pageId = '9';
 
 		//テスト実施

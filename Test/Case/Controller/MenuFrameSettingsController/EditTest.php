@@ -154,7 +154,7 @@ class MenuFrameSettingsControllerEditTest extends NetCommonsControllerTestCase {
 					'MenuFramesRoom' => array(
 						'id' => '1',
 						'frame_key' => 'frame_3',
-						'room_id' => '1',
+						'room_id' => '2',
 						'is_hidden' => false,
 					)
 				)

@@ -197,22 +197,14 @@ class MenuFrameSetting extends MenusAppModel {
 			'conditions' => array('frame_key' => Current::read('Frame.key'))
 		));
 		if (! $menuFrameSetting) {
-			$this->loadModels([
-				'Container' => 'Containers.Container',
-			]);
-
-			$container = $this->Container->find('first', array(
-				'recursive' => -1,
-				'fields' => array('id', 'type'),
-				'conditions' => array('id' => Current::read('Box.container_id'))
-			));
-			if (Hash::get($container, 'Container.type') === Container::TYPE_HEADER) {
+			$containerType = Current::read('Box.container_type');
+			if ($containerType === Container::TYPE_HEADER) {
 				$displayType = self::DISPLAY_TYPE_HEADER;
-			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MAJOR) {
+			} elseif ($containerType === Container::TYPE_MAJOR) {
 				$displayType = self::DISPLAY_TYPE_LEFT;
-			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_MINOR) {
+			} elseif ($containerType === Container::TYPE_MINOR) {
 				$displayType = self::DISPLAY_TYPE_RIGHT;
-			} elseif (Hash::get($container, 'Container.type') === Container::TYPE_FOOTER) {
+			} elseif ($containerType === Container::TYPE_FOOTER) {
 				$displayType = self::DISPLAY_TYPE_FOOTER;
 			} else {
 				$displayType = self::DISPLAY_TYPE_MAIN;

@@ -69,14 +69,14 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 		Current::write('Page.id', '9');
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
 			'conditions' => array('Page.room_id' => $roomIds)
 		));
-		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.11.MenuFramesPage.folder_type', true);
+		$viewVars['menus'] = Hash::insert($viewVars['menus'], '2.11.MenuFramesPage.folder_type', true);
 
 		$viewVars['menuFrameSetting'] = $MenuFrameSetting->getMenuFrameSetting();
 		$menuFrameRooms = $MenuFramesRoom->getMenuFrameRooms(array(
@@ -98,7 +98,7 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
  */
 	public function testRenderChild() {
 		//データ生成
-		$roomId = '1';
+		$roomId = '2';
 		$pageId = '9';
 		$listTag = false;
 

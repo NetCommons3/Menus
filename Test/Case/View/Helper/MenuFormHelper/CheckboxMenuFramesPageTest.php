@@ -65,7 +65,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				),
 				'menu' => array(
 					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
-					'LanguagesPage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
+					'PagesLanguage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
 					'MenuFramesPage' => (new MenuFramesPageFixture())->records[0],
 				),
 				'pageTreeList' => array($pageId => $pageId),
@@ -78,7 +78,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				),
 				'menu' => array(
 					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
-					'LanguagesPage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
+					'PagesLanguage' => Hash::extract((new PagesLanguage4menuFixture())->records, '{n}[page_id=' . $pageId . ']')[1],
 					'MenuFramesPage' => array(),
 				),
 				'pageTreeList' => array($pageId => chr(9) . $pageId),
@@ -90,8 +90,8 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 					'Room' => array('id' => '9', 'parent_id' => '2')
 				),
 				'menu' => array(
-					'Page' => array('id' => '9', 'room_id' => '9', 'parent_id' => null),
-					'LanguagesPage' => array(),
+					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
+					'PagesLanguage' => array(),
 					'MenuFramesPage' => array(),
 				),
 				'pageTreeList' => array(),
@@ -103,8 +103,8 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 					'Room' => array('id' => '9', 'parent_id' => '3')
 				),
 				'menu' => array(
-					'Page' => array('id' => '9', 'room_id' => '9', 'parent_id' => null),
-					'LanguagesPage' => array(),
+					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
+					'PagesLanguage' => array(),
 					'MenuFramesPage' => array(),
 				),
 				'pageTreeList' => array(),

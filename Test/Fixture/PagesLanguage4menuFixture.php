@@ -1,6 +1,6 @@
 <?php
 /**
- * Menusプラグイン用LanguagesPageFixture
+ * Menusプラグイン用PagesLanguageFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -8,29 +8,29 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('LanguagesPageFixture', 'Pages.Test/Fixture');
+App::uses('PagesLanguageFixture', 'Pages.Test/Fixture');
 
 /**
- * Menusプラグイン用LanguagesPageFixture
+ * Menusプラグイン用PagesLanguageFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Menus\Test\Fixture
  */
-class PagesLanguage4menuFixture extends LanguagesPageFixture {
+class PagesLanguage4menuFixture extends PagesLanguageFixture {
 
 /**
  * Model name
  *
  * @var string
  */
-	public $name = 'LanguagesPage';
+	public $name = 'PagesLanguage';
 
 /**
  * Full Table Name
  *
  * @var string
  */
-	public $table = 'languages_pages';
+	public $table = 'pages_languages';
 
 /**
  * Records

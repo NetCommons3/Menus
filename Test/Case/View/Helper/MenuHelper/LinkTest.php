@@ -53,7 +53,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 		Current::write('Page.id', $pageId);
 
 		$viewVars = array();
@@ -86,7 +86,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$class = 'menu-tree-1 active';
 
 		//テスト実施
@@ -113,7 +113,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -140,7 +140,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '4');
+		$menu = Hash::get($viewVars['menus']['2'], '4');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -167,7 +167,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['4'], '5');
+		$menu = Hash::get($viewVars['menus']['5'], '5');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -189,13 +189,13 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 	public function testLinkToggle() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('10');
-		$viewVars['menus'] = Hash::insert($viewVars['menus'], '1.9.MenuFramesPage.folder_type', true);
+		$viewVars['menus'] = Hash::insert($viewVars['menus'], '2.9.MenuFramesPage.folder_type', true);
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$class = 'menu-tree-1';
 
 		//テスト実施
@@ -223,7 +223,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//データ生成
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$class = 'menu-tree-1 active';
 
 		//テスト実施

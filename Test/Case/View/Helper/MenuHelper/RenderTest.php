@@ -52,7 +52,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$MenuFramesPage = ClassRegistry::init('Menus.MenuFramesPage');
 		$Page = ClassRegistry::init('Pages.Page');
 
-		$roomIds = array('1', '4', '5');
+		$roomIds = array('2', '5', '6');
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
@@ -129,7 +129,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//テスト実施
 		$this->Menu->parentPageIds = $parentPageIds;
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$result = $this->Menu->render($menu, $listTag);
 
 		//チェック
@@ -170,7 +170,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$menu['MenuFramesPage']['is_hidden'] = true;
 		$result = $this->Menu->render($menu, true);
 
@@ -190,9 +190,9 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//Helperロード
 		$viewVars = $this->__getViewVars();
-		$viewVars['menuFrameRooms']['9']['Room'] = array(
-			'id' => '9',
-			'parent_id' => '2',
+		$viewVars['menuFrameRooms']['10']['Room'] = array(
+			'id' => '10',
+			'parent_id' => '3',
 		);
 		$viewVars['menuFrameSetting']['MenuFrameSetting']['is_private_room_hidden'] = true;
 		$requestData = array();
@@ -201,8 +201,8 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
-		$menu = Hash::get($viewVars['menus']['1'], '9');
-		$menu['Page']['room_id'] = '9';
+		$menu = Hash::get($viewVars['menus']['2'], '9');
+		$menu['Page']['room_id'] = '10';
 		$result = $this->Menu->render($menu, true);
 
 		//チェック
@@ -221,14 +221,14 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//Helperロード
 		$viewVars = $this->__getViewVars();
-		$viewVars['menuFrameRooms']['1']['MenuFramesRoom']['is_hidden'] = true;
+		$viewVars['menuFrameRooms']['2']['MenuFramesRoom']['is_hidden'] = true;
 		$requestData = array();
 		$params = array();
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
-		$menu = Hash::get($viewVars['menus']['1'], '9');
+		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$result = $this->Menu->render($menu, true);
 
 		//チェック
@@ -253,7 +253,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
-		$menu = Hash::get($viewVars['menus']['1'], '1');
+		$menu = Hash::get($viewVars['menus']['2'], '1');
 		$result = $this->Menu->render($menu, true);
 
 		//チェック
