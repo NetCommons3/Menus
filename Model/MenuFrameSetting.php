@@ -11,6 +11,7 @@
 
 App::uses('MenusAppModel', 'Menus.Model');
 App::uses('Folder', 'Utility');
+App::uses('Container', 'Containers.Model');
 
 /**
  * MenuFrameSetting Model
