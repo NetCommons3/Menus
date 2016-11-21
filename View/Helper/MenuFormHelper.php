@@ -10,6 +10,7 @@
 
 App::uses('AppHelper', 'View/Helper');
 App::uses('Room', 'Rooms.Model');
+App::uses('Space', 'Rooms.Model');
 ClassRegistry::init('Pages.Page');
 
 /**
@@ -59,7 +60,7 @@ class MenuFormHelper extends AppHelper {
 	public function checkboxMenuFramesRoom($roomId, $room) {
 		$html = '';
 
-		if (Hash::get($room, 'Room.parent_id') === Room::PRIVATE_PARENT_ID) {
+		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			$prefixInput = 'MenuFrameSetting';
 			$isFidden = 'is_private_room_hidden';
 		} else {
@@ -99,8 +100,8 @@ class MenuFormHelper extends AppHelper {
  */
 	public function checkboxMenuFramesPage($roomId, $room, $pageId, $menu) {
 		$html = '';
-		if (Hash::get($room, 'Room.parent_id') === Room::PRIVATE_PARENT_ID ||
-				Hash::get($menu, 'Page.room_id') !== Room::PUBLIC_PARENT_ID &&
+		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID) ||
+				Hash::get($menu, 'Page.room_id') !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID) &&
 					! Hash::get($menu, 'Page.parent_id')) {
 
 			return $html;

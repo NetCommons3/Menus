@@ -103,7 +103,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 
 		$requestData = array();
 		$params = array();
@@ -127,7 +129,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testHiddenPrivateRoomOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 		$viewVars = Hash::insert($viewVars, 'menuFrameSetting.MenuFrameSetting.is_private_room_hidden', true);
 
 		$requestData = array();
@@ -152,7 +156,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testHiddenPrivatePageOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
 		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
@@ -179,7 +185,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testSamePageIdTopOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '5');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
 		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
@@ -206,7 +214,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testWODefaultHiddenOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		//$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
 		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', null);
@@ -233,7 +243,9 @@ class MenuHelperShowPrivateRoomTest extends NetCommonsHelperTestCase {
 	public function testWMenuFramesPageIdOnPrivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.page_id_top', '99');
 		$viewVars = Hash::insert($viewVars, 'defaultHidden', true);
 		$viewVars = Hash::insert($viewVars, 'menus.5.5.MenuFramesPage.id', '999');

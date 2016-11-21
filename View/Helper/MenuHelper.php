@@ -10,6 +10,7 @@
 
 App::uses('AppHelper', 'View/Helper');
 App::uses('Room', 'Rooms.Model');
+App::uses('Space', 'Rooms.Model');
 ClassRegistry::init('Pages.Page');
 
 /**
@@ -194,7 +195,7 @@ class MenuHelper extends AppHelper {
 	public function showPrivateRoom($menu) {
 		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-		if ($room['parent_id'] !== Room::PRIVATE_PARENT_ID) {
+		if ($room['parent_id'] !== Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			return false;
 		}
 
@@ -220,7 +221,7 @@ class MenuHelper extends AppHelper {
 	public function showRoom($menu) {
 		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-		if ($room['parent_id'] === Room::PRIVATE_PARENT_ID) {
+		if ($room['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			return false;
 		}
 		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'], array());
@@ -255,7 +256,7 @@ class MenuHelper extends AppHelper {
 
 		$url = $setting;
 		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
-				$room['Room']['id'] === Room::PUBLIC_PARENT_ID) {
+				$room['Room']['id'] === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
 			$url .= '';
 		} else {
 			$url .= h($menu['Page']['permalink']);
@@ -298,7 +299,7 @@ class MenuHelper extends AppHelper {
 
 		$title = '';
 		if ($room && Hash::get($room['Room'], 'page_id_top', false) === $menu['Page']['id'] &&
-				$room['Room']['id'] !== Room::PUBLIC_PARENT_ID) {
+				$room['Room']['id'] !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
 			$title .= h(Hash::get($room, 'RoomsLanguage.name', ''));
 		} else {
 			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));

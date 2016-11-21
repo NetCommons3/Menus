@@ -109,7 +109,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 		//チェック
 		$this->assertTextContains('Room name', $result);
 
-		if ($room['Room']['parent_id'] === Room::PRIVATE_PARENT_ID) {
+		if ($room['Room']['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			$this->assertInput('input',
 					'data[MenuFrameSetting][is_private_room_hidden]', '0', $result);
 			$this->assertInput('input',
