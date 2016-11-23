@@ -103,7 +103,9 @@ class MenuHelperShowRoomTest extends NetCommonsHelperTestCase {
 	public function testOnPvivateRoom() {
 		//Helperロード
 		$viewVars = $this->__getViewVars('4');
-		$viewVars = Hash::insert($viewVars, 'menuFrameRooms.5.Room.parent_id', Room::PRIVATE_PARENT_ID);
+		$viewVars = Hash::insert(
+			$viewVars, 'menuFrameRooms.5.Room.parent_id', Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)
+		);
 
 		$requestData = array();
 		$params = array();

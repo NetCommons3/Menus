@@ -34,12 +34,12 @@ class Init extends CakeMigration {
 			'create_table' => array(
 				'menu_frame_settings' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary', 'comment' => 'ID'),
-					'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'フレームKey | frames.key', 'charset' => 'utf8'),
+					'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'フレームKey', 'charset' => 'utf8'),
 					'display_type' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'bootstrap navi type', 'charset' => 'utf8'),
 					'is_private_room_hidden' => array('type' => 'boolean', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者 | users.id'),
+					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
-					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者 | users.id'),
+					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者'),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
@@ -52,9 +52,9 @@ class Init extends CakeMigration {
 					'page_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 					'is_hidden' => array('type' => 'boolean', 'null' => true, 'default' => null),
 					'folder_type' => array('type' => 'boolean', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者 | users.id'),
+					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
-					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者 | users.id'),
+					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者'),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
@@ -66,9 +66,9 @@ class Init extends CakeMigration {
 					'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'room_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 					'is_hidden' => array('type' => 'boolean', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者 | users.id'),
+					'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
-					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者 | users.id'),
+					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者'),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
