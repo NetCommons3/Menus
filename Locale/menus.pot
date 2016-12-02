@@ -13,31 +13,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:24
-msgid "Display type"
-msgstr ""
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:27
-msgid "Header type"
-msgstr ""
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:28
-msgid "Left type"
-msgstr ""
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
-msgid "Main type"
-msgstr ""
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:30
-msgid "Right type"
-msgstr ""
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:31
+#: Menus/Model/MenuFrameSetting.php:95
 msgid "Footer type"
 msgstr ""
 
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:37
+#: Menus/Model/MenuFrameSetting.php:98
+msgid "Header type"
+msgstr ""
+
+#: Menus/Model/MenuFrameSetting.php:101
+msgid "Left type"
+msgstr ""
+
+#: Menus/Model/MenuFrameSetting.php:104
+msgid "Right type"
+msgstr ""
+
+#: Menus/Model/MenuFrameSetting.php:107
+msgid "Main type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:22
+msgid "Display type"
+msgstr ""
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
 msgid "Display page"
+msgstr ""
+
+#: Menus/View/Helper/MenuFormHelper.php:146
+msgid "Folder type"
 msgstr ""
 
