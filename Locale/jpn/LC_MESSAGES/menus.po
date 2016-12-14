@@ -13,35 +13,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:24
-msgid "Display type"
-msgstr "表示タイプ"
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:27
-msgid "Header type"
-msgstr "ヘッダータイプ"
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:28
-msgid "Left type"
-msgstr "左タイプ"
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
-msgid "Main type"
-msgstr "センタータイプ"
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:30
-msgid "Right type"
-msgstr "右タイプ"
-
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:31
+#: Menus/Model/MenuFrameSetting.php:95
 msgid "Footer type"
 msgstr "フッタータイプ"
 
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:37
+#: Menus/Model/MenuFrameSetting.php:98
+msgid "Header type"
+msgstr "ヘッダータイプ"
+
+#: Menus/Model/MenuFrameSetting.php:101
+msgid "Left type"
+msgstr "左タイプ"
+
+#: Menus/Model/MenuFrameSetting.php:104
+msgid "Right type"
+msgstr "右タイプ"
+
+#: Menus/Model/MenuFrameSetting.php:107
+msgid "Main type"
+msgstr "センタータイプ"
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:22
+msgid "Display type"
+msgstr "表示タイプ"
+
+#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:29
 msgid "Display page"
 msgstr "ページの表示有無"
 
-#: Menus/View/Elements/MenuFrameSettings/edit_form.ctp:37
+#: Menus/View/Helper/MenuFormHelper.php:146
 msgid "Folder type"
 msgstr "フォルダ形式"
 
