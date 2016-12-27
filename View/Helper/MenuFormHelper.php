@@ -155,7 +155,7 @@ class MenuFormHelper extends AppHelper {
 		}
 		$html .= '</div>';
 
-		//ページ移動のボタン(後で)
+		//ページ移動のボタン(後々追加するかも)
 		$html .= '<div class="col-xs-3">';
 
 		$html .= '</div>';
