@@ -94,10 +94,16 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/page_1" class="menu-tree-1 active" id="MenuFramesPage9">' .
-						'<span class="glyphicon glyphicon-menu-down"> </span> Page 1' .
-					'</a>';
-		$this->assertEquals($pattern, $result);
+		$expected = array(
+			'title' => 'Page 1',
+			'icon' => '<span class="glyphicon glyphicon-menu-down"> </span> ',
+			'url' => '/page_1',
+			'options' => array(
+				'id' => 'MenuFramesPage9',
+				'escapeTitle' => false,
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -121,10 +127,16 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/page_1" class="menu-tree-1" id="MenuFramesPage9">' .
-						'<span class="glyphicon glyphicon-menu-right"> </span> Page 1' .
-					'</a>';
-		$this->assertEquals($pattern, $result);
+		$expected = array(
+			'title' => 'Page 1',
+			'icon' => '<span class="glyphicon glyphicon-menu-right"> </span> ',
+			'url' => '/page_1',
+			'options' => array(
+				'id' => 'MenuFramesPage9',
+				'escapeTitle' => false,
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -148,10 +160,16 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/" class="menu-tree-1" id="MenuFramesPage4">' .
-						'Home ja' .
-					'</a>';
-		$this->assertEquals($pattern, $result);
+		$expected = array(
+			'title' => 'Home ja',
+			'icon' => '',
+			'url' => '/',
+			'options' => array(
+				'id' => 'MenuFramesPage4',
+				'escapeTitle' => false,
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -175,10 +193,16 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/test2" class="menu-tree-1" id="MenuFramesPage5">' .
-						'サブルーム１' .
-					'</a>';
-		$this->assertEquals($pattern, $result);
+		$expected = array(
+			'title' => 'サブルーム１',
+			'icon' => '',
+			'url' => '/test2',
+			'options' => array(
+				'id' => 'MenuFramesPage5',
+				'escapeTitle' => false,
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -203,10 +227,20 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="#" class="menu-tree-1" id="MenuFramesPage9".*?>' .
-						'<span class="glyphicon glyphicon-menu-right".*?> <\/span> Page 1' .
-					'<\/a>';
-		$this->assertRegExp('/' . $pattern . '/', $result);
+		$expected = array(
+			'title' => 'Page 1',
+			'icon' =>  '<span class="glyphicon glyphicon-menu-right" ' .
+							'ng-class="{\'glyphicon-menu-right\': !MenuFramesPage9Icon, \'glyphicon-menu-down\': MenuFramesPage9Icon}"> ' .
+						'</span> ',
+			'url' => '#',
+			'options' => array(
+				'id' => 'MenuFramesPage9',
+				'escapeTitle' => false,
+				'ng-init' => 'MenuFramesPage9Icon=0; initialize(\'MenuFramesPage9\', ["MenuFramesPage11","MenuFramesPage12"], 0)',
+				'ng-click' => 'MenuFramesPage9Icon=!MenuFramesPage9Icon;switchOpenClose(\'MenuFramesPage9\')',
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -231,10 +265,16 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->link($menu, $class);
 
 		//チェック
-		$pattern = '<a href="/setting/page_1" class="menu-tree-1 active" id="MenuFramesPage9">' .
-						'<span class="glyphicon glyphicon-menu-down"> </span> Page 1' .
-					'</a>';
-		$this->assertEquals($pattern, $result);
+		$expected = array(
+			'title' => 'Page 1',
+			'icon' => '<span class="glyphicon glyphicon-menu-down"> </span> ',
+			'url' => '/setting/page_1',
+			'options' => array(
+				'id' => 'MenuFramesPage9',
+				'escapeTitle' => false,
+			),
+		);
+		$this->assertEquals($expected, $result);
 
 		Current::isSettingMode(false);
 	}

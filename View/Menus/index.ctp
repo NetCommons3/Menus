@@ -8,5 +8,9 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+?>
 
-echo $this->Menu->renderMain();
+<nav ng-controller="MenusController">
+<?php echo $this->Menu->renderMain(); ?>
+</nav>
+

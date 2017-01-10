@@ -97,12 +97,21 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
  */
 	private function __assertLink($frameId, $pageId, $permalink, $active, $name) {
 		$domId = 'MenuFramesPage' . $frameId . $pageId;
-		$pattern =
-			'<li class="' . $active . '">' .
-				'<a href=".*?' . preg_quote($permalink, '/') . '" class="menu-tree-0" id="' . $domId . '">' .
-					$name .
-				'<\/a>' .
-			'<\/li>';
+		if ($active) {
+			$pattern =
+				'<li class="' . $active . '">' .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
+						$name .
+					'<\/a>' .
+				'<\/li>';
+		} else {
+			$pattern =
+				'<li>' .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
+						$name .
+					'<\/a>' .
+				'<\/li>';
+		}
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 	}
 

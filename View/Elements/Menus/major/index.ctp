@@ -16,8 +16,8 @@
 		foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $i => $menu) {
 			$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
 			if ($nest === 0) {
-				echo $this->Menu->render($menu, false);
-				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], false);
+				echo $this->Menu->render($menu);
+				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id']);
 			}
 		}
 		echo '</div>';
