@@ -88,7 +88,7 @@ class MenuFramesPage extends MenusAppModel {
 			),
 			'conditions' => array(
 				$this->Page->alias . '.room_id' => Current::read('Room.id'),
-				//$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
+				$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
 				//'OR' => array(
 				//	$this->alias . '.is_hidden' => false,
 				//	$this->alias . '.is_hidden IS NULL',

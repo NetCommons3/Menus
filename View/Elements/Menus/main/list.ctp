@@ -17,7 +17,9 @@ if ($isActive) {
 }
 $options['options']['class'] = $class;
 
-$title = '<span class="pull-left">' . $options['title'] . '</span>' .
-		'<span class="pull-right">' . $options['icon'] . '</span>';
+if (isset($options['title'])) {
+	$title = '<span class="pull-left">' . $options['title'] . '</span>' .
+			'<span class="pull-right">' . $options['icon'] . '</span>';
 
-echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
+	echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
+}

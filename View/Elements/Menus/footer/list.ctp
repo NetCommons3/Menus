@@ -21,8 +21,10 @@ $class .= 'list-group-item';
 $class .= ' menu-tree-' . $nest;
 $options['options']['class'] = $class;
 
-$title = $options['icon'] . $options['title'];
+if (isset($options['title'])) {
+	$title = $options['icon'] . $options['title'];
 
-echo $listTagStart;
-echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
-echo $listTagEnd;
+	echo $listTagStart;
+	echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
+	echo $listTagEnd;
+}
