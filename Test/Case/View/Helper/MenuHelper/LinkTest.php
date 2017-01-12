@@ -229,7 +229,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		//チェック
 		$expected = array(
 			'title' => 'Page 1',
-			'icon' =>  '<span class="glyphicon glyphicon-menu-right" ' .
+			'icon' => '<span class="glyphicon glyphicon-menu-right" ' .
 							'ng-class="{\'glyphicon-menu-right\': !MenuFramesPage9Icon, \'glyphicon-menu-down\': MenuFramesPage9Icon}"> ' .
 						'</span> ',
 			'url' => '#',

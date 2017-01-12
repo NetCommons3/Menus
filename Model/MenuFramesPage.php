@@ -76,9 +76,14 @@ class MenuFramesPage extends MenusAppModel {
 	public function getMenuData($options = array()) {
 		$this->loadModels([
 			'PagesLanguage' => 'Pages.PagesLanguage',
+			'Room' => 'Rooms.Room',
+			'Space' => 'Rooms.Space',
 		]);
 
 		//Menuデータ取得
+		$pageLangConditions = $this->PagesLanguage->getConditions(
+			array($this->Page->alias . '.id' . ' = ' . $this->PagesLanguage->alias . ' .page_id')
+		);
 		$options = Hash::merge(array(
 			'recursive' => -1,
 			'fields' => array(
@@ -88,7 +93,7 @@ class MenuFramesPage extends MenusAppModel {
 			),
 			'conditions' => array(
 				$this->Page->alias . '.room_id' => Current::read('Room.id'),
-				$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
+				//$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
 				//'OR' => array(
 				//	$this->alias . '.is_hidden' => false,
 				//	$this->alias . '.is_hidden IS NULL',
@@ -96,13 +101,26 @@ class MenuFramesPage extends MenusAppModel {
 			),
 			'joins' => array(
 				array(
+					'table' => $this->Room->table,
+					'alias' => $this->Room->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						'Page.room_id = Room.id',
+					),
+				),
+				array(
+					'table' => $this->Space->table,
+					'alias' => $this->Space->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						'Room.space_id = Space.id',
+					),
+				),
+				array(
 					'table' => $this->PagesLanguage->table,
 					'alias' => $this->PagesLanguage->alias,
 					'type' => 'INNER',
-					'conditions' => array(
-						$this->Page->alias . '.id' . ' = ' . $this->PagesLanguage->alias . ' .page_id',
-						$this->PagesLanguage->alias . '.language_id' => Current::read('Language.id'),
-					),
+					'conditions' => $pageLangConditions,
 				),
 				array(
 					'table' => $this->table,
