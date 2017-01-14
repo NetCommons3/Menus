@@ -31,6 +31,7 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
 		'plugin.pages.frame4pages',
+		'plugin.pages.frame_public_language4pages',
 		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
