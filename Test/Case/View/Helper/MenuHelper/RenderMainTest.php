@@ -88,10 +88,9 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$result = $this->Menu->renderMain();
+		$this->Menu->renderMain();
 
 		//チェック
-		$this->assertTextContains('<nav ng-controller="MenusController">', $result);
 		$this->assertEquals(array('1', Current::read('Page.id')), $this->Menu->parentPageIds);
 	}
 
@@ -108,10 +107,9 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$result = $this->Menu->renderMain();
+		$this->Menu->renderMain();
 
 		//チェック
-		$this->assertTextContains('<nav ng-controller="MenusController">', $result);
 		$this->assertEquals(array(Current::read('Page.id')), $this->Menu->parentPageIds);
 	}
 

@@ -61,3 +61,7 @@
 	padding-right: 0px;
 	border-color: transparent;
 }
+
+.list-group-item > span.pull-left {
+	max-width: 80%;
+}

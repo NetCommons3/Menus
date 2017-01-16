@@ -63,8 +63,10 @@ class MenusController extends MenusAppController {
 		$this->set('menuFrameRooms', Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}'));
 
 		//Treeリスト取得
-		$pageTreeList = $this->Page->generateTreeList(
-				array('Page.room_id' => $roomIds), null, null, Page::$treeParser);
+		$conditions = array(
+			'Page.room_id' => $roomIds,
+		);
+		$pageTreeList = $this->Page->generateTreeList($conditions, null, null, Page::$treeParser);
 		$this->set('pageTreeList', $pageTreeList);
 
 		$pages = $this->Page->getPages($roomIds);

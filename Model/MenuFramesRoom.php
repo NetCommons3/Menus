@@ -77,6 +77,7 @@ class MenuFramesRoom extends MenusAppModel {
 		$this->loadModels([
 			'Room' => 'Rooms.Room',
 			'RoomsLanguage' => 'Rooms.RoomsLanguage',
+			'Space' => 'Rooms.Space',
 		]);
 
 		//Menuデータ取得
@@ -93,12 +94,23 @@ class MenuFramesRoom extends MenusAppModel {
 			),
 			'joins' => array(
 				array(
+					'table' => $this->Space->table,
+					'alias' => $this->Space->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						'Room.space_id = Space.id',
+					),
+				),
+				array(
 					'table' => $this->RoomsLanguage->table,
 					'alias' => $this->RoomsLanguage->alias,
 					'type' => 'INNER',
 					'conditions' => array(
 						$this->Room->alias . '.id' . ' = ' . $this->RoomsLanguage->alias . ' .room_id',
-						$this->RoomsLanguage->alias . '.language_id' => Current::read('Language.id'),
+						'OR' => array(
+							$this->RoomsLanguage->alias . '.language_id' => Current::read('Language.id'),
+							'Space.is_m17n' => false,
+						)
 					),
 				),
 				array(
@@ -117,6 +129,7 @@ class MenuFramesRoom extends MenusAppModel {
 		), $options);
 
 		$menuFrameRooms = $this->Room->find('all', $options);
+
 		return Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}');
 	}
 

@@ -107,8 +107,10 @@ class MenuHelperRenderChildTest extends NetCommonsHelperTestCase {
 		$result = $this->Menu->renderChild($roomId, $pageId, $listTag);
 
 		//チェック
-		$this->assertTextContains('<a href="#" class="list-group-item menu-tree-1" id="MenuFramesPage11"', $result);
-		$this->assertTextContains('<a href="/page_6" class="list-group-item menu-tree-2" id="MenuFramesPage12', $result);
+		$pattern = '/<a href="#" id="MenuFramesPage11".*?class="list-group-item clearfix menu-tree-1">/';
+		$this->assertRegExp($pattern, $result);
+
+		$this->assertTextContains('<a href="/page_6" id="MenuFramesPage12" class="list-group-item clearfix menu-tree-2"', $result);
 	}
 
 }

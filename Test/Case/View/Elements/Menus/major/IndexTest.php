@@ -31,6 +31,7 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
 		'plugin.pages.frame4pages',
+		'plugin.pages.frame_public_language4pages',
 		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
@@ -80,7 +81,7 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
 		$pattern = '<div class="list-group">';
 		$pattern .= $this->__getPattern($frameId, '4', '/', ' active', 'Home ja');
 		$pattern .= $this->__getPattern($frameId, '8', '/test5', '', 'Test page 5');
-		$pattern .= $this->__getPattern($frameId, '9', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
+		$pattern .= $this->__getPattern($frameId, '9', '/page_1', '', 'Page 1', '<span class="glyphicon glyphicon-menu-right"> <\/span> ');
 		$pattern .= $this->__getPattern($frameId, '10', '/page_2', '', 'Page 2');
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
@@ -104,12 +105,14 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
  * @param string $permalink パーマリンク
  * @param string $active activeかどうか(アクティブの場合、"active"の文字列をセットする)
  * @param string $name ページ名
+ * @param string $icon アイコン
  * @return string パターン
  */
-	private function __getPattern($frameId, $pageId, $permalink, $active, $name) {
+	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '') {
 		$domId = 'MenuFramesPage' . $frameId . $pageId;
-		return '<a href=".*?' . preg_quote($permalink, '/') . '" class="list-group-item menu-tree-0' . $active . '" id="' . $domId . '">' .
-					$name .
+		return '<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item clearfix menu-tree-0' . $active . '">' .
+					'<span class="pull-left">' . $name . '<\/span>' .
+					'<span class="pull-right">' . $icon . '<\/span>' .
 				'<\/a>';
 	}
 

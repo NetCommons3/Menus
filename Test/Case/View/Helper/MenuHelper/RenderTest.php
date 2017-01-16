@@ -86,17 +86,17 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 	public function dataProvider() {
 		return array(
 			array('curPageId' => '9', 'curPermalink' => 'page_1', 'parentPageIds' => array('1', '9'),
-				'listTag' => false, 'active' => ' active'),
+				'displayType' => 'major', 'active' => ' active'),
 			array('curPageId' => '9', 'curPermalink' => 'page_1', 'parentPageIds' => array('1', '9'),
-				'listTag' => true, 'active' => ' active'),
+				'displayType' => 'header', 'active' => ' active'),
 			array('curPageId' => '5', 'curPermalink' => 'test2', 'parentPageIds' => array('3', '5'),
-				'listTag' => false, 'active' => ''),
+				'displayType' => 'major', 'active' => ''),
 			array('curPageId' => '5', 'curPermalink' => 'test2', 'parentPageIds' => array('3', '5'),
-				'listTag' => true, 'active' => ''),
+				'displayType' => 'header', 'active' => ''),
 			array('curPageId' => '11', 'curPermalink' => 'page_3', 'parentPageIds' => array('1', '9', '11'),
-				'listTag' => false, 'active' => ''),
+				'displayType' => 'major', 'active' => ''),
 			array('curPageId' => '11', 'curPermalink' => 'page_3', 'parentPageIds' => array('1', '9', '11'),
-				'listTag' => true, 'active' => ''),
+				'displayType' => 'header', 'active' => ''),
 		);
 	}
 
@@ -106,12 +106,12 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
  * @param int $curPageId カレントのページID
  * @param string $curPermalink カレントのパーマリンク
  * @param array $parentPageIds 親ページID
- * @param bool $listTag リストタグをつけるかどうか
+ * @param bool $displayType リストタグをつけるかどうか
  * @param string $active アクティブタグ
  * @dataProvider dataProvider
  * @return void
  */
-	public function testRender($curPageId, $curPermalink, $parentPageIds, $listTag, $active) {
+	public function testRender($curPageId, $curPermalink, $parentPageIds, $displayType, $active) {
 		//データ生成
 		Current::write('Page.id', $curPageId);
 		Current::write('Page.permalink', $curPermalink);
@@ -130,23 +130,33 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		//テスト実施
 		$this->Menu->parentPageIds = $parentPageIds;
 		$menu = Hash::get($viewVars['menus']['2'], '9');
-		$result = $this->Menu->render($menu, $listTag);
+		$result = $this->Menu->render($menu, $displayType);
 
 		//チェック
 		$pageId = '9';
 		$permalink = 'page_1';
 		$pageName = 'Page 1';
-		if ($listTag) {
-			$pattern =
-				'<li class="' . trim($active) . '">' .
-					'<a href="/' . $permalink . '" class="menu-tree-0" id="MenuFramesPage' . $pageId . '">' .
-						'<span class="glyphicon ' . $icon . '"> </span> ' . $pageName .
-					'</a>' .
-				'</li>';
+		if ($displayType === 'header') {
+			if ($active) {
+				$pattern =
+					'<li class="' . trim($active) . '">' .
+						'<a href="/' . $permalink . '" id="MenuFramesPage' . $pageId . '" class="list-group-item menu-tree-0">' .
+							'<span class="glyphicon ' . $icon . '"> </span> ' . $pageName .
+						'</a>' .
+					'</li>';
+			} else {
+				$pattern =
+					'<li>' .
+						'<a href="/' . $permalink . '" id="MenuFramesPage' . $pageId . '" class="list-group-item menu-tree-0">' .
+							'<span class="glyphicon ' . $icon . '"> </span> ' . $pageName .
+						'</a>' .
+					'</li>';
+			}
 		} else {
 			$pattern =
-				'<a href="/' . $permalink . '" class="list-group-item menu-tree-0' . $active . '" id="MenuFramesPage' . $pageId . '">' .
-					'<span class="glyphicon ' . $icon . '"> </span> ' . $pageName .
+				'<a href="/' . $permalink . '" id="MenuFramesPage' . $pageId . '" class="list-group-item clearfix menu-tree-0' . $active . '">' .
+					'<span class="pull-left">' . $pageName . '</span>' .
+					'<span class="pull-right">' . '<span class="glyphicon ' . $icon . '"> </span> ' . '</span>' .
 				'</a>';
 		}
 		$this->assertTextContains($pattern, $result);
@@ -172,7 +182,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$this->Menu->parentPageIds = array('1', '9');
 		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$menu['MenuFramesPage']['is_hidden'] = true;
-		$result = $this->Menu->render($menu, true);
+		$result = $this->Menu->render($menu, 'header');
 
 		//チェック
 		$this->assertEmpty($result);
@@ -203,7 +213,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		$this->Menu->parentPageIds = array('1', '9');
 		$menu = Hash::get($viewVars['menus']['2'], '9');
 		$menu['Page']['room_id'] = '10';
-		$result = $this->Menu->render($menu, true);
+		$result = $this->Menu->render($menu, 'header');
 
 		//チェック
 		$this->assertEmpty($result);
@@ -229,7 +239,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
 		$menu = Hash::get($viewVars['menus']['2'], '9');
-		$result = $this->Menu->render($menu, true);
+		$result = $this->Menu->render($menu, 'header');
 
 		//チェック
 		$this->assertEmpty($result);
@@ -254,7 +264,7 @@ class MenuHelperRenderTest extends NetCommonsHelperTestCase {
 		//テスト実施
 		$this->Menu->parentPageIds = array('1', '9');
 		$menu = Hash::get($viewVars['menus']['2'], '1');
-		$result = $this->Menu->render($menu, true);
+		$result = $this->Menu->render($menu, 'header');
 
 		//チェック
 		$this->assertEmpty($result);

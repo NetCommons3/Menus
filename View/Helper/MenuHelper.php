@@ -87,9 +87,7 @@ class MenuHelper extends AppHelper {
 		$this->parentPageIds = array_unique($this->parentPageIds);
 
 		//メニューHTML表示
-		$html .= '<nav ng-controller="MenusController">';
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/index');
-		$html .= '</nav>';
 
 		return $html;
 	}
@@ -99,10 +97,10 @@ class MenuHelper extends AppHelper {
  *
  * @param int $roomId Room.id
  * @param int $pageId Page.id
- * @param bool $listTag リストタグの有無
+ * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
-	public function renderChild($roomId, $pageId, $listTag) {
+	public function renderChild($roomId, $pageId, $displayType = null) {
 		$html = '';
 
 		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
@@ -127,9 +125,9 @@ class MenuHelper extends AppHelper {
 				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id', $roomId
 			);
 			$html .= $this->render(
-				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $listTag
+				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $displayType
 			);
-			$html .= $this->renderChild($roomId, $childPageId, $listTag);
+			$html .= $this->renderChild($roomId, $childPageId, $displayType);
 		}
 
 		return $html;
@@ -139,11 +137,15 @@ class MenuHelper extends AppHelper {
  * メニューリストの表示
  *
  * @param array $menu メニューデータ配列
- * @param bool $listTag リストタグの有無
+ * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
-	public function render($menu, $listTag) {
+	public function render($menu, $displayType = null) {
 		$html = '';
+
+		if (! $displayType) {
+			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
+		}
 
 		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) ||
 				$menu['MenuFramesPage']['is_hidden']) {
@@ -154,22 +156,7 @@ class MenuHelper extends AppHelper {
 			return $html;
 		}
 
-		if (Current::read('Page.permalink') === (string)$menu['Page']['permalink']) {
-			$activeClass = ' active';
-		} else {
-			$activeClass = '';
-		}
-
-		$class = '';
-		if ($listTag) {
-			$listTagStart = '<li class="' . trim($activeClass) . '">';
-			$listTagEnd = '</li>';
-			$activeClass = '';
-		} else {
-			$listTagStart = '';
-			$listTagEnd = '';
-			$class .= ' list-group-item';
-		}
+		$isActive = Current::read('Page.permalink') === (string)$menu['Page']['permalink'];
 
 		$nest = substr_count(
 			Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser
@@ -177,11 +164,13 @@ class MenuHelper extends AppHelper {
 		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			$nest--;
 		}
-		$class .= ' menu-tree-' . $nest;
 
-		$html .= $listTagStart;
-		$html .= $this->link($menu, trim($class) . $activeClass);
-		$html .= $listTagEnd;
+		//メニューHTML表示
+		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/list', array(
+			'isActive' => $isActive,
+			'nest' => $nest,
+			'options' => $this->link($menu)
+		));
 
 		return $html;
 	}
@@ -239,13 +228,11 @@ class MenuHelper extends AppHelper {
  * リンクの表示
  *
  * @param array $menu リンクデータ
- * @param string $class CSS定義
- * @return string HTMLタグ
+ * @return array NetCommonsHtml->linkの引数
  */
-	public function link($menu, $class) {
-		$html = '';
+	public function link($menu) {
 		if (! $menu) {
-			return $html;
+			return array();
 		}
 
 		$setting = '';
@@ -254,18 +241,20 @@ class MenuHelper extends AppHelper {
 		}
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
-		$url = $setting;
+		$viewPage = $this->_View->viewVars['pages'];
 		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
 				$room['Room']['id'] === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
-			$url .= '';
+			$url = '';
+		} elseif (Hash::get($viewPage, $menu['Page']['id'] . '.Page.full_permalink')) {
+			$url = h(Hash::get($viewPage, $menu['Page']['id'] . '.Page.full_permalink'));
 		} else {
-			$url .= h($menu['Page']['permalink']);
+			$url = h($menu['Page']['permalink']);
 		}
 
 		$title = $this->__getTitle($menu);
 		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
-		$options = array('class' => $class, 'id' => $domId, 'escapeTitle' => false);
+		$options = array('id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
@@ -280,19 +269,24 @@ class MenuHelper extends AppHelper {
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
 					' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
-			$html .= $this->NetCommonsHtml->link($title, '#', $options);
+			$url = '#';
 		} else {
-			$html .= $this->NetCommonsHtml->link($title, '/' . $url, $options);
+			$url = '/' . $setting . $url;
 		}
 
-		return $html;
+		return array(
+			'title' => $title['title'],
+			'icon' => $title['icon'],
+			'url' => $url,
+			'options' => $options
+		);
 	}
 
 /**
  * リンクのタイトル表示
  *
  * @param array $menu リンクデータ
- * @return string タイトル
+ * @return array array(タイトル, アイコン)
  */
 	private function __getTitle($menu) {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
@@ -310,22 +304,24 @@ class MenuHelper extends AppHelper {
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
 		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
-			$title = '<span class="glyphicon glyphicon-menu-right"' .
+			$icon = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{' .
 							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
 							'\'glyphicon-menu-down\': ' . $domIdIcon . '' .
 						'}"> ' .
-					'</span> ' . $title;
+					'</span> ';
 
 		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
 			if ($toggle) {
-				$title = '<span class="glyphicon glyphicon-menu-down"> </span> ' . $title;
+				$icon = '<span class="glyphicon glyphicon-menu-down"> </span> ';
 			} else {
-				$title = '<span class="glyphicon glyphicon-menu-right"> </span> ' . $title;
+				$icon = '<span class="glyphicon glyphicon-menu-right"> </span> ';
 			}
+		} else {
+			$icon = null;
 		}
 
-		return $title;
+		return array('title' => $title, 'icon' => $icon);
 	}
 
 /**

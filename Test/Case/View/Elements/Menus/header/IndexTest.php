@@ -31,6 +31,7 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
 		'plugin.menus.page4menu',
 		'plugin.menus.pages_language4menu',
 		'plugin.pages.frame4pages',
+		'plugin.pages.frame_public_language4pages',
 		'plugin.pages.room4pages',
 		'plugin.rooms.rooms_language4test',
 	);
@@ -97,12 +98,21 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
  */
 	private function __assertLink($frameId, $pageId, $permalink, $active, $name) {
 		$domId = 'MenuFramesPage' . $frameId . $pageId;
-		$pattern =
-			'<li class="' . $active . '">' .
-				'<a href=".*?' . preg_quote($permalink, '/') . '" class="menu-tree-0" id="' . $domId . '">' .
-					$name .
-				'<\/a>' .
-			'<\/li>';
+		if ($active) {
+			$pattern =
+				'<li class="' . $active . '">' .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
+						$name .
+					'<\/a>' .
+				'<\/li>';
+		} else {
+			$pattern =
+				'<li>' .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
+						$name .
+					'<\/a>' .
+				'<\/li>';
+		}
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 	}
 
