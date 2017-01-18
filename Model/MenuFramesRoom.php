@@ -153,7 +153,7 @@ class MenuFramesRoom extends MenusAppModel {
 
 		$menuFrameRooms = $this->Room->find('all', $options);
 		$result = array();
-		foreach ($menuFrameRooms as $i => $room) {
+		foreach ($menuFrameRooms as $room) {
 			$roomId = $room['Room']['id'];
 			if (! isset($result[$roomId])) {
 				$result[$roomId] = $room;
