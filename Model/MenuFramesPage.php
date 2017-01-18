@@ -84,6 +84,7 @@ class MenuFramesPage extends MenusAppModel {
 		$pageLangConditions = $this->PagesLanguage->getConditions(
 			array($this->Page->alias . '.id' . ' = ' . $this->PagesLanguage->alias . ' .page_id')
 		);
+
 		$options = Hash::merge(array(
 			'recursive' => -1,
 			'fields' => array(
@@ -120,7 +121,9 @@ class MenuFramesPage extends MenusAppModel {
 					'table' => $this->PagesLanguage->table,
 					'alias' => $this->PagesLanguage->alias,
 					'type' => 'INNER',
-					'conditions' => $pageLangConditions,
+					'conditions' => array(
+						$this->Page->alias . '.id' . ' = ' . $this->PagesLanguage->alias . ' .page_id'
+					),
 				),
 				array(
 					'table' => $this->table,
@@ -131,11 +134,20 @@ class MenuFramesPage extends MenusAppModel {
 						$this->alias . '.frame_key' => Current::read('Frame.key')
 					),
 				),
+				array(
+					'table' => $this->PagesLanguage->table,
+					'alias' => 'OriginPagesLanguage',
+					'type' => 'LEFT',
+					'conditions' => array(
+						'PagesLanguage.page_id = OriginPagesLanguage.page_id',
+						'OriginPagesLanguage.language_id' => Current::read('Language.id'),
+					),
+				),
 			),
 			'order' => array(
 				$this->Page->alias . '.lft' => 'asc',
 			)
-		), $options);
+		), $options, ['conditions' => $pageLangConditions]);
 
 		$menus = $this->Page->find('all', $options);
 		return Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id');

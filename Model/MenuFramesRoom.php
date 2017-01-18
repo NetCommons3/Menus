@@ -80,6 +80,20 @@ class MenuFramesRoom extends MenusAppModel {
 			'Space' => 'Rooms.Space',
 		]);
 
+		$roomsLangConditions = array(
+			$this->Room->alias . '.id' . ' = ' . $this->RoomsLanguage->alias . ' .room_id',
+			'OR' => array(
+				'RoomsLanguage.language_id' => Current::read('Language.id'),
+				array(
+					'Space.is_m17n' => false,
+					'OR' => array(
+						'RoomsLanguage.id = OriginRoomsLanguage.id',
+						'OriginRoomsLanguage.id' => null,
+					)
+				)
+			)
+		);
+
 		//Menuデータ取得
 		$options = Hash::merge(array(
 			'recursive' => -1,
@@ -122,13 +136,31 @@ class MenuFramesRoom extends MenusAppModel {
 						$this->alias . '.frame_key' => Current::read('Frame.key')
 					),
 				),
+				array(
+					'table' => $this->RoomsLanguage->table,
+					'alias' => 'OriginRoomsLanguage',
+					'type' => 'LEFT',
+					'conditions' => array(
+						'RoomsLanguage.room_id = OriginRoomsLanguage.room_id',
+						'OriginRoomsLanguage.room_id' => Current::read('Language.id'),
+					),
+				),
 			),
 			'order' => array(
 				$this->Room->alias . '.lft' => 'asc',
 			)
-		), $options);
+		), $options, ['conditions' => $roomsLangConditions]);
 
 		$menuFrameRooms = $this->Room->find('all', $options);
+		$result = array();
+		foreach ($menuFrameRooms as $i => $room) {
+			$roomId = $room['Room']['id'];
+			if (! isset($result[$roomId])) {
+				$result[$roomId] = $room;
+			} elseif ($room['RoomsLanguage']['language_id'] === Current::read('Language.id')) {
+				$result[$roomId] = $room;
+			}
+		}
 
 		return Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}');
 	}
