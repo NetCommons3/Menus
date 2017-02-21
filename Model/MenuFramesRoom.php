@@ -142,7 +142,7 @@ class MenuFramesRoom extends MenusAppModel {
 					'type' => 'LEFT',
 					'conditions' => array(
 						'RoomsLanguage.room_id = OriginRoomsLanguage.room_id',
-						'OriginRoomsLanguage.room_id' => Current::read('Language.id'),
+						'OriginRoomsLanguage.language_id' => Current::read('Language.id'),
 					),
 				),
 			),
