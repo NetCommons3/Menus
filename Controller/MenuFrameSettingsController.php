@@ -47,6 +47,7 @@ class MenuFrameSettingsController extends MenusAppController {
 	public $uses = array(
 		'Menus.MenuFrameSetting',
 		'Menus.MenuFramesRoom',
+		'Pages.Page',
 	);
 
 /**
@@ -58,6 +59,18 @@ class MenuFrameSettingsController extends MenusAppController {
 		'Menus.Menu',
 		'Menus.MenuForm'
 	);
+
+/**
+ * beforeRender
+ *
+ * @return void
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		$page = $this->Page->getPageWithFrame('');
+		$this->set('page', $page);
+	}
 
 /**
  * edit
