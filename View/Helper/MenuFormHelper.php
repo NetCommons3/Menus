@@ -112,56 +112,19 @@ class MenuFormHelper extends AppHelper {
 
 		$prefixInput = 'Menus.' . $roomId . '.' . $pageId . '.MenuFramesPage';
 
-		$html .= '<li class="list-group-item menu-list-item">';
-		$html .= '<div class="row">';
-
-		//フォルダタイプの初期値セット
-		$folderTypeDomId = $this->domId($prefixInput . '.folder_type');
-		$folderType = (int)Hash::get($menu, 'MenuFramesPage.folder_type');
-		$html .= '<div class="col-xs-9" ng-init="' . $folderTypeDomId . ' = ' . $folderType . '">';
-
 		//ページ名のネスト
 		$nest = substr_count(
 			Hash::get($this->_View->viewVars['pageTreeList'], $pageId), Page::$treeParser
 		);
-		$html .= str_repeat('<span class="menu-edit-tree"> </span>', $nest);
 
-		//MenuFramesPageのinput
-		$html .= $this->NetCommonsForm->hidden($prefixInput . '.id');
-		$html .= $this->NetCommonsForm->hidden($prefixInput . '.frame_key',
-				array('value' => $this->_View->request->data['Frame']['key']));
-		$html .= $this->NetCommonsForm->hidden($prefixInput . '.page_id', array('value' => $pageId));
-		$html .= $this->NetCommonsForm->checkbox($prefixInput . '.is_hidden', array(
-			'div' => false,
-			'value' => '0',
-			'hiddenField' => '1',
-			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.is_hidden')
+		$html .= $this->_View->element('Menus.MenuFrameSettings/page_setting_list', array(
+			'menu' => $menu,
+			'prefixInput' => $prefixInput,
+			'pageId' => $pageId,
+			'nest' => $nest,
+			'displayWhenClicking' => $menu['Page']['lft'] + 1 !== (int)$menu['Page']['rght']
 		));
-		$html .= $this->NetCommonsForm->label(
-			$prefixInput . '.is_hidden', h(Hash::get($menu, 'PagesLanguage.name'))
-		);
 
-		//フォルダタイプのinput
-		if ($menu['Page']['lft'] + 1 !== (int)$menu['Page']['rght']) {
-			$html .= $this->NetCommonsForm->button(__d('menus', 'Folder type'), array(
-				'type' => 'button',
-				'ng-click' => $folderTypeDomId . ' = (' . $folderTypeDomId . ' ? 0 : 1)',
-				'class' => 'btn btn-default btn-workflow btn-xs',
-				'ng-class' => '{active: ' . $folderTypeDomId . '}',
-			));
-			$this->NetCommonsForm->unlockField($prefixInput . '.folder_type');
-			$html .= $this->NetCommonsForm->hidden($prefixInput . '.folder_type',
-					array('ng-value' => $folderTypeDomId));
-		}
-		$html .= '</div>';
-
-		//ページ移動のボタン(後々追加するかも)
-		$html .= '<div class="col-xs-3">';
-
-		$html .= '</div>';
-
-		$html .= '</div>';
-		$html .= '</li>';
 		return $html;
 	}
 

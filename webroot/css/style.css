@@ -46,6 +46,16 @@
 	padding-top: 6px;
 	padding-bottom: 6px;
 }
+.menu-list-item .checkbox-inline {
+	padding-left: 0px;
+}
+.menu-list-item .dropdown-menu {
+	padding: 0px;
+}
+.menu-list-item .radio {
+	margin: 8px;
+	/*margin-bottom: 4px;*/
+}
 
 .plugin-menus .menu-header.navbar-default {
 	background-color: transparent;
