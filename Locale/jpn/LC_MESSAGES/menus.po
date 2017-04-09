@@ -45,3 +45,11 @@ msgstr "ページの表示有無"
 msgid "Folder type"
 msgstr "フォルダ形式"
 
+msgid "Display when clicking"
+msgstr "クリック時の表示"
+
+msgid "Show the page of clicked on"
+msgstr "当ページを表示"
+
+msgid "Show lower layer page clicked"
+msgstr "下層ページを表示"
