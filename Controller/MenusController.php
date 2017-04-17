@@ -97,6 +97,10 @@ class MenusController extends MenusAppController {
 		}
 		$defaultHidden = in_array($menuFrameSetting['MenuFrameSetting']['display_type'], $options, true);
 		$this->set('defaultHidden', $defaultHidden);
+		if ($menuFrameSetting['MenuFrameSetting']['display_type']
+			== MenuFrameSetting::DISPLAY_TYPE_PATH) {
+			$this->set('glyphiconHiddenHidden', true);
+		}
 	}
 
 }

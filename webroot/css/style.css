@@ -42,6 +42,18 @@
 	margin-left: 20px;
 }
 
+.breadcrumb .menu-tree-1 ,
+.breadcrumb .menu-tree-2 ,
+.breadcrumb .menu-tree-3 ,
+.breadcrumb .menu-tree-4 ,
+.breadcrumb .menu-tree-5 ,
+.breadcrumb .menu-tree-6 ,
+.breadcrumb .menu-tree-7 ,
+.breadcrumb .menu-tree-8 ,
+.breadcrumb .menu-tree-9 {
+	margin-left: 0px;
+}
+
 .menu-list-item {
 	padding-top: 6px;
 	padding-bottom: 6px;

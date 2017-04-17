@@ -16,6 +16,7 @@ ClassRegistry::init('Pages.Page');
 /**
  * MenuHelper
  *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class MenuHelper extends AppHelper {
 
@@ -128,6 +129,37 @@ class MenuHelper extends AppHelper {
 				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $displayType
 			);
 			$html .= $this->renderChild($roomId, $childPageId, $displayType);
+		}
+
+		return $html;
+	}
+
+/**
+ * メニューの表示(さかのぼり:パンくず用)
+ *
+ * @param int $roomId Room.id
+ * @param int $pageId Page.id
+ * @param string $displayType 表示タイプ
+ * @return string HTMLタグ
+ */
+	public function renderParent($roomId, $pageId, $displayType = null) {
+		$html = '';
+		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
+		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
+		$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
+		$parentPageIds = array_merge(array(Hash::get($childPages, '0.id')), $parentPageIds);
+		$parentPageIds = array_unique($parentPageIds);
+
+		foreach ($parentPageIds as $parentPageId) {
+			$parentRoomId = Hash::get(
+				$this->_View->viewVars['pages'], $parentPageId . '.Page.room_id'
+			);
+			if (! $parentRoomId) {
+				continue;
+			}
+			$html .= $this->render(
+				Hash::get($this->_View->viewVars['menus'], $parentRoomId . '.' . $parentPageId), $displayType
+			);
 		}
 
 		return $html;
@@ -267,7 +299,7 @@ class MenuHelper extends AppHelper {
 			}, $childPageIds);
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
-					' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
+				' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
 			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
 			$url = '#';
 		} else {
