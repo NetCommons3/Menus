@@ -89,12 +89,12 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
 		$pattern = '<div class="list-group">';
 		$pattern .= $this->__getPattern($frameId, '5', '/test2', '', 'サブルーム１');
 		$pattern .= '<\/div>';
-		$this->assertRegExp('/' . $pattern . '/', $this->view);
+		$this->assertNotRegExp('/' . $pattern . '/', $this->view);
 
 		$pattern = '<div class="list-group">';
 		$pattern .= $this->__getPattern($frameId, '6', '/test3', '', 'サブルーム２');
 		$pattern .= '<\/div>';
-		$this->assertRegExp('/' . $pattern . '/', $this->view);
+		$this->assertNotRegExp('/' . $pattern . '/', $this->view);
 	}
 
 /**
