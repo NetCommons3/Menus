@@ -45,3 +45,5 @@ msgstr ""
 msgid "Folder type"
 msgstr ""
 
+msgid "Topic path"
+msgstr ""

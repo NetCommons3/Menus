@@ -57,6 +57,13 @@ class MenuFrameSetting extends MenusAppModel {
 	const DISPLAY_TYPE_MAIN = 'main';
 
 /**
+ * パンくずタイプ定数
+ *
+ * @var string
+ */
+	const DISPLAY_TYPE_PATH = 'topic_path';
+
+/**
  * メニューのリスト
  *
  * View/Elements/Menusのディレクトリを__constructでセットする
@@ -103,8 +110,17 @@ class MenuFrameSetting extends MenusAppModel {
 				case self::DISPLAY_TYPE_RIGHT:
 					$label = __d('menus', 'Right type');
 					break;
-				default:
+				case self::DISPLAY_TYPE_PATH:
+					$label = __d('menus', 'Topic path');
+					break;
+				case self::DISPLAY_TYPE_MAIN:
 					$label = __d('menus', 'Main type');
+					break;
+				default:
+					// defaultはdir名をそのまま出します。そうしておくと、カスタムをかける場合
+					// 新規テンプレートを増やしやすいです
+					$label = __d('menus', $dir);
+					break;
 			}
 			$this->menuTypes[$dir] = $label;
 		}

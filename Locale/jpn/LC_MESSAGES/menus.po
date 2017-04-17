@@ -53,3 +53,6 @@ msgstr "当ページを表示"
 
 msgid "Show lower layer page clicked"
 msgstr "下層ページを表示"
+
+msgid "Topic path"
+msgstr "パンくず"

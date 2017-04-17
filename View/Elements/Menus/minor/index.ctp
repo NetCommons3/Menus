@@ -10,16 +10,23 @@
  */
 ?>
 
-<?php foreach ($menuFrameRooms as $menuFrameRoom) : ?>
-	<?php
-		echo '<div class="list-group">';
-		foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
-			$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
-			if ($nest === 0) {
-				echo $this->Menu->render($menu);
-				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id']);
+<?php
+	echo '<div class="list-group">';
+	$rootId = Current::read('Page.root_id');
+	if ($rootId == 1) {
+		$checkNest = 1;
+	} else {
+		$checkNest = 0;
+	}
+	foreach ($parentPages as $menu) {
+		$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
+		if ($nest === $checkNest) {
+			$targetMenu = Hash::extract($menus, '{n}.' . $menu['Page']['id']);
+			if (! empty($targetMenu)) {
+				echo $this->Menu->render($targetMenu[0], false);
+				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], false);
 			}
 		}
-		echo '</div>';
-	?>
-<?php endforeach;
+	}
+	echo '</div>';
+
