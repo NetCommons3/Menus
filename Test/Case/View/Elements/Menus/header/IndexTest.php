@@ -75,7 +75,7 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
 		$pattern = '/' . preg_quote('View/Elements/Menus/header/index', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 
-		$pattern = '<ul class="list-group nav nav-tabs" role="tablist">';
+		$pattern = '<ul class="list-group nav nav-tabs nav-justified" role="tablist">';
 		$this->assertTextContains($pattern, $this->view);
 
 		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja');
