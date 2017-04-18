@@ -10,7 +10,7 @@
  */
 ?>
 
-<ul class="list-group nav nav-pills">
+<ul class="list-group nav nav-pills nav-justified">
 	<?php
 		foreach ($menuFrameRooms as $menuFrameRoom) {
 			foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {

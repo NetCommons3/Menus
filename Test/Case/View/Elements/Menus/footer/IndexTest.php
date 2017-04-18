@@ -75,7 +75,7 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		$pattern = '/' . preg_quote('View/Elements/Menus/footer/index', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 
-		$pattern = '<ul class="list-group nav nav-pills">';
+		$pattern = '<ul class="list-group nav nav-pills nav-justified">';
 		$this->assertTextContains($pattern, $this->view);
 
 		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja');

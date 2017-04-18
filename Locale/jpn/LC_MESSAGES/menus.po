@@ -15,19 +15,19 @@ msgstr ""
 
 #: Menus/Model/MenuFrameSetting.php:95
 msgid "Footer type"
-msgstr "フッタータイプ"
+msgstr "丸み(nav-pills)表示"
 
 #: Menus/Model/MenuFrameSetting.php:98
 msgid "Header type"
-msgstr "ヘッダータイプ"
+msgstr "タブ(nav-tabs)表示"
 
 #: Menus/Model/MenuFrameSetting.php:101
 msgid "Left type"
-msgstr "左タイプ"
+msgstr "リスト表示"
 
 #: Menus/Model/MenuFrameSetting.php:104
 msgid "Right type"
-msgstr "右タイプ"
+msgstr "下層ページのみ表示"
 
 #: Menus/Model/MenuFrameSetting.php:107
 msgid "Main type"
