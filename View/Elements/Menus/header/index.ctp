@@ -22,7 +22,7 @@
 
 	<div id="menus-<?php echo Current::read('Frame.id'); ?>" class="collapse navbar-collapse">
 		<div class="hidden-xs">
-			<ul class="list-group nav nav-tabs" role="tablist">
+			<ul class="list-group nav nav-tabs nav-justified" role="tablist">
 				<?php
 					foreach ($menuFrameRooms as $menuFrameRoom) {
 						foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
