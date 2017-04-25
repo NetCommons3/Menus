@@ -1,6 +1,6 @@
 <?php
 /**
- * Menus index template
+ * メニュー表示
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,7 +10,7 @@
  */
 ?>
 
-<nav ng-controller="MenusController">
+<nav ng-controller="MenusController" ng-cloak>
 <?php echo $this->Menu->renderMain(); ?>
 </nav>
 
