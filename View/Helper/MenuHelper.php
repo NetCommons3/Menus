@@ -100,8 +100,6 @@ class MenuHelper extends AppHelper {
 /**
  * メニューの表示(さかのぼり:パンくず用)
  *
- * @param int $roomId Room.id
- * @param int $pageId Page.id
  * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
@@ -206,7 +204,8 @@ class MenuHelper extends AppHelper {
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
 				' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
-			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose($event, \'' . $domId . '\')';
+			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';' .
+								' switchOpenClose($event, \'' . $domId . '\')';
 			$url = '#';
 		} else {
 			$url = '/' . $setting . $url;
@@ -347,7 +346,7 @@ class MenuHelper extends AppHelper {
  * インデント数の取得
  *
  * @param string $treePageId Tree(Tabコード付き)のページID
- * @return bool
+ * @return int
  */
 	public function getIndent($treePageId) {
 		$pageId = trim($treePageId);

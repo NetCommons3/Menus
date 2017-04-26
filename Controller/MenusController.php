@@ -123,10 +123,7 @@ class MenusController extends MenusAppController {
 			$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
 
 			//最初のノードは、必ず表示する。そのため、インデント数で判断する
-			$indent = substr_count($treePageId, Page::$treeParser);
-			if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
-				$indent--;
-			}
+			$indent = $this->_getIndent($page, $treePageId);
 
 			//隠しページは表示しない
 			if ($menu['MenuFramesPage']['is_hidden']) {
@@ -168,6 +165,22 @@ class MenusController extends MenusAppController {
 		}
 
 		$this->set('pageTreeList', $treeList4Disp);
+	}
+
+/**
+ * インデント数の取得
+ *
+ * @param array $page ページデータ配列
+ * @param string $treePageId Tree(Tabコード付き)のページID
+ * @return int
+ */
+	protected function _getIndent($page, $treePageId) {
+		$indent = substr_count($treePageId, Page::$treeParser);
+		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+			$indent--;
+		}
+
+		return $indent;
 	}
 
 /**

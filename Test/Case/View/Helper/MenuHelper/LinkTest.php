@@ -237,7 +237,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 				'id' => 'MenuFramesPage9',
 				'escapeTitle' => false,
 				'ng-init' => 'MenuFramesPage9Icon=0; initialize(\'MenuFramesPage9\', ["MenuFramesPage11","MenuFramesPage12"], 0)',
-				'ng-click' => 'MenuFramesPage9Icon=!MenuFramesPage9Icon;switchOpenClose(\'MenuFramesPage9\')',
+				'ng-click' => 'MenuFramesPage9Icon=!MenuFramesPage9Icon; switchOpenClose($event, \'MenuFramesPage9\')',
 			),
 		);
 		$this->assertEquals($expected, $result);

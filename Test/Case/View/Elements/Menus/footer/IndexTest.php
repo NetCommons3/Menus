@@ -75,12 +75,12 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		$pattern = '/' . preg_quote('View/Elements/Menus/footer/index', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 
-		$pattern = '<ul class="list-group nav nav-pills nav-justified">';
+		$pattern = '<ul class="list-group nav nav-pills nav-justified menu-footer-tabs">';
 		$this->assertTextContains($pattern, $this->view);
 
 		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja');
 		$this->__assertLink($frameId, '8', '/test5', '', 'Test page 5');
-		$this->__assertLink($frameId, '9', '/page_1', '', '<span class="glyphicon glyphicon-menu-right"> <\/span> Page 1');
+		$this->__assertLink($frameId, '9', '/page_1', '', 'Page 1');
 		$this->__assertLink($frameId, '10', '/page_2', '', 'Page 2');
 		$this->__assertLink($frameId, '5', '/test2', '', 'サブルーム１');
 		$this->__assertLink($frameId, '6', '/test3', '', 'サブルーム２');
@@ -101,15 +101,15 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		if ($active) {
 			$pattern =
 				'<li class="' . $active . '">' .
-					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
-						$name .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix">' .
+						'<span>' . $name . '<\/span>' .
 					'<\/a>' .
 				'<\/li>';
 		} else {
 			$pattern =
 				'<li>' .
-					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item menu-tree-0">' .
-						$name .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix">' .
+						'<span>' . $name . '<\/span>' .
 					'<\/a>' .
 				'<\/li>';
 		}
