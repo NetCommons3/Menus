@@ -236,15 +236,17 @@ class Menu2Helper extends AppHelper {
 
 		$page = Hash::get($pages, $pageId);
 		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
-		$nest = $this->getIndent($page, $treePageId);
-		if (! $this->displayPage($menu, !(bool)$nest)) {
+		$nest = $this->getIndent($treePageId);
+		if (! $this->displayPage($treePageId)) {
 			return $html;
 		}
 
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/list', array(
 			'isActive' => $this->isActive($page),
 			'nest' => $nest,
-			'options' => $this->link($menu)
+			'options' => $this->link($menu),
+			'menu' => $menu,
+			'page' => $page,
 		));
 
 		return $html;
@@ -343,7 +345,7 @@ class Menu2Helper extends AppHelper {
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
 				' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
-			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
+			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose($event, \'' . $domId . '\')';
 			$url = '#';
 		} else {
 			$url = '/' . $setting . $url;
@@ -425,33 +427,23 @@ class Menu2Helper extends AppHelper {
 /**
  * 表示するかどうか
  *
- * @param array $menu メニューページデータ配列
- * @param string $displayType 表示タイプ
+ * @param string $treePageId Tree(Tabコード付き)のページID
  * @return bool
  */
-	public function displayPage($menu, $isParent) {
-//		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) ||
-//				$menu['MenuFramesPage']['is_hidden']) {
-//			return false;
-//		}
+	public function displayPage($treePageId) {
+		$pageId = trim($treePageId);
+		$pages = $this->_View->viewVars['pages'];
+		$menus = $this->_View->viewVars['menus'];
+
+		$page = Hash::get($pages, $pageId);
+		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+
 		if (! $menu['PagesLanguage']['name'] || ! $menu) {
 			return false;
 		}
-
-		$pageId = $menu['Page']['id'];
 		if ($pageId === Page::PUBLIC_ROOT_PAGE_ID) {
 			return false;
 		}
-//		if ($isParent) {
-//			return true;
-//		}
-//
-////var_dump($this->parentPageIds, $pageId);
-//		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
-//		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
-//				! in_array($pageId, $this->parentPageIds, true)) {
-//			return false;
-//		}
 
 		return true;
 	}
@@ -467,13 +459,38 @@ class Menu2Helper extends AppHelper {
 	}
 
 /**
+ * 子ページを持っているかどうか
+ *
+ * @param int $pageId ページID
+ * @return bool
+ */
+	public function hasChildPage($pageId) {
+		$childPage = Hash::extract(
+			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
+		);
+
+		$result = false;
+		foreach ($childPage as $id) {
+			if (isset($this->_View->viewVars['pageTreeList2'][$id])) {
+				$result = true;
+				break;
+			}
+		}
+
+		return $result;
+	}
+
+/**
  * インデント数の取得
  *
- * @param array $page ページデータ配列
  * @param string $treePageId Tree(Tabコード付き)のページID
  * @return bool
  */
-	public function getIndent($page, $treePageId) {
+	public function getIndent($treePageId) {
+		$pageId = trim($treePageId);
+		$pages = $this->_View->viewVars['pages'];
+		$page = Hash::get($pages, $pageId);
+
 		$indent = substr_count($treePageId, Page::$treeParser);
 		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			$indent--;

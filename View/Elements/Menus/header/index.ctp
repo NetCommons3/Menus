@@ -22,17 +22,49 @@
 
 	<div id="menus-<?php echo Current::read('Frame.id'); ?>" class="collapse navbar-collapse">
 		<div class="hidden-xs">
-			<ul class="list-group nav nav-tabs nav-justified" role="tablist">
+			<ul class="list-group nav nav-tabs nav-justified menu-header-tab" role="tablist">
 				<?php
-					foreach ($menuFrameRooms as $menuFrameRoom) {
-						foreach (Hash::get($menus, $menuFrameRoom['Room']['id']) as $menu) {
-							$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
-							if ($nest === 0) {
-								echo $this->Menu->render($menu);
-								echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id']);
-							}
+					$first = true;
+					foreach ($pageTreeList2 as $treePageId) {
+						if (! $this->Menu2->displayPage($treePageId)) {
+							continue;
 						}
+
+						$pageId = trim($treePageId);
+						$page = Hash::get($pages, $pageId);
+						$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+
+						$nest = $this->Menu2->getIndent($treePageId);
+						if ($nest === 0) {
+							if (! $first) {
+								echo $this->element('Menus.Menus/header/list_end', [
+									'nest' => $nest,
+									'hasChild' => $hasChild,
+								]);
+							}
+							$first = false;
+							$hasChild = $this->Menu2->hasChildPage($pageId);
+						} else {
+							echo $this->element('Menus.Menus/header/list_end', [
+								'nest' => $nest,
+								'hasChild' => false,
+							]);
+						}
+
+						echo $this->element('Menus.Menus/header/list_start', [
+							'pageId' => $pageId,
+							'nest' => $nest,
+							'isActive' => $this->Menu2->isActive($page),
+							'hasChild' => $hasChild,
+						]);
+
+						echo $this->Menu2->renderPage($treePageId);
 					}
+
+					echo $this->element('Menus.Menus/header/list_end', [
+						'nest' => 0,
+						'hasChild' => $hasChild,
+					]);
 				?>
 			</ul>
 		</div>

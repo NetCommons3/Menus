@@ -40,10 +40,14 @@ NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
    *
    * @return {void}
    */
-  $scope.switchOpenClose = function(key) {
+  $scope.switchOpenClose = function($event, key) {
     angular.forEach($scope.menus[key], function(domId) {
       $('#' + domId).toggle();
     });
+    if (angular.isObject($event)) {
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
   };
 
 }]);

@@ -9,22 +9,50 @@
  * @copyright   Copyright 2014, NetCommons Project
  */
 
-if ($isActive) {
-	$listTagStart = '<li class="active">';
-} else {
-	$listTagStart = '<li>';
-}
-$listTagEnd = '</li>';
+$title = '';
 
-$class = '';
-$class .= 'list-group-item';
-$class .= ' menu-tree-' . $nest;
-$options['options']['class'] = $class;
+if ($nest === 0) {
+//	$isRootActive = in_array($menu['Page']['id'], $this->Menu2->parentPageIds, true);
+	$hasChild = $this->Menu2->hasChildPage($menu['Page']['id']);
+
+	$options['icon'] = '';
+	if (isset($options['title'])) {
+		$title = '<span>' . $options['title'] . '</span>';
+		$options['options']['title'] = $options['title'];
+	}
+	if ($hasChild) {
+		$options['options']['data-toggle'] = 'dropdown';
+		$options['options']['href'] = '';
+		$options['url'] = '#';
+		$options['options']['role'] = 'button';
+		$options['options']['aria-haspopup'] = 'true';
+		$options['options']['aria-expanded'] = 'false';
+		$options['options']['ng-init'] = null;
+		$options['options']['ng-click'] = null;
+		$options['options']['class'] = 'clearfix list-group-item dropdown-toggle';
+
+		$title .= ' <span class="caret"></span>';
+	} else {
+		$options['options']['class'] = 'clearfix list-group-item';
+	}
+} else {
+	$hasChild = false;
+	$nest--;
+	$options['options']['class'] = 'clearfix menu-tree-' . $nest;
+
+	if (isset($options['title'])) {
+		$title = '<span class="pull-left">' . $options['title'] . '</span>' .
+				'<span class="pull-right">' . $options['icon'] . '</span>';
+	}
+}
+
 
 if (isset($options['title'])) {
-	$title = $options['icon'] . $options['title'];
-
-	echo $listTagStart;
 	echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
-	echo $listTagEnd;
+}
+
+if ($hasChild) {
+	echo '<ul class="dropdown-menu">';
+	echo '<li class="dropdown-header">' . $options['title'] . '</li>';
+	echo '<li role="separator" class="divider"></li>';
 }

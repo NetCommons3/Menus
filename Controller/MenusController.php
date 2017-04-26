@@ -152,6 +152,8 @@ class MenusController extends MenusAppController {
 				continue;
 			}
 
+			//以下の条件の時、下層ページデータを取得するようにデータを保持する
+			// * クリック時下層ページを表示
 			if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
 				//ページの下層ページIDs
 				$treeChildList = Hash::merge(
@@ -167,9 +169,6 @@ class MenusController extends MenusAppController {
 
 		//TODO：後で変更する
 		$this->set('pageTreeList', $pageTreeList);
-
-//		var_dump($treeList4Disp);
-
 		$this->set('pageTreeList2', $treeList4Disp);
 	}
 
