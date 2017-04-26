@@ -91,28 +91,20 @@
 /**
  * ヘッダーメニュー
  */
-.menu-header-tab ul.dropdown-menu > li > a,
-.menu-header-tab ul.dropdown-menu > li.dropdown-header {
+.menu-header-tabs ul.dropdown-menu > li > a,
+.menu-header-tabs ul.dropdown-menu > li.dropdown-header {
 	padding: 4px 16px;
 	white-space: nowrap;
 }
-.menu-header-tab > li > a {
+.menu-header-tabs > li > a {
 	white-space: nowrap;
 }
-
-.menu-header-tab > li > a > span:first-child {
-	/*white-space: nowrap;*/
+.menu-header-tabs > li > a > span:first-child {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 	max-width: 120px;
 	display: inline-block;
 	vertical-align: middle;
-	/*margin-right: 10px;*/
-}
-.menu-header-tab > li > a > span:last-child {
-	/*float: right;*/
-	display: inline-block;
-	/*vertical-align: middle;*/
 }
 

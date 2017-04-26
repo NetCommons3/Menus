@@ -1,12 +1,12 @@
 <?php
 /**
- * header index template
+ * タブ(nav-tabs)表示タイプのメニュー
  *
- * @author      Noriko Arai <arai@nii.ac.jp>
- * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @link        http://www.netcommons.org NetCommons Project
- * @license     http://www.netcommons.org/license.txt NetCommons License
- * @copyright   Copyright 2014, NetCommons Project
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
 ?>
 
@@ -22,7 +22,7 @@
 
 	<div id="menus-<?php echo Current::read('Frame.id'); ?>" class="collapse navbar-collapse">
 		<div class="hidden-xs">
-			<ul class="list-group nav nav-tabs nav-justified menu-header-tab" role="tablist">
+			<ul class="list-group nav nav-tabs nav-justified menu-header-tabs" role="tablist">
 				<?php
 					$first = true;
 					foreach ($pageTreeList2 as $treePageId) {
