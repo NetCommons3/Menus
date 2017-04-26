@@ -12,7 +12,6 @@
 $title = '';
 
 if ($nest === 0) {
-//	$isRootActive = in_array($menu['Page']['id'], $this->Menu2->parentPageIds, true);
 	$hasChild = $this->Menu2->hasChildPage($menu['Page']['id']);
 
 	$options['icon'] = '';
@@ -29,11 +28,11 @@ if ($nest === 0) {
 		$options['options']['aria-expanded'] = 'false';
 		$options['options']['ng-init'] = null;
 		$options['options']['ng-click'] = null;
-		$options['options']['class'] = 'clearfix list-group-item dropdown-toggle';
+		$options['options']['class'] = 'clearfix dropdown-toggle';
 
 		$title .= ' <span class="caret"></span>';
 	} else {
-		$options['options']['class'] = 'clearfix list-group-item';
+		$options['options']['class'] = 'clearfix';
 	}
 } else {
 	$hasChild = false;
@@ -45,7 +44,6 @@ if ($nest === 0) {
 				'<span class="pull-right">' . $options['icon'] . '</span>';
 	}
 }
-
 
 if (isset($options['title'])) {
 	echo $this->NetCommonsHtml->link($title, $options['url'], $options['options']);
