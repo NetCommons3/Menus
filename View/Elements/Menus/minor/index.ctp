@@ -12,16 +12,16 @@
 echo '<div class="list-group">';
 
 $isActiveRoot = false;
-foreach ($pageTreeList2 as $treePageId) {
+foreach ($pageTreeList as $treePageId) {
 	$pageId = trim($treePageId);
 
-	$nest = $this->Menu2->getIndent($treePageId);
+	$nest = $this->Menu->getIndent($treePageId);
 	if ($nest === 0) {
-		$isActiveRoot = in_array($pageId, $this->Menu2->parentPageIds, true);
+		$isActiveRoot = in_array($pageId, $this->Menu->parentPageIds, true);
 	}
 
 	if ($isActiveRoot) {
-		echo $this->Menu2->renderPage($treePageId);
+		echo $this->Menu->renderPage($treePageId);
 	}
 }
 

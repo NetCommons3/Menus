@@ -12,7 +12,7 @@
 $title = '';
 
 if ($nest === 0) {
-	$hasChild = $this->Menu2->hasChildPage($menu['Page']['id']);
+	$hasChild = $this->Menu->hasChildPage($menu['Page']['id']);
 
 	$options['icon'] = '';
 	if (isset($options['title'])) {

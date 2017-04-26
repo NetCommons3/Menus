@@ -12,6 +12,6 @@
 ?>
 
 <nav ng-controller="MenusController" ng-cloak>
-<?php echo $this->Menu2->renderMain(); ?>
+<?php echo $this->Menu->renderMain(); ?>
 </nav>
 

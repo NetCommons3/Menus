@@ -38,7 +38,7 @@ class MenusController extends MenusAppController {
  * @var array
  */
 	public $helpers = array(
-		'Menus.Menu', 'Menus.Menu2'
+		'Menus.Menu'
 	);
 
 /**
@@ -167,9 +167,7 @@ class MenusController extends MenusAppController {
 			}
 		}
 
-		//TODO：後で変更する
-		$this->set('pageTreeList', $pageTreeList);
-		$this->set('pageTreeList2', $treeList4Disp);
+		$this->set('pageTreeList', $treeList4Disp);
 	}
 
 /**

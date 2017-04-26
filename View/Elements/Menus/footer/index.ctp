@@ -13,8 +13,8 @@
 <ul class="list-group nav nav-pills nav-justified menu-footer-tabs">
 	<?php
 		$first = true;
-		foreach ($pageTreeList2 as $treePageId) {
-			if (! $this->Menu2->displayPage($treePageId)) {
+		foreach ($pageTreeList as $treePageId) {
+			if (! $this->Menu->displayPage($treePageId)) {
 				continue;
 			}
 
@@ -22,7 +22,7 @@
 			$page = Hash::get($pages, $pageId);
 			$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
 
-			$nest = $this->Menu2->getIndent($treePageId);
+			$nest = $this->Menu->getIndent($treePageId);
 			if ($nest === 0) {
 				if (! $first) {
 					echo $this->element('Menus.Menus/footer/list_end', [
@@ -31,7 +31,7 @@
 					]);
 				}
 				$first = false;
-				$hasChild = $this->Menu2->hasChildPage($pageId);
+				$hasChild = $this->Menu->hasChildPage($pageId);
 			} else {
 				echo $this->element('Menus.Menus/footer/list_end', [
 					'nest' => $nest,
@@ -42,11 +42,11 @@
 			echo $this->element('Menus.Menus/footer/list_start', [
 				'pageId' => $pageId,
 				'nest' => $nest,
-				'isActive' => $this->Menu2->isActive($page),
+				'isActive' => $this->Menu->isActive($page),
 				'hasChild' => $hasChild,
 			]);
 
-			echo $this->Menu2->renderPage($treePageId);
+			echo $this->Menu->renderPage($treePageId);
 		}
 
 		echo $this->element('Menus.Menus/footer/list_end', [

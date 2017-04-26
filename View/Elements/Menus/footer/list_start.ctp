@@ -17,7 +17,7 @@ if (Current::read('PageContainer.container_type') === Container::TYPE_FOOTER) {
 }
 
 if ($nest === 0) {
-	$isRootActive = in_array($pageId, $this->Menu2->parentPageIds, true);
+	$isRootActive = in_array($pageId, $this->Menu->parentPageIds, true);
 	if ($isActive || $isRootActive) {
 		if ($hasChild) {
 			$listTagStart = '<li role="presentation" class="' . $drop . ' active">';
