@@ -58,7 +58,7 @@
 							'hasChild' => $hasChild,
 						]);
 
-						echo $this->Menu->renderPage($treePageId);
+						echo $this->Menu->renderPage($treePageId, 'header');
 					}
 
 					echo $this->element('Menus.Menus/header/list_end', [

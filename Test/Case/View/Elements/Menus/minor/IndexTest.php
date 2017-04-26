@@ -111,7 +111,7 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
  * @return string パターン
  */
 	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '', $tree = '0') {
-		$domId = 'MenuFramesPage' . $frameId . $pageId;
+		$domId = 'MenuFramesPageMinor' . $frameId . $pageId;
 		return '<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item clearfix menu-tree-' . $tree . $active . '">' .
 					'<span class="pull-left">' . $name . '<\/span>' .
 					'<span class="pull-right">' . $icon . '<\/span>' .

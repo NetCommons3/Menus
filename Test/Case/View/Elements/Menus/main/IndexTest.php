@@ -109,7 +109,7 @@ class MenusViewElementsMenusMainIndexTest extends NetCommonsControllerTestCase {
  * @return string パターン
  */
 	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '') {
-		$domId = 'MenuFramesPage' . $frameId . $pageId;
+		$domId = 'MenuFramesPageMain' . $frameId . $pageId;
 		return '<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item clearfix menu-tree-0' . $active . '">' .
 					'<span class="pull-left">' . $name . '<\/span>' .
 					'<span class="pull-right">' . $icon . '<\/span>' .

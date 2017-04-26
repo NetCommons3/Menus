@@ -21,6 +21,6 @@ foreach ($pageTreeList as $treePageId) {
 		$first = false;
 	}
 
-	echo $this->Menu->renderPage($treePageId);
+	echo $this->Menu->renderPage($treePageId, 'major');
 }
 echo '</div>';

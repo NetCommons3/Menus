@@ -21,7 +21,7 @@ foreach ($pageTreeList as $treePageId) {
 	}
 
 	if ($isActiveRoot) {
-		echo $this->Menu->renderPage($treePageId);
+		echo $this->Menu->renderPage($treePageId, 'minor');
 	}
 }
 

@@ -97,7 +97,7 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
  * @return void
  */
 	private function __assertLink($frameId, $pageId, $permalink, $active, $name) {
-		$domId = 'MenuFramesPage' . $frameId . $pageId;
+		$domId = 'MenuFramesPageHeader' . $frameId . $pageId;
 		if ($active) {
 			$pattern =
 				'<li class="' . $active . '">' .

@@ -118,7 +118,7 @@ class MenuHelper extends AppHelper {
 			if (! $parentRoomId) {
 				continue;
 			}
-			$html .= $this->renderPage($parentPageId);
+			$html .= $this->renderPage($parentPageId, $displayType);
 		}
 
 		return $html;
@@ -152,7 +152,7 @@ class MenuHelper extends AppHelper {
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/list', array(
 			'isActive' => $this->isActive($page),
 			'nest' => $nest,
-			'options' => $this->link($menu),
+			'options' => $this->link($menu, $displayType),
 			'menu' => $menu,
 			'page' => $page,
 		));
@@ -164,11 +164,15 @@ class MenuHelper extends AppHelper {
  * リンクの表示
  *
  * @param array $menu リンクデータ
+ * @param string $displayType 表示タイプ
  * @return array NetCommonsHtml->linkの引数
  */
-	public function link($menu) {
+	public function link($menu, $displayType = null) {
 		if (! $menu) {
 			return array();
+		}
+		if (! $displayType) {
+			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
 
 		$setting = '';
@@ -187,8 +191,11 @@ class MenuHelper extends AppHelper {
 			$url = h($menu['Page']['permalink']);
 		}
 
-		$title = $this->__getTitle($menu);
-		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
+		$title = $this->__getTitle($menu, $displayType);
+		$domDisplayType = preg_replace('/-/', '_', $displayType);
+		$domId = $this->domId(
+			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
+		);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
@@ -198,8 +205,10 @@ class MenuHelper extends AppHelper {
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
 			);
-			$childDomIds = array_map(function ($value) {
-				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
+			$childDomIds = array_map(function ($value) use ($domDisplayType) {
+				return $this->domId(
+					'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $value
+				);
 			}, $childPageIds);
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
@@ -223,9 +232,10 @@ class MenuHelper extends AppHelper {
  * リンクのタイトル表示
  *
  * @param array $menu リンクデータ
- * @return array array(タイトル, アイコン)
+* @param string $displayType 表示タイプ
+  * @return array array(タイトル, アイコン)
  */
-	private function __getTitle($menu) {
+	private function __getTitle($menu, $displayType) {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$title = '';
@@ -236,7 +246,10 @@ class MenuHelper extends AppHelper {
 			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));
 		}
 
-		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
+		$domDisplayType = preg_replace('/-/', '_', $displayType);
+		$domId = $this->domId(
+			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
+		);
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 

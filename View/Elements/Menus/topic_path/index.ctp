@@ -11,6 +11,6 @@
 ?>
 
 <ul class="breadcrumb">
-	<?php echo $this->Menu->renderParent(); ?>
+	<?php echo $this->Menu->renderParent('topic_path'); ?>
 </ul>
 

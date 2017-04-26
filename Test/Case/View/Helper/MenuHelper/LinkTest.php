@@ -99,7 +99,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 			'icon' => '<span class="glyphicon glyphicon-menu-down"> </span> ',
 			'url' => '/page_1',
 			'options' => array(
-				'id' => 'MenuFramesPage9',
+				'id' => 'MenuFramesPageMenuTree1Active9',
 				'escapeTitle' => false,
 			),
 		);
@@ -132,7 +132,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 			'icon' => '<span class="glyphicon glyphicon-menu-right"> </span> ',
 			'url' => '/page_1',
 			'options' => array(
-				'id' => 'MenuFramesPage9',
+				'id' => 'MenuFramesPageMenuTree19',
 				'escapeTitle' => false,
 			),
 		);
@@ -165,7 +165,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 			'icon' => '',
 			'url' => '/',
 			'options' => array(
-				'id' => 'MenuFramesPage4',
+				'id' => 'MenuFramesPageMenuTree14',
 				'escapeTitle' => false,
 			),
 		);
@@ -198,7 +198,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 			'icon' => '',
 			'url' => '/test2',
 			'options' => array(
-				'id' => 'MenuFramesPage5',
+				'id' => 'MenuFramesPageMenuTree15',
 				'escapeTitle' => false,
 			),
 		);
@@ -230,14 +230,14 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$expected = array(
 			'title' => 'Page 1',
 			'icon' => '<span class="glyphicon glyphicon-menu-right" ' .
-							'ng-class="{\'glyphicon-menu-right\': !MenuFramesPage9Icon, \'glyphicon-menu-down\': MenuFramesPage9Icon}"> ' .
+							'ng-class="{\'glyphicon-menu-right\': !MenuFramesPageMenuTree19Icon, \'glyphicon-menu-down\': MenuFramesPageMenuTree19Icon}"> ' .
 						'</span> ',
 			'url' => '#',
 			'options' => array(
-				'id' => 'MenuFramesPage9',
+				'id' => 'MenuFramesPageMenuTree19',
 				'escapeTitle' => false,
-				'ng-init' => 'MenuFramesPage9Icon=0; initialize(\'MenuFramesPage9\', ["MenuFramesPage11","MenuFramesPage12"], 0)',
-				'ng-click' => 'MenuFramesPage9Icon=!MenuFramesPage9Icon; switchOpenClose($event, \'MenuFramesPage9\')',
+				'ng-init' => 'MenuFramesPageMenuTree19Icon=0; initialize(\'MenuFramesPageMenuTree19\', ["MenuFramesPageMenuTree111","MenuFramesPageMenuTree112"], 0)',
+				'ng-click' => 'MenuFramesPageMenuTree19Icon=!MenuFramesPageMenuTree19Icon; switchOpenClose($event, \'MenuFramesPageMenuTree19\')',
 			),
 		);
 		$this->assertEquals($expected, $result);
@@ -270,7 +270,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 			'icon' => '<span class="glyphicon glyphicon-menu-down"> </span> ',
 			'url' => '/setting/page_1',
 			'options' => array(
-				'id' => 'MenuFramesPage9',
+				'id' => 'MenuFramesPageMenuTree1Active9',
 				'escapeTitle' => false,
 			),
 		);
