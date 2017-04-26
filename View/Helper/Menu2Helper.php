@@ -98,123 +98,35 @@ class Menu2Helper extends AppHelper {
 
 		return $html;
 	}
-//
-///**
-// * メニューの表示
-// *
-// * TODO:後で削除
-// *
-// * @param int $roomId Room.id
-// * @param int $pageId Page.id
-// * @param string $displayType 表示タイプ
-// * @return string HTMLタグ
-// */
-//	public function renderChild($roomId, $pageId, $displayType = null) {
-//		$html = '';
-//
-//		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
-//		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
-//				! in_array($pageId, $this->parentPageIds, true)) {
-//			return $html;
-//		}
-//
-//		$pageTreeList = array_keys($this->_View->viewVars['pageTreeList']);
-//		$childPageIds = Hash::extract(
-//			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
-//		);
-//		$sortChildPageIds = array();
-//		foreach ($childPageIds as $id) {
-//			$index = array_search((int)$id, $pageTreeList, true);
-//			$sortChildPageIds[$index] = $id;
-//		}
-//		ksort($sortChildPageIds);
-//
-//		foreach ($sortChildPageIds as $childPageId) {
-//			$childRoomId = Hash::get(
-//				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id', $roomId
-//			);
-//			$html .= $this->render(
-//				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $displayType
-//			);
-//			$html .= $this->renderChild($roomId, $childPageId, $displayType);
-//		}
-//
-//		return $html;
-//	}
-//
-///**
-// * メニューの表示(さかのぼり:パンくず用)
-// *
-// * @param int $roomId Room.id
-// * @param int $pageId Page.id
-// * @param string $displayType 表示タイプ
-// * @return string HTMLタグ
-// */
-//	public function renderParent($roomId, $pageId, $displayType = null) {
-//		$html = '';
-//		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
-//		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
-//		$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
-//		$parentPageIds = array_merge(array(Hash::get($childPages, '0.id')), $parentPageIds);
-//		$parentPageIds = array_unique($parentPageIds);
-//
-//		foreach ($parentPageIds as $parentPageId) {
-//			$parentRoomId = Hash::get(
-//				$this->_View->viewVars['pages'], $parentPageId . '.Page.room_id'
-//			);
-//			if (! $parentRoomId) {
-//				continue;
-//			}
-//			$html .= $this->render(
-//				Hash::get($this->_View->viewVars['menus'], $parentRoomId . '.' . $parentPageId), $displayType
-//			);
-//		}
-//
-//		return $html;
-//	}
-//
-///**
-// * メニューリストの表示
-// * TODO: 後で削除
-// *
-// * @param array $menu メニューデータ配列
-// * @param string $displayType 表示タイプ
-// * @return string HTMLタグ
-// */
-//	public function render($menu, $displayType = null) {
-//		$html = '';
-//
-//		if (! $displayType) {
-//			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
-//		}
-//
-//		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) ||
-//				$menu['MenuFramesPage']['is_hidden']) {
-//			return $html;
-//		}
-//
-//		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
-//			return $html;
-//		}
-//
-//		$isActive = Current::read('Page.permalink') === (string)$menu['Page']['permalink'];
-//
-//		$nest = substr_count(
-//			Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser
-//		);
-//		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
-//			$nest--;
-//		}
-//
-//		//メニューHTML表示
-//		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/list', array(
-//			'isActive' => $isActive,
-//			'nest' => $nest,
-//			'options' => $this->link($menu)
-//		));
-//
-//		return $html;
-//	}
+
+/**
+ * メニューの表示(さかのぼり:パンくず用)
+ *
+ * @param int $roomId Room.id
+ * @param int $pageId Page.id
+ * @param string $displayType 表示タイプ
+ * @return string HTMLタグ
+ */
+	public function renderParent($displayType = null) {
+		$html = '';
+		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
+		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
+		$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
+		$parentPageIds = array_merge(array(Hash::get($childPages, '0.id')), $parentPageIds);
+		$parentPageIds = array_unique($parentPageIds);
+
+		foreach ($parentPageIds as $parentPageId) {
+			$parentRoomId = Hash::get(
+				$this->_View->viewVars['pages'], $parentPageId . '.Page.room_id'
+			);
+			if (! $parentRoomId) {
+				continue;
+			}
+			$html .= $this->renderPage($parentPageId);
+		}
+
+		return $html;
+	}
 
 /**
  * メニューリストの表示
@@ -251,55 +163,6 @@ class Menu2Helper extends AppHelper {
 
 		return $html;
 	}
-//
-///**
-// * プライベートルームを表示するかどうか
-// *
-// * @param array $menu メニューデータ配列
-// * @return bool
-// */
-//	public function showPrivateRoom($menu) {
-//		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
-//		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-//		if ($room['parent_id'] !== Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
-//			return false;
-//		}
-//
-//		$pathKey = 'MenuFrameSetting.is_private_room_hidden';
-//		if (Hash::get($this->_View->viewVars['menuFrameSetting'], $pathKey)) {
-//			return false;
-//		}
-//
-//		if ($room['page_id_top'] !== $menu['Page']['id'] &&
-//				$defaultHidden &&
-//				! $menu['MenuFramesPage']['id']) {
-//			return false;
-//		}
-//		return true;
-//	}
-//
-///**
-// * ルームを表示するかどうか
-// *
-// * @param array $menu メニューデータ配列
-// * @return bool
-// */
-//	public function showRoom($menu) {
-//		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
-//		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-//		if ($room['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
-//			return false;
-//		}
-//		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'], array());
-//		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
-//				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
-//			return false;
-//		}
-//		if ($defaultHidden && ! $menu['MenuFramesPage']['id']) {
-//			return false;
-//		}
-//		return true;
-//	}
 
 /**
  * リンクの表示
@@ -438,7 +301,9 @@ class Menu2Helper extends AppHelper {
 		$page = Hash::get($pages, $pageId);
 		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
 
-		if (! $menu['PagesLanguage']['name'] || ! $menu) {
+		if (! $menu['PagesLanguage']['name'] ||
+				! $menu ||
+				! isset($this->_View->viewVars['pageTreeList2'][$pageId])) {
 			return false;
 		}
 		if ($pageId === Page::PUBLIC_ROOT_PAGE_ID) {
