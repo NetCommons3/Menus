@@ -15,10 +15,7 @@ $isActiveRoot = false;
 foreach ($pageTreeList2 as $treePageId) {
 	$pageId = trim($treePageId);
 
-	$page = Hash::get($pages, $pageId);
-	$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
-	$nest = $this->Menu2->getIndent($page, $treePageId);
-
+	$nest = $this->Menu2->getIndent($treePageId);
 	if ($nest === 0) {
 		$isActiveRoot = in_array($pageId, $this->Menu2->parentPageIds, true);
 	}
