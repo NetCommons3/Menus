@@ -232,8 +232,8 @@ class MenuHelper extends AppHelper {
  * リンクのタイトル表示
  *
  * @param array $menu リンクデータ
-* @param string $displayType 表示タイプ
-  * @return array array(タイトル, アイコン)
+ * @param string $displayType 表示タイプ
+ * @return array array(タイトル, アイコン)
  */
 	private function __getTitle($menu, $displayType) {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
