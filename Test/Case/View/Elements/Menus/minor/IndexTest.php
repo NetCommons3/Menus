@@ -108,6 +108,7 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
  * @param string $active activeかどうか(アクティブの場合、"active"の文字列をセットする)
  * @param string $name ページ名
  * @param string $icon アイコン
+ * @param string $tree ツリー数
  * @return string パターン
  */
 	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '', $tree = '0') {
