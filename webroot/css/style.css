@@ -125,3 +125,26 @@
 .menu-header-tabs.nav-tabs.nav-justified > .active > a:hover {
 	border: none;
 }
+
+/**
+ * 設定画面のページ表示有無
+ */
+.menu-tree-room,
+.menu-tree-node-page,
+.menu-tree-leaf-page {
+	padding-left: 4px;
+	margin-left: -20px;
+}
+.menu-tree-room {
+	border-left: 3px #659ada solid;
+}
+.menu-tree-node-page,
+.menu-tree-leaf-page {
+	border-left: 3px #aca899 solid;
+}
+.menu-is-hidden-checkbox > span > input[type="checkbox"] {
+	position: static;
+	margin-left: 0px;
+	margin-top: -2px;
+	vertical-align: middle;
+}

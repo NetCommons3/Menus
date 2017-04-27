@@ -20,16 +20,21 @@
 				));
 				echo $this->NetCommonsForm->hidden($prefixInput . '.page_id', array('value' => $pageId));
 			?>
-			<label class="control-label" for="<?php echo $this->NetCommonsForm->domId($prefixInput . '.is_hidden'); ?>">
+			<label class="control-label menu-is-hidden-checkbox" for="<?php echo $this->NetCommonsForm->domId($prefixInput . '.is_hidden'); ?>">
 				<?php
 					echo str_repeat('<span class="menu-edit-tree"> </span>', $nest);
+
+					echo '<span class="' . $pageNameCss . '">';
 					echo $this->NetCommonsForm->checkbox($prefixInput . '.is_hidden', array(
 						'div' => false,
 						'value' => '0',
 						'hiddenField' => '1',
-						'checked' => ! (bool)Hash::get($this->request->data, $prefixInput . '.is_hidden'),
+						'checked' => ! (bool)Hash::get($this->request->data, $prefixInput . '.is_hidden') || $roomDisabled,
+						'ng-click' => 'checkChildPages($event, ' . json_encode($domChildPageIds) . ')',
+						'ng-disabled' => $roomDisabled
 					));
 					echo h(Hash::get($menu, 'PagesLanguage.name'));
+					echo '</span>';
 				?>
 			</label>
 		</div>

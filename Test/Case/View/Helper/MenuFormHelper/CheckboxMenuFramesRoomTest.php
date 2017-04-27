@@ -55,6 +55,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 				'menu' => array(
 					'MenuFramesRoom' => (new MenuFramesRoomFixture())->records[0],
 				),
+				'pageId' => '1'
 			),
 			// * ネストあり、MenuFramesPageデータなし
 			array(
@@ -65,6 +66,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 				'menu' => array(
 					'MenuFramesRoom' => array(),
 				),
+				'pageId' => '5'
 			),
 			// * プライベートルーム
 			array(
@@ -75,6 +77,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 				'menu' => array(
 					'MenuFramesRoom' => array(),
 				),
+				'pageId' => '9'
 			),
 		);
 	}
@@ -84,15 +87,20 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
  *
  * @param array $room ルームデータ
  * @param array $menu メニューデータ
+ * @param int $pageId ページID
  * @dataProvider dataProvider
  * @return void
  */
-	public function testCheckboxMenuFramesRoom($room, $menu) {
+	public function testCheckboxMenuFramesRoom($room, $menu, $pageId) {
 		//データ生成
 		$roomId = $room['Room']['id'];
 
 		//Helperロード
-		$viewVars = array();
+		$viewVars = array(
+			'pages' => array(
+				$pageId => $menu
+			)
+		);
 		$requestData = array(
 			'Frame' => array('key' => 'frame_3'),
 			'MenuFrameSetting' => (new MenuFrameSettingFixture())->records[0],
@@ -104,7 +112,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 		$this->loadHelper('Menus.MenuForm', $viewVars, $requestData, $params);
 
 		//テスト実施
-		$result = $this->MenuForm->checkboxMenuFramesRoom($roomId, $room);
+		$result = $this->MenuForm->checkboxMenuFramesRoom($roomId, $room, $pageId);
 
 		//チェック
 		$this->assertTextContains('Room name', $result);

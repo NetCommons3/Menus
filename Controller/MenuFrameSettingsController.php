@@ -84,6 +84,8 @@ class MenuFrameSettingsController extends MenusAppController {
 		}
 
 		$roomIds = array_keys($this->viewVars['rooms']);
+		$pages = $this->Page->getPages($roomIds);
+		$this->set('pages', $pages);
 
 		if ($this->request->is(array('post', 'put'))) {
 			//不要パラメータ除去
@@ -93,18 +95,17 @@ class MenuFrameSettingsController extends MenusAppController {
 				return $this->redirect(NetCommonsUrl::backToPageUrl());
 			}
 			$this->NetCommons->handleValidationError($this->MenuFrameSetting->validationErrors);
-
-		} else {
-			$this->request->data = Hash::merge($this->request->data,
-				$this->MenuFrameSetting->getMenuFrameSetting()
-			);
-
-			$this->request->data['Frame'] = Current::read('Frame');
-			$this->request->data['Menus'] = $this->viewVars['menus'];
-			$this->request->data['MenuRooms'] = $this->MenuFramesRoom->getMenuFrameRooms(array(
-				'conditions' => array($this->Room->alias . '.id' => $roomIds)
-			));
 		}
+
+		$this->request->data = Hash::merge($this->request->data,
+			$this->MenuFrameSetting->getMenuFrameSetting()
+		);
+
+		$this->request->data['Frame'] = Current::read('Frame');
+		$this->request->data['Menus'] = $this->viewVars['menus'];
+		$this->request->data['MenuRooms'] = $this->MenuFramesRoom->getMenuFrameRooms(array(
+			'conditions' => array($this->Room->alias . '.id' => $roomIds)
+		));
 
 		//Treeリスト取得
 		$pageTreeList = $this->Page->generateTreeList(
