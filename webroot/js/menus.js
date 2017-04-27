@@ -40,9 +40,59 @@ NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
    *
    * @return {void}
    */
-  $scope.switchOpenClose = function(key) {
+  $scope.switchOpenClose = function($event, key) {
     angular.forEach($scope.menus[key], function(domId) {
       $('#' + domId).toggle();
+    });
+    if (angular.isObject($event)) {
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
+  };
+
+}]);
+
+
+/**
+ * MenusController Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope)} Controller
+ */
+NetCommonsApp.controller('MenuFrameSettingsController', ['$scope', function($scope) {
+
+  /**
+   * チェッククリックした際に配下ページをチェックする
+   *
+   * @return {void}
+   */
+  $scope.checkChildPages = function($event, domChildPageIds) {
+    var checked = $event.target.checked;
+
+    angular.forEach(domChildPageIds, function(domId) {
+      var domEl = $('#' + domId);
+      if (angular.isObject(domEl[0])) {
+        domEl[0].checked = checked;
+      }
+    });
+  };
+
+  /**
+   * チェッククリックした際に配下ページをDisableにする
+   *
+   * @return {void}
+   */
+  $scope.disableChildPages = function($event, domChildPageIds) {
+    var checked = $event.target.checked;
+
+    angular.forEach(domChildPageIds, function(domId) {
+      var domEl = $('#' + domId);
+      if (angular.isObject(domEl[0])) {
+        if (! domEl[0].checked) {
+          domEl[0].checked = checked;
+        }
+        domEl[0].disabled = !checked;
+      }
     });
   };
 

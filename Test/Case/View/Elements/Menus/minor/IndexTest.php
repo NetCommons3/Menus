@@ -64,8 +64,8 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
  */
 	public function testIndex() {
 		$frameId = '3';
-		Current::write('Page.id', '4');
-		Current::write('Page.permalink', 'home');
+		Current::write('Page.id', '9');
+		Current::write('Page.permalink', 'page_1');
 
 		//テスト実行
 		$this->_testGetAction('/test_menus/test_view_elements_menus_minor_index/index?frame_id=' . $frameId,
@@ -79,10 +79,12 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
 		$this->assertTextContains($pattern, $this->view);
 
 		$pattern = '<div class="list-group">';
-		$pattern .= $this->__getPattern($frameId, '4', '/', ' active', 'Home ja');
-		$pattern .= $this->__getPattern($frameId, '8', '/test5', '', 'Test page 5');
-		$pattern .= $this->__getPattern($frameId, '9', '/page_1', '', 'Page 1', '<span class="glyphicon glyphicon-menu-right"> <\/span> ');
-		$pattern .= $this->__getPattern($frameId, '10', '/page_2', '', 'Page 2');
+		$pattern .= $this->__getPattern(
+			$frameId, '9', '/page_1', ' active', 'Page 1', '<span class="glyphicon glyphicon-menu-down"> <\/span> ', '0'
+		);
+		$pattern .= $this->__getPattern(
+			$frameId, '11', '/page_3', '', 'Page 3', '<span class="glyphicon glyphicon-menu-right"> <\/span> ', '1'
+		);
 		$pattern .= '<\/div>';
 		$this->assertRegExp('/' . $pattern . '/', $this->view);
 
@@ -106,11 +108,12 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
  * @param string $active activeかどうか(アクティブの場合、"active"の文字列をセットする)
  * @param string $name ページ名
  * @param string $icon アイコン
+ * @param string $tree ツリー数
  * @return string パターン
  */
-	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '') {
-		$domId = 'MenuFramesPage' . $frameId . $pageId;
-		return '<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item clearfix menu-tree-0' . $active . '">' .
+	private function __getPattern($frameId, $pageId, $permalink, $active, $name, $icon = '', $tree = '0') {
+		$domId = 'MenuFramesPageMinor' . $frameId . $pageId;
+		return '<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" class="list-group-item clearfix menu-tree-' . $tree . $active . '">' .
 					'<span class="pull-left">' . $name . '<\/span>' .
 					'<span class="pull-right">' . $icon . '<\/span>' .
 				'<\/a>';

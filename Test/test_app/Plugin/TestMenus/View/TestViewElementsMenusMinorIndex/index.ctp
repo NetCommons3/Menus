@@ -15,4 +15,5 @@ $this->Menu->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
 
 View/Elements/Menus/minor/index
 
+<?php $this->Menu->renderMain(); ?>
 <?php echo $this->element('Menus.Menus/minor/index');

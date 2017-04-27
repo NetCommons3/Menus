@@ -25,22 +25,46 @@ $MenuFrameSetting = ClassRegistry::init('Menus.MenuFrameSetting');
 		)); ?>
 </div>
 
-<div class="form-group">
+<div class="form-group" ng-controller="MenuFrameSettingsController">
 	<?php echo $this->NetCommonsForm->label(null, __d('menus', 'Display page')); ?>
 
-	<?php foreach ($rooms as $roomId => $room) : ?>
-		<div class="panel panel-default">
-			<div class="panel-heading menu-list-item">
-				<?php echo $this->MenuForm->checkboxMenuFramesRoom($roomId, $room); ?>
-			</div>
+	<?php
+		$first = true;
 
-			<?php if (Hash::get($this->data, 'Menus.' . $roomId)) : ?>
-				<ul class="list-group">
-					<?php foreach ($this->data['Menus'][$roomId] as $pageId => $menu) : ?>
-						<?php echo $this->MenuForm->checkboxMenuFramesPage($roomId, $room, $pageId, $menu); ?>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-		</div>
-	<?php endforeach; ?>
+		foreach ($pageTreeList as $treePageId) {
+			$pageId = trim($treePageId);
+			$page = Hash::get($pages, $pageId);
+
+			$roomId = $page['Room']['id'];
+			$room = Hash::get($rooms, $roomId);
+
+			$menu = Hash::get($this->data['Menus'], $roomId . '.' . $pageId);
+
+			$nest = $this->Menu->getIndent($treePageId);
+			if ($nest === 0 && substr_count($treePageId, Page::$treeParser) === 0) {
+				if (! $first) {
+					echo '</div>';
+				}
+				echo '<div class="panel panel-default">';
+
+				echo '<div class="panel-heading menu-list-item">';
+
+				echo $this->MenuForm->checkboxMenuFramesRoom($roomId, $room, $pageId);
+				echo '</div>';
+
+				echo '<ul class="list-group">';
+				$first = false;
+
+				$rootRoomId = $roomId;
+				$rootRoom = $room;
+			} else {
+				echo $this->MenuForm->checkboxMenuFramesPage(
+					$roomId, $room, $pageId, $menu, $rootRoomId, $rootRoom
+				);
+			}
+		}
+
+		echo '</ul>';
+		echo '</div>';
+	?>
 </div>

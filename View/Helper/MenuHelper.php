@@ -15,8 +15,6 @@ ClassRegistry::init('Pages.Page');
 
 /**
  * MenuHelper
- *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class MenuHelper extends AppHelper {
 
@@ -77,6 +75,7 @@ class MenuHelper extends AppHelper {
 			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
 		}
 
+		//現在選択しているページの親ページIDs
 		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
 		$this->parentPageIds = array_merge(
 			$this->parentPageIds,
@@ -87,6 +86,11 @@ class MenuHelper extends AppHelper {
 		}
 		$this->parentPageIds = array_unique($this->parentPageIds);
 
+		//現在選択しているページの下層ページIDs
+		$this->childPageIds = Hash::extract(
+			$this->_View->viewVars['pages'], Current::read('Page.id') . '.ChildPage.{n}.id', array()
+		);
+
 		//メニューHTML表示
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/index');
 
@@ -94,55 +98,12 @@ class MenuHelper extends AppHelper {
 	}
 
 /**
- * メニューの表示
- *
- * @param int $roomId Room.id
- * @param int $pageId Page.id
- * @param string $displayType 表示タイプ
- * @return string HTMLタグ
- */
-	public function renderChild($roomId, $pageId, $displayType = null) {
-		$html = '';
-
-		$prefixInput = $roomId . '.' . $pageId . '.MenuFramesPage.folder_type';
-		if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false) &&
-				! in_array($pageId, $this->parentPageIds, true)) {
-			return $html;
-		}
-
-		$pageTreeList = array_keys($this->_View->viewVars['pageTreeList']);
-		$childPageIds = Hash::extract(
-			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
-		);
-		$sortChildPageIds = array();
-		foreach ($childPageIds as $id) {
-			$index = array_search((int)$id, $pageTreeList, true);
-			$sortChildPageIds[$index] = $id;
-		}
-		ksort($sortChildPageIds);
-
-		foreach ($sortChildPageIds as $childPageId) {
-			$childRoomId = Hash::get(
-				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id', $roomId
-			);
-			$html .= $this->render(
-				Hash::get($this->_View->viewVars['menus'], $childRoomId . '.' . $childPageId), $displayType
-			);
-			$html .= $this->renderChild($roomId, $childPageId, $displayType);
-		}
-
-		return $html;
-	}
-
-/**
  * メニューの表示(さかのぼり:パンくず用)
  *
- * @param int $roomId Room.id
- * @param int $pageId Page.id
  * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
-	public function renderParent($roomId, $pageId, $displayType = null) {
+	public function renderParent($displayType = null) {
 		$html = '';
 		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
 		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
@@ -157,9 +118,7 @@ class MenuHelper extends AppHelper {
 			if (! $parentRoomId) {
 				continue;
 			}
-			$html .= $this->render(
-				Hash::get($this->_View->viewVars['menus'], $parentRoomId . '.' . $parentPageId), $displayType
-			);
+			$html .= $this->renderPage($parentPageId, $displayType);
 		}
 
 		return $html;
@@ -168,103 +127,52 @@ class MenuHelper extends AppHelper {
 /**
  * メニューリストの表示
  *
- * @param array $menu メニューデータ配列
+ * @param array $treePageId TreeページID
  * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
-	public function render($menu, $displayType = null) {
+	public function renderPage($treePageId, $displayType = null) {
 		$html = '';
 
 		if (! $displayType) {
 			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
 
-		if (! $this->showPrivateRoom($menu) && ! $this->showRoom($menu) ||
-				$menu['MenuFramesPage']['is_hidden']) {
+		$pageId = trim($treePageId);
+		$pages = $this->_View->viewVars['pages'];
+		$menus = $this->_View->viewVars['menus'];
+
+		$page = Hash::get($pages, $pageId);
+		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+		$nest = $this->getIndent($treePageId);
+		if (! $this->displayPage($treePageId)) {
 			return $html;
 		}
 
-		if ($menu['Page']['id'] === Page::PUBLIC_ROOT_PAGE_ID) {
-			return $html;
-		}
-
-		$isActive = Current::read('Page.permalink') === (string)$menu['Page']['permalink'];
-
-		$nest = substr_count(
-			Hash::get($this->_View->viewVars['pageTreeList'], $menu['Page']['id']), Page::$treeParser
-		);
-		if ($menu['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
-			$nest--;
-		}
-
-		//メニューHTML表示
 		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/list', array(
-			'isActive' => $isActive,
+			'isActive' => $this->isActive($page),
 			'nest' => $nest,
-			'options' => $this->link($menu)
+			'options' => $this->link($menu, $displayType),
+			'menu' => $menu,
+			'page' => $page,
 		));
 
 		return $html;
 	}
 
 /**
- * プライベートルームを表示するかどうか
- *
- * @param array $menu メニューデータ配列
- * @return bool
- */
-	public function showPrivateRoom($menu) {
-		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
-		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-		if ($room['parent_id'] !== Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
-			return false;
-		}
-
-		$pathKey = 'MenuFrameSetting.is_private_room_hidden';
-		if (Hash::get($this->_View->viewVars['menuFrameSetting'], $pathKey)) {
-			return false;
-		}
-
-		if ($room['page_id_top'] !== $menu['Page']['id'] &&
-				$defaultHidden &&
-				! $menu['MenuFramesPage']['id']) {
-			return false;
-		}
-		return true;
-	}
-
-/**
- * ルームを表示するかどうか
- *
- * @param array $menu メニューデータ配列
- * @return bool
- */
-	public function showRoom($menu) {
-		$defaultHidden = Hash::get($this->_View->viewVars, 'defaultHidden', false);
-		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
-		if ($room['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
-			return false;
-		}
-		$menuFrameRooms = Hash::get($this->_View->viewVars['menuFrameRooms'], $room['id'], array());
-		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
-				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
-			return false;
-		}
-		if ($defaultHidden && ! $menu['MenuFramesPage']['id']) {
-			return false;
-		}
-		return true;
-	}
-
-/**
  * リンクの表示
  *
  * @param array $menu リンクデータ
+ * @param string $displayType 表示タイプ
  * @return array NetCommonsHtml->linkの引数
  */
-	public function link($menu) {
+	public function link($menu, $displayType = null) {
 		if (! $menu) {
 			return array();
+		}
+		if (! $displayType) {
+			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
 
 		$setting = '';
@@ -283,8 +191,11 @@ class MenuHelper extends AppHelper {
 			$url = h($menu['Page']['permalink']);
 		}
 
-		$title = $this->__getTitle($menu);
-		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
+		$title = $this->__getTitle($menu, $displayType);
+		$domDisplayType = preg_replace('/-/', '_', $displayType);
+		$domId = $this->domId(
+			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
+		);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
@@ -294,13 +205,16 @@ class MenuHelper extends AppHelper {
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
 			);
-			$childDomIds = array_map(function ($value) {
-				return $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $value);
+			$childDomIds = array_map(function ($value) use ($domDisplayType) {
+				return $this->domId(
+					'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $value
+				);
 			}, $childPageIds);
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
 				' initialize(\'' . $domId . '\', ' . json_encode($childDomIds) . ', ' . $toggle . ')';
-			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';switchOpenClose(\'' . $domId . '\')';
+			$options['ng-click'] = $domIdIcon . '=!' . $domIdIcon . ';' .
+								' switchOpenClose($event, \'' . $domId . '\')';
 			$url = '#';
 		} else {
 			$url = '/' . $setting . $url;
@@ -318,9 +232,10 @@ class MenuHelper extends AppHelper {
  * リンクのタイトル表示
  *
  * @param array $menu リンクデータ
+ * @param string $displayType 表示タイプ
  * @return array array(タイトル, アイコン)
  */
-	private function __getTitle($menu) {
+	private function __getTitle($menu, $displayType) {
 		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
 
 		$title = '';
@@ -331,7 +246,10 @@ class MenuHelper extends AppHelper {
 			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));
 		}
 
-		$domId = $this->domId('MenuFramesPage.' . Current::read('Frame.id') . '.' . $menu['Page']['id']);
+		$domDisplayType = preg_replace('/-/', '_', $displayType);
+		$domId = $this->domId(
+			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
+		);
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
@@ -377,6 +295,83 @@ class MenuHelper extends AppHelper {
 			}
 		}
 		return $result;
+	}
+
+/**
+ * 表示するかどうか
+ *
+ * @param string $treePageId Tree(Tabコード付き)のページID
+ * @return bool
+ */
+	public function displayPage($treePageId) {
+		$pageId = trim($treePageId);
+		$pages = $this->_View->viewVars['pages'];
+		$menus = $this->_View->viewVars['menus'];
+
+		$page = Hash::get($pages, $pageId);
+		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+
+		if (! $menu['PagesLanguage']['name'] ||
+				! $menu ||
+				! isset($this->_View->viewVars['pageTreeList'][$pageId])) {
+			return false;
+		}
+		if ($pageId === Page::PUBLIC_ROOT_PAGE_ID) {
+			return false;
+		}
+
+		return true;
+	}
+
+/**
+ * アクティブかどうか
+ *
+ * @param array $page ページデータ配列
+ * @return bool
+ */
+	public function isActive($page) {
+		return Current::read('Page.permalink') === (string)$page['Page']['permalink'];
+	}
+
+/**
+ * 子ページを持っているかどうか
+ *
+ * @param int $pageId ページID
+ * @return bool
+ */
+	public function hasChildPage($pageId) {
+		$childPage = Hash::extract(
+			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
+		);
+
+		$result = false;
+		foreach ($childPage as $id) {
+			if (isset($this->_View->viewVars['pageTreeList'][$id])) {
+				$result = true;
+				break;
+			}
+		}
+
+		return $result;
+	}
+
+/**
+ * インデント数の取得
+ *
+ * @param string $treePageId Tree(Tabコード付き)のページID
+ * @return int
+ */
+	public function getIndent($treePageId) {
+		$pageId = trim($treePageId);
+		$pages = $this->_View->viewVars['pages'];
+		$page = Hash::get($pages, $pageId);
+
+		$indent = substr_count($treePageId, Page::$treeParser);
+		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+			$indent--;
+		}
+
+		return $indent;
 	}
 
 }

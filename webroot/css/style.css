@@ -87,3 +87,64 @@
 .list-group-item > span.pull-left {
 	max-width: 80%;
 }
+
+/**
+ * ヘッダー or フッターメニュー
+ */
+.menu-header-tabs ul.dropdown-menu > li > a,
+.menu-header-tabs ul.dropdown-menu > li.dropdown-header,
+.menu-footer-tabs ul.dropdown-menu > li > a,
+.menu-footer-tabs ul.dropdown-menu > li.dropdown-header {
+	padding: 4px 16px;
+	white-space: nowrap;
+}
+
+.menu-header-tabs.nav-justified > li > a,
+.menu-footer-tabs.nav-justified > li > a {
+	text-align: left;
+}
+
+/**
+ * ヘッダーメニュー
+ */
+.menu-header-tabs.nav-tabs.nav-justified > li {
+	border-radius: 4px 4px 0 0;
+	vertical-align: middle;
+}
+.menu-header-tabs.nav-tabs.nav-justified > li:not(.active) {
+	border-bottom: 1px solid #ddd;
+}
+.menu-header-tabs.nav-tabs.nav-justified > li.active {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+.menu-header-tabs.nav-justified > li > a,
+.menu-header-tabs.nav-tabs.nav-justified > .active > a,
+.menu-header-tabs.nav-tabs.nav-justified > .active > a:focus,
+.menu-header-tabs.nav-tabs.nav-justified > .active > a:hover {
+	border: none;
+}
+
+/**
+ * 設定画面のページ表示有無
+ */
+.menu-tree-room,
+.menu-tree-node-page,
+.menu-tree-leaf-page {
+	padding-left: 4px;
+	margin-left: -20px;
+}
+.menu-tree-room {
+	border-left: 3px #659ada solid;
+}
+.menu-tree-node-page,
+.menu-tree-leaf-page {
+	border-left: 3px #aca899 solid;
+}
+.menu-is-hidden-checkbox > span > input[type="checkbox"] {
+	position: static;
+	margin-left: 0px;
+	margin-top: -2px;
+	vertical-align: middle;
+}

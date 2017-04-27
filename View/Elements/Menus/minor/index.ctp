@@ -1,32 +1,28 @@
 <?php
 /**
- * minor index template
+ * 下層ページのみ表示タイプのメニュー
  *
- * @author      Noriko Arai <arai@nii.ac.jp>
- * @author      Shohei Nakajima <nakajimashouhei@gmail.com>
- * @link        http://www.netcommons.org NetCommons Project
- * @license     http://www.netcommons.org/license.txt NetCommons License
- * @copyright   Copyright 2014, NetCommons Project
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
  */
-?>
 
-<?php
-	echo '<div class="list-group">';
-	$rootId = Current::read('Page.root_id');
-	if ($rootId == 1) {
-		$checkNest = 1;
-	} else {
-		$checkNest = 0;
-	}
-	foreach ($parentPages as $menu) {
-		$nest = substr_count(Hash::get($pageTreeList, $menu['Page']['id']), Page::$treeParser);
-		if ($nest === $checkNest) {
-			$targetMenu = Hash::extract($menus, '{n}.' . $menu['Page']['id']);
-			if (! empty($targetMenu)) {
-				echo $this->Menu->render($targetMenu[0], false);
-				echo $this->Menu->renderChild($menu['Page']['room_id'], $menu['Page']['id'], false);
-			}
-		}
-	}
-	echo '</div>';
+echo '<div class="list-group">';
 
+$isActiveRoot = false;
+foreach ($pageTreeList as $treePageId) {
+	$pageId = trim($treePageId);
+
+	$nest = $this->Menu->getIndent($treePageId);
+	if ($nest === 0) {
+		$isActiveRoot = in_array($pageId, $this->Menu->parentPageIds, true);
+	}
+
+	if ($isActiveRoot) {
+		echo $this->Menu->renderPage($treePageId, 'minor');
+	}
+}
+
+echo '</div>';
