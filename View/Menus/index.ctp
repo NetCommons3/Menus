@@ -11,7 +11,7 @@
  */
 ?>
 
-<nav ng-controller="MenusController" ng-cloak>
+<nav ng-controller="MenusController">
 <?php echo $this->Menu->renderMain(); ?>
 </nav>
 
