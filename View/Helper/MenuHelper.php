@@ -253,7 +253,9 @@ class MenuHelper extends AppHelper {
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
-		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+		$hasChildPage = Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage');
+
+		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
 			$icon = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{' .
 							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
@@ -261,7 +263,7 @@ class MenuHelper extends AppHelper {
 						'}"> ' .
 					'</span> ';
 
-		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
+		} elseif ($hasChildPage) {
 			if ($toggle) {
 				$icon = '<span class="glyphicon glyphicon-menu-down"> </span> ';
 			} else {
