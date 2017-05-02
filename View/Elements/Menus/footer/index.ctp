@@ -13,7 +13,7 @@
 <ul class="list-group nav nav-pills nav-justified menu-footer-tabs">
 	<?php
 		$first = true;
-		foreach ($pageTreeList as $treePageId) {
+		foreach ($treeList4Disp as $treePageId) {
 			if (! $this->Menu->displayPage($treePageId)) {
 				continue;
 			}
@@ -31,7 +31,7 @@
 					]);
 				}
 				$first = false;
-				$hasChild = $this->Menu->hasChildPage($pageId);
+				$hasChild = $this->Menu->hasChildPage($menu, true);
 			} else {
 				echo $this->element('Menus.Menus/footer/list_end', [
 					'nest' => $nest,
@@ -43,7 +43,7 @@
 				'pageId' => $pageId,
 				'nest' => $nest,
 				'isActive' => $this->Menu->isActive($page),
-				'hasChild' => $hasChild,
+				'hasChild' => $this->Menu->hasChildPage($menu, false),
 			]);
 
 			echo $this->Menu->renderPage($treePageId, 'footer');

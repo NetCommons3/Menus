@@ -25,7 +25,7 @@
 			<ul class="list-group nav nav-tabs nav-justified menu-header-tabs" role="tablist">
 				<?php
 					$first = true;
-					foreach ($pageTreeList as $treePageId) {
+					foreach ($treeList4Disp as $treePageId) {
 						if (! $this->Menu->displayPage($treePageId)) {
 							continue;
 						}
@@ -43,7 +43,7 @@
 								]);
 							}
 							$first = false;
-							$hasChild = $this->Menu->hasChildPage($pageId);
+							$hasChild = $this->Menu->hasChildPage($menu, true);
 						} else {
 							echo $this->element('Menus.Menus/header/list_end', [
 								'nest' => $nest,
@@ -55,7 +55,7 @@
 							'pageId' => $pageId,
 							'nest' => $nest,
 							'isActive' => $this->Menu->isActive($page),
-							'hasChild' => $hasChild,
+							'hasChild' => $this->Menu->hasChildPage($menu, false),
 						]);
 
 						echo $this->Menu->renderPage($treePageId, 'header');
