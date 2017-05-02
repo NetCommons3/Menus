@@ -68,6 +68,7 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$viewVars['menuFrameRooms'] = Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}');
 		$viewVars['pageTreeList'] = $Page->generateTreeList(
 				array('Page.room_id' => $roomIds), null, null, Page::$treeParser);
+		$viewVars['treeList4Disp'] = $viewVars['pageTreeList'];
 		$viewVars['pages'] = $Page->getPages($roomIds);
 		$viewVars['parentPages'] = $Page->getPath(Current::read('Page.id'));
 

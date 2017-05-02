@@ -12,12 +12,19 @@
 $title = '';
 
 if ($nest === 0) {
-	$hasChild = $this->Menu->hasChildPage($menu['Page']['id']);
+	$hasChild = $this->Menu->hasChildPage($menu, true);
+	$hasIcon = (bool)$options['icon'];
 
 	$options['icon'] = '';
 	if (isset($options['title'])) {
 		$title = '<span>' . $options['title'] . '</span>';
 		$options['options']['title'] = $options['title'];
+	}
+	if ($hasIcon) {
+		$title .= ' <span class="caret"></span>';
+		$options['options']['class'] = 'clearfix dropdown-toggle';
+	} else {
+		$options['options']['class'] = 'clearfix';
 	}
 	if ($hasChild) {
 		$options['options']['data-toggle'] = 'dropdown';
@@ -28,11 +35,6 @@ if ($nest === 0) {
 		$options['options']['aria-expanded'] = 'false';
 		$options['options']['ng-init'] = null;
 		$options['options']['ng-click'] = null;
-		$options['options']['class'] = 'clearfix dropdown-toggle';
-
-		$title .= ' <span class="caret"></span>';
-	} else {
-		$options['options']['class'] = 'clearfix';
 	}
 } else {
 	$hasChild = false;

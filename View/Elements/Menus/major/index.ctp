@@ -11,7 +11,7 @@
 
 echo '<div class="list-group">';
 $first = true;
-foreach ($pageTreeList as $treePageId) {
+foreach ($treeList4Disp as $treePageId) {
 	$treeIndent = substr_count($treePageId, Page::$treeParser);
 	if ($treeIndent === 0) {
 		if (! $first) {

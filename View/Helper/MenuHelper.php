@@ -253,7 +253,9 @@ class MenuHelper extends AppHelper {
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
-		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+		$hasChildPage = $this->hasChildPage($menu, false);
+
+		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
 			$icon = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{' .
 							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
@@ -261,7 +263,7 @@ class MenuHelper extends AppHelper {
 						'}"> ' .
 					'</span> ';
 
-		} elseif (Hash::get($this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage')) {
+		} elseif ($hasChildPage) {
 			if ($toggle) {
 				$icon = '<span class="glyphicon glyphicon-menu-down"> </span> ';
 			} else {
@@ -313,7 +315,7 @@ class MenuHelper extends AppHelper {
 
 		if (! $menu['PagesLanguage']['name'] ||
 				! $menu ||
-				! isset($this->_View->viewVars['pageTreeList'][$pageId])) {
+				! isset($this->_View->viewVars['treeList4Disp'][$pageId])) {
 			return false;
 		}
 		if ($pageId === Page::PUBLIC_ROOT_PAGE_ID) {
@@ -336,19 +338,39 @@ class MenuHelper extends AppHelper {
 /**
  * 子ページを持っているかどうか
  *
- * @param int $pageId ページID
+ * @param int $menu メニューデータ
+ * @param bool $hasTreeList $treeList4Dispに持っているかどうか
  * @return bool
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function hasChildPage($pageId) {
+	public function hasChildPage($menu, $hasTreeList = false) {
 		$childPage = Hash::extract(
-			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
+			$this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage.{n}.id', array()
 		);
 
-		$result = false;
+		if ($hasTreeList) {
+			$pageTreeList = $this->_View->viewVars['treeList4Disp'];
+		} else {
+			$pageTreeList = $this->_View->viewVars['pageTreeList'];
+		}
+
+		$hasChildPage = false;
 		foreach ($childPage as $id) {
-			if (isset($this->_View->viewVars['pageTreeList'][$id])) {
-				$result = true;
+			if (isset($pageTreeList[$id])) {
+				$hasChildPage = true;
 				break;
+			}
+		}
+
+		if ($hasTreeList) {
+			$result = $hasChildPage;
+		} else {
+			if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
+				$result = true;
+			} elseif ($hasChildPage) {
+				$result = true;
+			} else {
+				$result = false;
 			}
 		}
 

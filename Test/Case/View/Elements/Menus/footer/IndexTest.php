@@ -78,12 +78,12 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		$pattern = '<ul class="list-group nav nav-pills nav-justified menu-footer-tabs">';
 		$this->assertTextContains($pattern, $this->view);
 
-		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja');
-		$this->__assertLink($frameId, '8', '/test5', '', 'Test page 5');
-		$this->__assertLink($frameId, '9', '/page_1', '', 'Page 1');
-		$this->__assertLink($frameId, '10', '/page_2', '', 'Page 2');
-		$this->__assertLink($frameId, '5', '/test2', '', 'サブルーム１');
-		$this->__assertLink($frameId, '6', '/test3', '', 'サブルーム２');
+		$this->__assertLink($frameId, '4', '/', 'active', 'Home ja', false);
+		$this->__assertLink($frameId, '8', '/test5', '', 'Test page 5', false);
+		$this->__assertLink($frameId, '9', '/page_1', '', 'Page 1', true);
+		$this->__assertLink($frameId, '10', '/page_2', '', 'Page 2', false);
+		$this->__assertLink($frameId, '5', '/test2', '', 'サブルーム１', false);
+		$this->__assertLink($frameId, '6', '/test3', '', 'サブルーム２', false);
 	}
 
 /**
@@ -94,15 +94,23 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
  * @param string $permalink パーマリンク
  * @param string $active activeかどうか(アクティブの場合、"active"の文字列をセットする)
  * @param string $name ページ名
+ * @param bool $hasDropMark ドロップマークがあるかどうか
  * @return void
  */
-	private function __assertLink($frameId, $pageId, $permalink, $active, $name) {
+	private function __assertLink($frameId, $pageId, $permalink, $active, $name, $hasDropMark) {
 		$domId = 'MenuFramesPageFooter' . $frameId . $pageId;
 		if ($active) {
 			$pattern =
 				'<li class="' . $active . '">' .
 					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix">' .
 						'<span>' . $name . '<\/span>' .
+					'<\/a>' .
+				'<\/li>';
+		} elseif ($hasDropMark) {
+			$pattern =
+				'<li role="presentation" class="dropup">' .
+					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix dropdown-toggle">' .
+						'<span>' . $name . '<\/span> <span class="caret"><\/span>' .
 					'<\/a>' .
 				'<\/li>';
 		} else {

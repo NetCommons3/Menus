@@ -10,6 +10,7 @@
  */
 
 App::uses('MenusAppController', 'Menus.Controller');
+App::uses('Space', 'Rooms.Model');
 
 /**
  * Menus Controller
@@ -111,14 +112,18 @@ class MenusController extends MenusAppController {
 		$conditions = array(
 			'Page.room_id' => $roomIds,
 		);
-		$pageTreeList = $this->Page->generateTreeList($conditions, null, null, Page::$treeParser);
+		$dbPageTreeList = $this->Page->generateTreeList($conditions, null, null, Page::$treeParser);
 
-		$treeList4Disp = [];
-		$treeChildList = [];
+		$parentPages = $this->Page->getPath(Current::read('Page.id'));
+		$parentPageIds = Hash::extract($parentPages, '{n}.Page.id');
+
+		$treeList4Disp = []; //表示ツリー用の変数
+		$treeChildList = []; //子(孫)ページを表示するかどうか保持す変数
+		$pageTreeList = []; //隠しページを除いたツリー用の変数
 
 		$pages = $this->viewVars['pages'];
 		$menus = $this->viewVars['menus'];
-		foreach ($pageTreeList as $pageId => $treePageId) {
+		foreach ($dbPageTreeList as $pageId => $treePageId) {
 			$page = Hash::get($pages, $pageId);
 			$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
 
@@ -129,6 +134,9 @@ class MenusController extends MenusAppController {
 			if ($menu['MenuFramesPage']['is_hidden']) {
 				continue;
 			}
+
+			$pageTreeList[$pageId] = $treePageId;
+
 			//以下の場合、表示しない
 			// * プライベートを表示しない設定になっている
 			// * ルームが表示しない設定になっている
@@ -136,35 +144,46 @@ class MenusController extends MenusAppController {
 				continue;
 			}
 
-			if ($indent === 0) {
-				//先頭のページなら、必ず表示するものとする
-				$treeList4Disp[$pageId] = $treePageId;
-			}
-
 			//以下の条件の時、表示する
+			// * 先頭のページなら、必ず表示するものとする
+			// * 現在表示しているページの親ページ
 			// * 現在いるページの下層ページ(子ページ)なら表示する
 			// * クリック時の表示が下層ページなら表示する
-			if ($page['Page']['parent_id'] === Current::read('Page.id')) {
-				$treeList4Disp[$pageId] = $treePageId;
-				continue;
-			}
 
-			//以下の条件の時、下層ページデータを取得するようにデータを保持する
+			//以下の条件の時、下層ページデータを取得して、次ループで当処理に入ってくるようにデータを保持する
 			// * クリック時下層ページを表示
-			if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+			// * 現在表示しているページの親ページ
+
+			if (in_array((string)$pageId, $parentPageIds, true)) {
+				$treeList4Disp[$pageId] = $treePageId;
+
 				//ページの下層ページIDs
 				$treeChildList = Hash::merge(
 					$treeChildList,
 					Hash::extract($pages, $pageId . '.ChildPage.{n}.id', [])
 				);
+				continue;
 			}
 
-			if (in_array((string)$pageId, $treeChildList, true)) {
+			if ($indent === 0 ||
+					in_array((string)$pageId, $treeChildList, true)) {
 				$treeList4Disp[$pageId] = $treePageId;
+
+				//以下の条件の時、下層ページデータを取得して、次ループで当処理に入ってくるようにデータを保持する
+				// * クリック時下層ページを表示
+				// * 現在表示しているページの親ページ
+				if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+					//ページの下層ページIDs
+					$treeChildList = Hash::merge(
+						$treeChildList,
+						Hash::extract($pages, $pageId . '.ChildPage.{n}.id', [])
+					);
+				}
 			}
 		}
 
-		$this->set('pageTreeList', $treeList4Disp);
+		$this->set('treeList4Disp', $treeList4Disp);
+		$this->set('pageTreeList', $pageTreeList);
 	}
 
 /**
@@ -176,8 +195,11 @@ class MenusController extends MenusAppController {
  */
 	protected function _getIndent($page, $treePageId) {
 		$indent = substr_count($treePageId, Page::$treeParser);
-		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
+		if ($page['Space']['id'] === Space::PUBLIC_SPACE_ID) {
 			$indent--;
+		}
+		if ($indent < 0) {
+			$indent = 0;
 		}
 
 		return $indent;
