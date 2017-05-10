@@ -200,7 +200,9 @@ class MenuHelper extends AppHelper {
 		$options = array('id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
-		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+		$hasChildPage = $this->hasChildPage($menu, false);
+
+		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
 			$childPageIds = array();
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
