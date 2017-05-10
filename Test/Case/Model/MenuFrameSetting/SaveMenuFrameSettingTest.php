@@ -62,7 +62,7 @@ class MenuFrameSettingSaveMenuFrameSettingTest extends NetCommonsSaveTest {
 			'MenuFrameSetting' => array(
 				'id' => '3',
 				'frame_key' => 'frame_3',
-				'display_type' => 'main',
+				'display_type' => 'major',
 			),
 		);
 

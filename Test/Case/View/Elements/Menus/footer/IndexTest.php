@@ -101,21 +101,21 @@ class MenusViewElementsMenusFooterIndexTest extends NetCommonsControllerTestCase
 		$domId = 'MenuFramesPageFooter' . $frameId . $pageId;
 		if ($active) {
 			$pattern =
-				'<li class="' . $active . '">' .
+				'<li class="' . $active . '" ng-click="linkClick\(\'' . $domId . '\'\)">' .
 					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix">' .
 						'<span>' . $name . '<\/span>' .
 					'<\/a>' .
 				'<\/li>';
 		} elseif ($hasDropMark) {
 			$pattern =
-				'<li role="presentation" class="dropup">' .
+				'<li role="presentation" class="dropup" ng-click="linkClick\(\'' . $domId . '\'\)">' .
 					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix dropdown-toggle">' .
 						'<span>' . $name . '<\/span> <span class="caret"><\/span>' .
 					'<\/a>' .
 				'<\/li>';
 		} else {
 			$pattern =
-				'<li>' .
+				'<li ng-click="linkClick\(\'' . $domId . '\'\)">' .
 					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix">' .
 						'<span>' . $name . '<\/span>' .
 					'<\/a>' .
