@@ -10,7 +10,7 @@
  * @param {string} Controller name
  * @param {function($scope)} Controller
  */
-NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
+NetCommonsApp.controller('MenusController', ['$scope', '$window', function($scope, $window) {
 
   /**
    * data
@@ -58,7 +58,7 @@ NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
   $scope.linkClick = function(domId) {
     var domEl = $('#' + domId);
     if (angular.isObject(domEl[0])) {
-      domEl[0].click();
+      $window.location.href = domEl[0].href;
     }
   };
 
