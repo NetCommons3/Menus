@@ -10,7 +10,7 @@
  * @param {string} Controller name
  * @param {function($scope)} Controller
  */
-NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
+NetCommonsApp.controller('MenusController', ['$scope', '$window', function($scope, $window) {
 
   /**
    * data
@@ -47,6 +47,18 @@ NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
     if (angular.isObject($event)) {
       $event.preventDefault();
       $event.stopPropagation();
+    }
+  };
+
+  /**
+   * クリック
+   *
+   * @return {void}
+   */
+  $scope.linkClick = function(domId) {
+    var domEl = $('#' + domId);
+    if (angular.isObject(domEl[0])) {
+      $window.location.href = domEl[0].href;
     }
   };
 

@@ -11,17 +11,18 @@
 
 if ($nest === 0) {
 	$isRootActive = in_array($pageId, $this->Menu->parentPageIds, true);
+	$linkClick = 'linkClick(\'' . $this->Menu->getLinkDomId('header', $pageId) . '\')';
 	if ($isActive || $isRootActive) {
 		if ($hasChild) {
-			$listTagStart = '<li role="presentation" class="dropdown active">';
+			$listTagStart = '<li role="presentation" class="dropdown active" ng-click="' . $linkClick . '">';
 		} else {
-			$listTagStart = '<li class="active">';
+			$listTagStart = '<li class="active" ng-click="' . $linkClick . '">';
 		}
 	} else {
 		if ($hasChild) {
-			$listTagStart = '<li role="presentation" class="dropdown">';
+			$listTagStart = '<li role="presentation" class="dropdown" ng-click="' . $linkClick . '">';
 		} else {
-			$listTagStart = '<li>';
+			$listTagStart = '<li ng-click="' . $linkClick . '">';
 		}
 	}
 } else {

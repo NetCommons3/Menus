@@ -15,6 +15,8 @@ ClassRegistry::init('Pages.Page');
 
 /**
  * MenuHelper
+ *
+ * @package NetCommons\Menus\View\Helper
  */
 class MenuHelper extends AppHelper {
 
@@ -192,23 +194,21 @@ class MenuHelper extends AppHelper {
 		}
 
 		$title = $this->__getTitle($menu, $displayType);
-		$domDisplayType = preg_replace('/-/', '_', $displayType);
-		$domId = $this->domId(
-			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
-		);
+
+		$domId = $this->getLinkDomId($displayType, $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$options = array('id' => $domId, 'escapeTitle' => false);
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
-		if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+		$hasChildPage = $this->hasChildPage($menu, false);
+
+		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
 			$childPageIds = array();
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
 			);
-			$childDomIds = array_map(function ($value) use ($domDisplayType) {
-				return $this->domId(
-					'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $value
-				);
+			$childDomIds = array_map(function ($value) use($displayType) {
+				return $this->getLinkDomId($displayType, $value);
 			}, $childPageIds);
 
 			$options['ng-init'] = $domIdIcon . '=' . $toggle . ';' .
@@ -246,10 +246,7 @@ class MenuHelper extends AppHelper {
 			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));
 		}
 
-		$domDisplayType = preg_replace('/-/', '_', $displayType);
-		$domId = $this->domId(
-			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $menu['Page']['id']
-		);
+		$domId = $this->getLinkDomId($displayType, $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
@@ -394,6 +391,20 @@ class MenuHelper extends AppHelper {
 		}
 
 		return $indent;
+	}
+
+/**
+ * リンクのdomIdを取得する
+ *
+ * @param string $displayType 表示タイプ
+ * @param int $pageId ページID
+ * @return string
+ */
+	public function getLinkDomId($displayType, $pageId) {
+		$domDisplayType = preg_replace('/-/', '_', $displayType);
+		return $this->domId(
+			'MenuFramesPage.' . $domDisplayType . '.' . Current::read('Frame.id') . '.' . $pageId
+		);
 	}
 
 }

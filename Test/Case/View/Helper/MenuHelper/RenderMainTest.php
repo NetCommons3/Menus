@@ -133,11 +133,11 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$this->Menu->renderMain();
 
 		//cssのURLチェック
-		$pattern = '/<link.*?' . preg_quote('/menus/css/main/style.css', '/') . '.*?>/';
+		$pattern = '/<link.*?' . preg_quote('/menus/css/major/style.css', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->Menu->_View->fetch('css'));
 
 		//scriptのURLチェック
-		$pattern = '/<script.*?' . preg_quote('/menus/js/main/menus.js', '/') . '.*?>/';
+		$pattern = '/<script.*?' . preg_quote('/menus/js/major/menus.js', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->Menu->_View->fetch('script'));
 	}
 

@@ -73,7 +73,7 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 			)),
 			array('frameKey' => 'frame_8', 'expected' => array(
 				'frame_key' => 'frame_8',
-				'display_type' => 'main',
+				'display_type' => 'major',
 				'created_user' => null,
 				'created' => null,
 				'modified_user' => null,
