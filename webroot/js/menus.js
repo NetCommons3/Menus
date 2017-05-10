@@ -50,6 +50,18 @@ NetCommonsApp.controller('MenusController', ['$scope', function($scope) {
     }
   };
 
+  /**
+   * クリック
+   *
+   * @return {void}
+   */
+  $scope.linkClick = function(domId) {
+    var domEl = $('#' + domId);
+    if (angular.isObject(domEl[0])) {
+      domEl[0].click();
+    }
+  };
+
 }]);
 
 

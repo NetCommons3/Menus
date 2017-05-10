@@ -16,6 +16,7 @@ ClassRegistry::init('Pages.Page');
 /**
  * MenuFormHelper
  *
+ * @package NetCommons\Menus\View\Helper
  */
 class MenuFormHelper extends AppHelper {
 

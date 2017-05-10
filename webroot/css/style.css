@@ -96,34 +96,66 @@
 .menu-footer-tabs ul.dropdown-menu > li > a,
 .menu-footer-tabs ul.dropdown-menu > li.dropdown-header {
 	padding: 4px 16px;
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 }
 
 .menu-header-tabs.nav-justified > li > a,
 .menu-footer-tabs.nav-justified > li > a {
-	text-align: left;
+	text-align: center;
+	/*white-space: nowrap;*/
 }
 
 /**
  * ヘッダーメニュー
  */
-.menu-header-tabs.nav-tabs.nav-justified > li {
+.menu-header-tabs > li {
 	border-radius: 4px 4px 0 0;
 	vertical-align: middle;
+	cursor: pointer
 }
-.menu-header-tabs.nav-tabs.nav-justified > li:not(.active) {
+.menu-header-tabs > li:not(.active) {
 	border-bottom: 1px solid #ddd;
 }
-.menu-header-tabs.nav-tabs.nav-justified > li.active {
+.menu-header-tabs > li.active {
 	border-top: 1px solid #ddd;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
 }
 .menu-header-tabs.nav-justified > li > a,
-.menu-header-tabs.nav-tabs.nav-justified > .active > a,
-.menu-header-tabs.nav-tabs.nav-justified > .active > a:focus,
-.menu-header-tabs.nav-tabs.nav-justified > .active > a:hover {
+.menu-header-tabs.nav-justified > .active > a,
+.menu-header-tabs.nav-justified > .active > a:focus,
+.menu-header-tabs.nav-justified > .active > a:hover {
 	border: none;
+	background-color: transparent;
+}
+.menu-header-tabs > li:not(.active):focus,
+.menu-header-tabs > li:not(.active):hover {
+	border-radius: 4px 4px 0 0;
+	background-color: #eee;
+}
+
+/**
+ * フッターメニュー
+ */
+.menu-footer-tabs > li {
+	border: 1px solid #ddd;
+	border-radius: 4px 4px 4px 4px;
+	vertical-align: middle;
+	cursor: pointer
+}
+.menu-footer-tabs > li.active > a,
+.menu-footer-tabs > li.active > a:focus,
+.menu-footer-tabs > li.active > a:hover {
+	background-color: transparent;
+}
+.menu-footer-tabs > li.active {
+	border-radius: 4px 4px 4px 4px;
+	background-color: #337ab7;
+}
+.menu-footer-tabs > li:not(.active):focus,
+.menu-footer-tabs > li:not(.active):hover {
+	border-radius: 4px 4px 4px 4px;
+	background-color: #eee;
 }
 
 /**
