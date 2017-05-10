@@ -50,13 +50,6 @@ class MenuFrameSetting extends MenusAppModel {
 	const DISPLAY_TYPE_FOOTER = 'footer';
 
 /**
- * メインタイプ定数
- *
- * @var string
- */
-	const DISPLAY_TYPE_MAIN = 'main';
-
-/**
  * パンくずタイプ定数
  *
  * @var string
@@ -112,9 +105,6 @@ class MenuFrameSetting extends MenusAppModel {
 					break;
 				case self::DISPLAY_TYPE_PATH:
 					$label = __d('menus', 'Topic path');
-					break;
-				case self::DISPLAY_TYPE_MAIN:
-					$label = __d('menus', 'Main type');
 					break;
 				default:
 					// defaultはdir名をそのまま出します。そうしておくと、カスタムをかける場合
@@ -224,7 +214,7 @@ class MenuFrameSetting extends MenusAppModel {
 			} elseif ($containerType === Container::TYPE_FOOTER) {
 				$displayType = self::DISPLAY_TYPE_FOOTER;
 			} else {
-				$displayType = self::DISPLAY_TYPE_MAIN;
+				$displayType = self::DISPLAY_TYPE_LEFT;
 			}
 
 			$menuFrameSetting = $this->create(array(
