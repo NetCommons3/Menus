@@ -48,6 +48,15 @@ class MenusAppController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
+		$this->_prepare();
+	}
+
+/**
+ * 前準備
+ *
+ * @return void
+ */
+	protected function _prepare() {
 		//ルームデータ取得
 		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
 		if (! $rooms) {
