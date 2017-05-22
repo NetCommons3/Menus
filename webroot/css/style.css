@@ -98,6 +98,10 @@
 	padding: 4px 16px;
 	/*white-space: nowrap;*/
 }
+.menu-header-tabs.nav-justified > li,
+.menu-footer-tabs.nav-justified > li {
+	width: 7%;
+}
 
 .menu-header-tabs.nav-justified > li > a,
 .menu-footer-tabs.nav-justified > li > a {
