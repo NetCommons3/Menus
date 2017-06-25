@@ -184,13 +184,16 @@ class MenuFormHelper extends AppHelper {
 			$prefixInput = 'MenuFrameSetting';
 			$isFidden = 'is_private_room_hidden';
 		} else {
-			$prefixInput = 'MenuRooms.' . $roomId . '.MenuFramesRoom';
+			//$prefixInput = 'MenuRooms.' . $roomId . '.MenuFramesRoom';
+			$prefixInput = 'Menus.' . $roomId . '.' . $room['Room']['page_id_top'] . '.MenuFramesPage';
 			$isFidden = 'is_hidden';
 
 			$html .= $this->NetCommonsForm->hidden($prefixInput . '.id');
 			$html .= $this->NetCommonsForm->hidden($prefixInput . '.frame_key',
 					array('value' => $this->_View->request->data['Frame']['key']));
-			$html .= $this->NetCommonsForm->hidden($prefixInput . '.room_id', array('value' => $roomId));
+			$html .= $this->NetCommonsForm->hidden(
+				$prefixInput . '.page_id', array('value' => $room['Room']['page_id_top'])
+			);
 		}
 		return array($prefixInput, $isFidden, $html);
 	}
