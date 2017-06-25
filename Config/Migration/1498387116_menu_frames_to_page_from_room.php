@@ -1,6 +1,6 @@
 <?php
 /**
- * メインタイプを削除する Migration
+ * MenuFramesRoomのデータをMenuFramesPageに登録する Migration
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -11,11 +11,12 @@
 App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
 
 /**
- * メインタイプを削除する Migration
+ * MenuFramesRoomのデータをMenuFramesPageに登録する Migration
  *
  * @author AllCreator <info@allcreator.net>
  * @package NetCommons\Menus\Config\Migration
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @see https://github.com/NetCommons3/NetCommons3/issues/928
  */
 class MenuFramesToPageFromRoom extends NetCommonsMigration {
 
