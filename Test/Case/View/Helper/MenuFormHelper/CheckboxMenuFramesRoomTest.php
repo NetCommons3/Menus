@@ -10,7 +10,7 @@
  */
 
 App::uses('NetCommonsHelperTestCase', 'NetCommons.TestSuite');
-App::uses('MenuFramesRoomFixture', 'Menus.Test/Fixture');
+App::uses('MenuFramesPageFixture', 'Menus.Test/Fixture');
 App::uses('MenuFrameSettingFixture', 'Menus.Test/Fixture');
 
 /**
@@ -49,33 +49,33 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			// * ネスト無し、MenuFramesPageデータあり
 			array(
 				'room' => array(
-					'Room' => array('id' => '2', 'parent_id' => null),
+					'Room' => array('id' => '2', 'parent_id' => null, 'page_id_top' => '4'),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(
-					'MenuFramesRoom' => (new MenuFramesRoomFixture())->records[0],
+					'MenuFramesPage' => (new MenuFramesPageFixture())->records[0],
 				),
-				'pageId' => '1'
+				'pageId' => '4'
 			),
 			// * ネストあり、MenuFramesPageデータなし
 			array(
 				'room' => array(
-					'Room' => array('id' => '5', 'parent_id' => '1'),
+					'Room' => array('id' => '5', 'parent_id' => '1', 'page_id_top' => '5'),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(
-					'MenuFramesRoom' => array(),
+					'MenuFramesPage' => array(),
 				),
 				'pageId' => '5'
 			),
 			// * プライベートルーム
 			array(
 				'room' => array(
-					'Room' => array('id' => '10', 'parent_id' => '2'),
+					'Room' => array('id' => '10', 'parent_id' => '2', 'page_id_top' => '9'),
 					'RoomsLanguage' => array(array('language_id' => '2', 'name' => 'Room name'))
 				),
 				'menu' => array(
-					'MenuFramesRoom' => array(),
+					'MenuFramesPage' => array(),
 				),
 				'pageId' => '9'
 			),
@@ -104,9 +104,9 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 		$requestData = array(
 			'Frame' => array('key' => 'frame_3'),
 			'MenuFrameSetting' => (new MenuFrameSettingFixture())->records[0],
-			'MenuRooms' => array(
-				$roomId => array('MenuFramesRoom' => $menu['MenuFramesRoom'])
-			)
+//			'MenuRooms' => array(
+//				$roomId => array('MenuFramesRoom' => $menu['MenuFramesRoom'])
+//			)
 		);
 		$params = array();
 		$this->loadHelper('Menus.MenuForm', $viewVars, $requestData, $params);
@@ -132,24 +132,24 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			$this->assertTextNotContains('data[MenuFrameSetting][is_private_room_hidden]', $result);
 
 			$field = 'id';
-			$value = Hash::get($menu, 'MenuFramesRoom.' . $field);
+			$value = Hash::get($menu, 'MenuFramesPage.' . $field);
 			$this->assertInput('input',
-					'data[MenuRooms][' . $roomId . '][MenuFramesRoom][' . $field . ']', $value, $result);
+					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][' . $field . ']', $value, $result);
 
 			$field = 'frame_key';
-			$value = Hash::get($menu, 'MenuFramesRoom.' . $field);
+			$value = Hash::get($menu, 'MenuFramesPage.' . $field);
 			$this->assertInput('input',
-					'data[MenuRooms][' . $roomId . '][MenuFramesRoom][' . $field . ']', $value, $result);
+					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][' . $field . ']', $value, $result);
 
-			$field = 'room_id';
-			$value = Hash::get($menu, 'MenuFramesRoom.' . $field);
+			$field = 'page_id';
+			$value = Hash::get($menu, 'MenuFramesPage.' . $field);
 			$this->assertInput('input',
-					'data[MenuRooms][' . $roomId . '][MenuFramesRoom][' . $field . ']', $value, $result);
+					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][' . $field . ']', $value, $result);
 
 			$this->assertInput('input',
-					'data[MenuRooms][' . $roomId . '][MenuFramesRoom][is_hidden]', '0', $result);
+					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][is_hidden]', '0', $result);
 			$this->assertInput('input',
-					'data[MenuRooms][' . $roomId . '][MenuFramesRoom][is_hidden]', '1', $result);
+					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][is_hidden]', '1', $result);
 		}
 	}
 
