@@ -104,9 +104,6 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 		$requestData = array(
 			'Frame' => array('key' => 'frame_3'),
 			'MenuFrameSetting' => (new MenuFrameSettingFixture())->records[0],
-//			'MenuRooms' => array(
-//				$roomId => array('MenuFramesRoom' => $menu['MenuFramesRoom'])
-//			)
 		);
 		$params = array();
 		$this->loadHelper('Menus.MenuForm', $viewVars, $requestData, $params);
