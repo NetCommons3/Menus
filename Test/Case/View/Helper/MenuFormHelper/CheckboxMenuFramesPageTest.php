@@ -61,7 +61,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 			// * ネスト無し、MenuFramesPageデータあり
 			array(
 				'room' => array(
-					'Room' => array('id' => '1', 'parent_id' => null)
+					'Room' => array('id' => '1', 'parent_id' => null, 'page_id_top' => '4')
 				),
 				'menu' => array(
 					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
@@ -71,13 +71,13 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				'pageTreeList' => array($pageId => chr(9) . $pageId),
 				'nest' => 1,
 				'rootRoom' => array(
-					'Room' => array('id' => '1', 'parent_id' => null)
+					'Room' => array('id' => '1', 'parent_id' => null, 'page_id_top' => '4')
 				),
 			),
 			// * ネストあり、MenuFramesPageデータなし
 			array(
 				'room' => array(
-					'Room' => array('id' => '1', 'parent_id' => null)
+					'Room' => array('id' => '1', 'parent_id' => null, 'page_id_top' => '4')
 				),
 				'menu' => array(
 					'Page' => Hash::extract((new Page4menuFixture())->records, '{n}[id=' . $pageId . ']')[0],
@@ -87,13 +87,13 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				'pageTreeList' => array($pageId => chr(9) . chr(9) . $pageId),
 				'nest' => 2,
 				'rootRoom' => array(
-					'Room' => array('id' => '1', 'parent_id' => null)
+					'Room' => array('id' => '1', 'parent_id' => null, 'page_id_top' => '4')
 				),
 			),
 			// * プライベートルーム
 			array(
 				'room' => array(
-					'Room' => array('id' => '9', 'parent_id' => '2')
+					'Room' => array('id' => '9', 'parent_id' => '2', 'page_id_top' => '9')
 				),
 				'menu' => array(
 					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
@@ -103,13 +103,13 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				'pageTreeList' => array(),
 				'nest' => false,
 				'rootRoom' => array(
-					'Room' => array('id' => '9', 'parent_id' => '2')
+					'Room' => array('id' => '9', 'parent_id' => '2', 'page_id_top' => '9')
 				),
 			),
 			// * グループルーム
 			array(
 				'room' => array(
-					'Room' => array('id' => '9', 'parent_id' => '3')
+					'Room' => array('id' => '9', 'parent_id' => '3', 'page_id_top' => '9')
 				),
 				'menu' => array(
 					'Page' => array('id' => '9', 'room_id' => '10', 'parent_id' => null),
@@ -119,7 +119,7 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 				'pageTreeList' => array(),
 				'nest' => false,
 				'rootRoom' => array(
-					'Room' => array('id' => '9', 'parent_id' => '3')
+					'Room' => array('id' => '9', 'parent_id' => '3', 'page_id_top' => '9')
 				),
 			),
 		);
