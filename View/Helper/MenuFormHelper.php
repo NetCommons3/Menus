@@ -64,7 +64,6 @@ class MenuFormHelper extends AppHelper {
 
 		$childPageIds = [];
 		$childPageIds = $this->getRecursiveChildPageId($pageId, $childPageIds);
-
 		$domChildPageIds = [];
 		foreach ($childPageIds as $childPageId) {
 			$childRoomId = Hash::get(
