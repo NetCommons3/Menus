@@ -55,7 +55,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 				'menu' => array(
 					'MenuFramesPage' => (new MenuFramesPageFixture())->records[0],
 				),
-				'pageId' => '4'
+				'pageId' => '1'
 			),
 			// * ネストあり、MenuFramesPageデータなし
 			array(
@@ -139,7 +139,13 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][' . $field . ']', $value, $result);
 
 			$field = 'page_id';
-			$value = Hash::get($menu, 'MenuFramesPage.' . $field);
+			if ($room['Room']['id'] === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
+				// ページ一覧で、パブリックルームのルーム表示のみ、ページがないため、$room['Room']['page_id_top']から取れない。
+				// そのため、Space::getPageIdSpace(Space::PUBLIC_SPACE_ID)で page_idをセット
+				$value =  Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
+			} else {
+				$value = Hash::get($menu, 'MenuFramesPage.' . $field);
+			}
 			$this->assertInput('input',
 					'data[Menus][' . $roomId . '][' . $pageId . '][MenuFramesPage][' . $field . ']', $value, $result);
 

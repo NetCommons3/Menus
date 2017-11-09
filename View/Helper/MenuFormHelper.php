@@ -188,9 +188,9 @@ class MenuFormHelper extends AppHelper {
 			//$prefixInput = 'MenuRooms.' . $roomId . '.MenuFramesRoom';
 			$pageIdTop = $room['Room']['page_id_top'];
 			// ページ一覧で、パブリックルームのルーム表示のみ、ページがないため、$room['Room']['page_id_top']から取れない。
-			// そのため、決め打ちでパブリックルームなら、$pageIdTop=1をセット
+			// そのため、Space::getPageIdSpace(Space::PUBLIC_SPACE_ID)で page_idをセット
 			if ($isRoom && $roomId === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID, 'Room')) {
-				$pageIdTop = '1';
+				$pageIdTop = Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
 			}
 
 			$prefixInput = 'Menus.' . $roomId . '.' . $pageIdTop . '.MenuFramesPage';
