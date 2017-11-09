@@ -142,7 +142,7 @@ class MenuFormHelperCheckboxMenuFramesRoomTest extends NetCommonsHelperTestCase 
 			if ($room['Room']['id'] === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
 				// ページ一覧で、パブリックルームのルーム表示のみ、ページがないため、$room['Room']['page_id_top']から取れない。
 				// そのため、Space::getPageIdSpace(Space::PUBLIC_SPACE_ID)で page_idをセット
-				$value =  Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
+				$value = Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
 			} else {
 				$value = Hash::get($menu, 'MenuFramesPage.' . $field);
 			}
