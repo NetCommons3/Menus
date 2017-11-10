@@ -60,7 +60,7 @@ class MenuFormHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function checkboxMenuFramesRoom($roomId, $room, $pageId) {
-		list($prefixInput, $isFidden, $html) = $this->_getRoomPrefix($roomId, $room);
+		list($prefixInput, $isFidden, $html) = $this->_getRoomPrefix($roomId, $room, true);
 
 		$childPageIds = [];
 		$childPageIds = $this->getRecursiveChildPageId($pageId, $childPageIds);
@@ -114,7 +114,7 @@ class MenuFormHelper extends AppHelper {
 			return $html;
 		}
 
-		list($roomPrefixInput, $roomIsFidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom);
+		list($roomPrefixInput, $roomIsFidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom, false);
 		$roomDisabled = (bool)Hash::get(
 			$this->_View->request->data, $roomPrefixInput . '.' . $roomIsFidden
 		);
@@ -176,23 +176,31 @@ class MenuFormHelper extends AppHelper {
  *
  * @param int $roomId Room.id
  * @param array $room ルームデータ
+ * @param bool $isRoom ルームのチェックボックスからの呼び出しか
  * @return array
  */
-	protected function _getRoomPrefix($roomId, $room) {
+	protected function _getRoomPrefix($roomId, $room, $isRoom) {
 		$html = '';
 		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			$prefixInput = 'MenuFrameSetting';
 			$isFidden = 'is_private_room_hidden';
 		} else {
 			//$prefixInput = 'MenuRooms.' . $roomId . '.MenuFramesRoom';
-			$prefixInput = 'Menus.' . $roomId . '.' . $room['Room']['page_id_top'] . '.MenuFramesPage';
+			$pageIdTop = $room['Room']['page_id_top'];
+			// ページ一覧で、パブリックルームのルーム表示のみ、ページがないため、$room['Room']['page_id_top']から取れない。
+			// そのため、Space::getPageIdSpace(Space::PUBLIC_SPACE_ID)で page_idをセット
+			if ($isRoom && $roomId === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID, 'Room')) {
+				$pageIdTop = Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
+			}
+
+			$prefixInput = 'Menus.' . $roomId . '.' . $pageIdTop . '.MenuFramesPage';
 			$isFidden = 'is_hidden';
 
 			$html .= $this->NetCommonsForm->hidden($prefixInput . '.id');
 			$html .= $this->NetCommonsForm->hidden($prefixInput . '.frame_key',
 					array('value' => $this->_View->request->data['Frame']['key']));
 			$html .= $this->NetCommonsForm->hidden(
-				$prefixInput . '.page_id', array('value' => $room['Room']['page_id_top'])
+				$prefixInput . '.page_id', array('value' => $pageIdTop)
 			);
 		}
 		return array($prefixInput, $isFidden, $html);
