@@ -35,7 +35,6 @@ class MenuHelper extends AppHelper {
 	public $helpers = array(
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
-		'NetCommons.DisplayChange',
 	);
 
 /**
@@ -49,7 +48,7 @@ class MenuHelper extends AppHelper {
 			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
 		//メニューのcss, js読み込み、HTML表示
-		$html = $this->DisplayChange->element($displayType);
+		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 
 		//現在選択しているページの親ページIDs
 		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
