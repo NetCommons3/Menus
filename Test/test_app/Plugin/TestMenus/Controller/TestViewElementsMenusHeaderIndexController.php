@@ -38,6 +38,8 @@ class TestViewElementsMenusHeaderIndexController extends MenusController {
  * @return void
  */
 	public function index() {
+		$this->request->params['plugin'] = 'menus';
+		$this->request->params['controller'] = 'menus';
 		$this->autoRender = true;
 		parent::index();
 	}
