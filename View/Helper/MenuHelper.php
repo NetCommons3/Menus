@@ -47,7 +47,7 @@ class MenuHelper extends AppHelper {
 		if (! $displayType) {
 			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
-		//メニューのcss, js読み込み、HTML表示
+		// メニューのcss, js読み込み、HTML表示
 		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 
 		//現在選択しているページの親ページIDs
