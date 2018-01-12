@@ -85,7 +85,11 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		$viewVars = $this->__getViewVars('2');
 		$viewVars['parentPages'] = array();
 		$requestData = array();
-		$params = array();
+		$params = array(
+			'plugin' => $this->plugin,
+			'controller' => 'menus',
+			'action' => 'index'
+		);
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
@@ -104,7 +108,11 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		//Helperロード
 		$viewVars = $this->__getViewVars('1');
 		$requestData = array();
-		$params = array();
+		$params = array(
+			'plugin' => $this->plugin,
+			'controller' => 'menus',
+			'action' => 'index'
+		);
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
@@ -126,18 +134,22 @@ class MenuHelperRenderMainTest extends NetCommonsHelperTestCase {
 		//Helperロード
 		$viewVars = $this->__getViewVars('2');
 		$requestData = array();
-		$params = array('plugin' => 'TestMenus');
+		$params = array(
+			'plugin' => 'test_menus',
+			'controller' => 'menus',
+			'action' => 'index'
+		);
 		$this->loadHelper('Menus.Menu', $viewVars, $requestData, $params);
 
 		//テスト実施
 		$this->Menu->renderMain();
 
 		//cssのURLチェック
-		$pattern = '/<link.*?' . preg_quote('/menus/css/major/style.css', '/') . '.*?>/';
+		$pattern = '/<link.*?' . preg_quote('/test_menus/css/major/style.css', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->Menu->_View->fetch('css'));
 
 		//scriptのURLチェック
-		$pattern = '/<script.*?' . preg_quote('/menus/js/major/menus.js', '/') . '.*?>/';
+		$pattern = '/<script.*?' . preg_quote('/test_menus/js/major/test_menus.js', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->Menu->_View->fetch('script'));
 	}
 

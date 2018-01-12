@@ -38,44 +38,17 @@ class MenuHelper extends AppHelper {
 	);
 
 /**
- * Before render callback. beforeRender is called before the view file is rendered.
- *
- * Overridden in subclasses.
- *
- * @param string $viewFile The view file that is going to be rendered
- * @return void
- */
-	public function beforeRender($viewFile) {
-		$this->NetCommonsHtml->css('/menus/css/style.css');
-		$this->NetCommonsHtml->script('/menus/js/menus.js');
-		parent::beforeRender($viewFile);
-	}
-
-/**
  * メニューの表示
  *
  * @param string $displayType 表示タイプ
  * @return string HTMLタグ
  */
 	public function renderMain($displayType = null) {
-		$html = '';
 		if (! $displayType) {
 			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
-		$plugin = Inflector::camelize($this->_View->params['plugin']);
-
-		//スタイルシートの読み込み
-		$cssPath = App::pluginPath($plugin) .
-					WEBROOT_DIR . DS . 'css' . DS . $displayType . DS . 'style.css';
-		if (file_exists($cssPath)) {
-			$html .= $this->NetCommonsHtml->css('/menus/css/' . $displayType . '/style.css');
-		}
-		//JSの読み込み
-		$jsPath = App::pluginPath($plugin) .
-					WEBROOT_DIR . DS . 'js' . DS . $displayType . DS . 'menus.js';
-		if (file_exists($jsPath)) {
-			$html .= $this->NetCommonsHtml->script('/menus/js/' . $displayType . '/menus.js');
-		}
+		// メニューのcss, js読み込み、HTML表示
+		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 
 		//現在選択しているページの親ページIDs
 		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
@@ -92,9 +65,6 @@ class MenuHelper extends AppHelper {
 		$this->childPageIds = Hash::extract(
 			$this->_View->viewVars['pages'], Current::read('Page.id') . '.ChildPage.{n}.id', array()
 		);
-
-		//メニューHTML表示
-		$html .= $this->_View->element('Menus.Menus/' . $displayType . '/index');
 
 		return $html;
 	}

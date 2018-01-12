@@ -25,7 +25,7 @@ class TestMenuFormHelperBeforeRenderController extends AppController {
  * @var array
  */
 	public $helpers = array(
-		'Menus.Menu'
+		'Menus.MenuForm'
 	);
 
 /**
