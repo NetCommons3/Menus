@@ -60,7 +60,7 @@ class MenuFormHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function checkboxMenuFramesRoom($roomId, $room, $pageId) {
-		list($prefixInput, $isFidden, $html) = $this->_getRoomPrefix($roomId, $room, true);
+		list($prefixInput, $isFidden, $html) = $this->_getRoomPrefix($roomId, $room);
 
 		$childPageIds = [];
 		$childPageIds = $this->getRecursiveChildPageId($pageId, $childPageIds);
@@ -114,7 +114,7 @@ class MenuFormHelper extends AppHelper {
 			return $html;
 		}
 
-		list($roomPrefixInput, $roomIsFidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom, false);
+		list($roomPrefixInput, $roomIsFidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom);
 		$roomDisabled = (bool)Hash::get(
 			$this->_View->request->data, $roomPrefixInput . '.' . $roomIsFidden
 		);
@@ -176,10 +176,9 @@ class MenuFormHelper extends AppHelper {
  *
  * @param int $roomId Room.id
  * @param array $room ルームデータ
- * @param bool $isRoom ルームのチェックボックスからの呼び出しか
  * @return array
  */
-	protected function _getRoomPrefix($roomId, $room, $isRoom) {
+	protected function _getRoomPrefix($roomId, $room) {
 		$html = '';
 		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			$prefixInput = 'MenuFrameSetting';
@@ -189,7 +188,7 @@ class MenuFormHelper extends AppHelper {
 			$pageIdTop = $room['Room']['page_id_top'];
 			// ページ一覧で、パブリックルームのルーム表示のみ、ページがないため、$room['Room']['page_id_top']から取れない。
 			// そのため、Space::getPageIdSpace(Space::PUBLIC_SPACE_ID)で page_idをセット
-			if ($isRoom && $roomId === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID, 'Room')) {
+			if ($roomId === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID, 'Room')) {
 				$pageIdTop = Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
 			}
 
