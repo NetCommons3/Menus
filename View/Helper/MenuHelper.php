@@ -47,8 +47,6 @@ class MenuHelper extends AppHelper {
 		if (! $displayType) {
 			$displayType = $this->_View->viewVars['menuFrameSetting']['MenuFrameSetting']['display_type'];
 		}
-		// メニューのcss, js読み込み、HTML表示
-		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 
 		//現在選択しているページの親ページIDs
 		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
@@ -66,6 +64,8 @@ class MenuHelper extends AppHelper {
 			$this->_View->viewVars['pages'], Current::read('Page.id') . '.ChildPage.{n}.id', array()
 		);
 
+		// メニューのcss, js読み込み、HTML表示
+		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 		return $html;
 	}
 
