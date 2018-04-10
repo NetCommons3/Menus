@@ -65,7 +65,7 @@ class MenuHelper extends AppHelper {
 		);
 
 		// メニューのcss, js読み込み、HTML表示
-		$html = $this->NetCommonsHtml->elementDisplayChange($displayType, $this);
+		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
 		return $html;
 	}
 
