@@ -109,8 +109,8 @@ class MenuFramesRoomGetMenuFrameRoomsTest extends NetCommonsGetTest {
 		$keyPath = 'Room.page_id_top';
 		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
 
-		$keyPath = 'RoomsLanguage.id';
-		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
+		//$keyPath = 'RoomsLanguage.id';
+		//$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
 
 		$keyPath = 'RoomsLanguage.room_id';
 		$this->assertEquals($roomId, Hash::get($result[$roomId], $keyPath));
@@ -121,8 +121,8 @@ class MenuFramesRoomGetMenuFrameRoomsTest extends NetCommonsGetTest {
 		$keyPath = 'MenuFramesRoom.id';
 		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
 
-		$keyPath = 'MenuFramesRoom.frame_key';
-		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
+		//$keyPath = 'MenuFramesRoom.frame_key';
+		//$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));
 
 		$keyPath = 'MenuFramesRoom.room_id';
 		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($result[$roomId], $keyPath));

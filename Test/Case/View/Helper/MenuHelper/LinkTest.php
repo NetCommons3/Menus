@@ -70,6 +70,15 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		$viewVars['pages'] = $Page->getPages($roomIds);
 		$viewVars['parentPages'] = $Page->getPath(Current::read('Page.id'));
 
+		$viewVars['childPageIds'] = [];
+		$pageIds = array_keys($viewVars['pageTreeList']);
+		foreach ($pageIds as $pageId) {
+			$viewVars['childPageIds'][$pageId] = [];
+			foreach ($viewVars['pages'][$pageId]['ChildPage'] as $child) {
+				$viewVars['childPageIds'][$pageId][] = $child['id'];
+			}
+		}
+
 		return $viewVars;
 	}
 

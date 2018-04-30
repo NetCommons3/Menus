@@ -95,12 +95,51 @@ class MenuFramesRoom extends MenusAppModel {
 		);
 
 		//Menuデータ取得
-		$options = Hash::merge(array(
+		$options = Hash::merge(
+			$this->__getDefaultQueryOptions(),
+			$options,
+			['conditions' => $roomsLangConditions]
+		);
+
+		$menuFrameRooms = $this->Room->find('all', $options);
+		$result = array();
+		foreach ($menuFrameRooms as $room) {
+			$roomId = $room['Room']['id'];
+			if (! isset($result[$roomId])) {
+				$result[$roomId] = $room;
+			} elseif ($room['RoomsLanguage']['language_id'] === Current::read('Language.id')) {
+				$result[$roomId] = $room;
+			}
+		}
+
+		$ret = [];
+		foreach ($menuFrameRooms as $mfr) {
+			$ret[$mfr['Room']['id']] = $mfr;
+		}
+		return $ret;
+	}
+
+/**
+ * デフォルトのクエリオプションを取得する
+ *
+ * @return array
+ */
+	private function __getDefaultQueryOptions() {
+		return array(
 			'recursive' => -1,
 			'fields' => array(
-				$this->Room->alias . '.*',
-				$this->RoomsLanguage->alias . '.*',
-				$this->alias . '.*',
+				$this->Room->alias . '.id',
+				$this->Room->alias . '.space_id',
+				$this->Room->alias . '.page_id_top',
+				$this->Room->alias . '.parent_id',
+				$this->Room->alias . '.active',
+				$this->Room->alias . '.in_draft',
+				$this->Room->alias . '.default_role_key',
+				$this->RoomsLanguage->alias . '.room_id',
+				$this->RoomsLanguage->alias . '.name',
+				$this->alias . '.id',
+				$this->alias . '.room_id',
+				$this->alias . '.is_hidden',
 			),
 			'conditions' => array(
 				$this->Room->alias . '.id' => Current::read('Room.id'),
@@ -149,20 +188,7 @@ class MenuFramesRoom extends MenusAppModel {
 			'order' => array(
 				$this->Room->alias . '.lft' => 'asc',
 			)
-		), $options, ['conditions' => $roomsLangConditions]);
-
-		$menuFrameRooms = $this->Room->find('all', $options);
-		$result = array();
-		foreach ($menuFrameRooms as $room) {
-			$roomId = $room['Room']['id'];
-			if (! isset($result[$roomId])) {
-				$result[$roomId] = $room;
-			} elseif ($room['RoomsLanguage']['language_id'] === Current::read('Language.id')) {
-				$result[$roomId] = $room;
-			}
-		}
-
-		return Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}');
+		);
 	}
 
 }
