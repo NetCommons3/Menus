@@ -11,12 +11,13 @@
 App::uses('AppHelper', 'View/Helper');
 App::uses('Room', 'Rooms.Model');
 App::uses('Space', 'Rooms.Model');
-ClassRegistry::init('Pages.Page');
+App::uses('Page', 'Pages.Model');
 
 /**
  * MenuHelper
  *
  * @package NetCommons\Menus\View\Helper
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class MenuHelper extends AppHelper {
 
@@ -60,9 +61,11 @@ class MenuHelper extends AppHelper {
 		$this->parentPageIds = array_unique($this->parentPageIds);
 
 		//現在選択しているページの下層ページIDs
-		$this->childPageIds = Hash::extract(
-			$this->_View->viewVars['pages'], Current::read('Page.id') . '.ChildPage.{n}.id', array()
-		);
+		if (isset($this->_View->viewVars['childPageIds'][Current::read('Page.id')])) {
+			$this->childPageIds = $this->_View->viewVars['childPageIds'][Current::read('Page.id')];
+		} else {
+			$this->childPageIds = [];
+		}
 
 		// メニューのcss, js読み込み、HTML表示
 		$html = $this->NetCommonsHtml->elementDisplayChange($displayType);
@@ -114,10 +117,10 @@ class MenuHelper extends AppHelper {
 		$pages = $this->_View->viewVars['pages'];
 		$menus = $this->_View->viewVars['menus'];
 
-		$page = Hash::get($pages, $pageId);
-		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
-		$nest = $this->getIndent($treePageId);
-		if (! $this->displayPage($treePageId)) {
+		$page = $pages[$pageId];
+		$menu = $menus[$page['Room']['id']][$pageId];
+		$nest = $this->_getIndent($treePageId, $page);
+		if (! $this->_displayPage(trim($treePageId), $menu)) {
 			return $html;
 		}
 
@@ -151,19 +154,17 @@ class MenuHelper extends AppHelper {
 		if (Current::isSettingMode()) {
 			$setting = Current::SETTING_MODE_WORD . '/';
 		}
-		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
+		$room = $this->_View->viewVars['menuFrameRooms'][$menu['Page']['room_id']];
 
 		$viewPage = $this->_View->viewVars['pages'];
 		if ($room['Room']['page_id_top'] === $menu['Page']['id'] &&
 				$room['Room']['id'] === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
 			$url = '';
-		} elseif (Hash::get($viewPage, $menu['Page']['id'] . '.Page.full_permalink')) {
-			$url = h(Hash::get($viewPage, $menu['Page']['id'] . '.Page.full_permalink'));
+		} elseif ($viewPage[$menu['Page']['id']]['Page']['full_permalink']) {
+			$url = h($viewPage[$menu['Page']['id']]['Page']['full_permalink']);
 		} else {
 			$url = h($menu['Page']['permalink']);
 		}
-
-		$title = $this->__getTitle($menu, $displayType);
 
 		$domId = $this->getLinkDomId($displayType, $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
@@ -172,7 +173,9 @@ class MenuHelper extends AppHelper {
 
 		$hasChildPage = $this->hasChildPage($menu, false);
 
-		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
+		$title = $this->__getTitle($menu, $displayType, $domId, $hasChildPage);
+
+		if ($menu['MenuFramesPage']['folder_type'] && $hasChildPage) {
 			$childPageIds = array();
 			$childPageIds = $this->getRecursiveChildPageId(
 				$menu['Page']['room_id'], $menu['Page']['id'], $childPageIds
@@ -203,26 +206,26 @@ class MenuHelper extends AppHelper {
  *
  * @param array $menu リンクデータ
  * @param string $displayType 表示タイプ
+ * @param string $domId DomのID
+ * @param bool $hasChildPage 子供ページを持っているか否か
  * @return array array(タイトル, アイコン)
  */
-	private function __getTitle($menu, $displayType) {
-		$room = Hash::get($this->_View->viewVars['menuFrameRooms'], $menu['Page']['room_id']);
+	private function __getTitle($menu, $displayType, $domId, $hasChildPage) {
+		$room = $this->_View->viewVars['menuFrameRooms'][$menu['Page']['room_id']];
 
 		$title = '';
-		if ($room && Hash::get($room['Room'], 'page_id_top', false) === $menu['Page']['id'] &&
+		if ($room &&
+				$room['Room']['page_id_top'] === $menu['Page']['id'] &&
 				$room['Room']['id'] !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
-			$title .= h(Hash::get($room, 'RoomsLanguage.name', ''));
+			$title .= h($room['RoomsLanguage']['name']);
 		} else {
-			$title .= h(Hash::get($menu, 'PagesLanguage.name', ''));
+			$title .= h($menu['PagesLanguage']['name']);
 		}
 
-		$domId = $this->getLinkDomId($displayType, $menu['Page']['id']);
 		$domIdIcon = $domId . 'Icon';
 		$toggle = (int)in_array($menu['Page']['id'], $this->parentPageIds, true);
 
-		$hasChildPage = $this->hasChildPage($menu, false);
-
-		if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
+		if ($menu['MenuFramesPage']['folder_type'] && $hasChildPage) {
 			$icon = '<span class="glyphicon glyphicon-menu-right"' .
 						' ng-class="{' .
 							'\'glyphicon-menu-right\': !' . $domIdIcon . ', ' .
@@ -252,14 +255,16 @@ class MenuHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function getRecursiveChildPageId($roomId, $pageId, $result) {
-		$childPageIds = Hash::extract(
-			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
-		);
+		if (isset($this->_View->viewVars['childPageIds'][$pageId])) {
+			$childPageIds = $this->_View->viewVars['childPageIds'][$pageId];
+		} else {
+			$childPageIds = [];
+		}
 		foreach ($childPageIds as $childPageId) {
 			$result[] = $childPageId;
 
 			$prefixInput = $roomId . '.' . $childPageId . '.MenuFramesPage.folder_type';
-			if (! Hash::get($this->_View->viewVars['menus'], $prefixInput, false)) {
+			if (empty($this->_View->viewVars['menus'][$prefixInput])) {
 				$result = $this->getRecursiveChildPageId($roomId, $childPageId, $result);
 			}
 		}
@@ -277,9 +282,20 @@ class MenuHelper extends AppHelper {
 		$pages = $this->_View->viewVars['pages'];
 		$menus = $this->_View->viewVars['menus'];
 
-		$page = Hash::get($pages, $pageId);
-		$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+		$page = $pages[$pageId];
+		$menu = $menus[$page['Room']['id']][$pageId];
 
+		return $this->_displayPage($pageId, $menu);
+	}
+
+/**
+ * 表示するかどうか
+ *
+ * @param string $pageId ページID
+ * @param array $menu メニューデータ
+ * @return bool
+ */
+	protected function _displayPage($pageId, $menu) {
 		if (! $menu['PagesLanguage']['name'] ||
 				! $menu ||
 				! isset($this->_View->viewVars['treeList4Disp'][$pageId])) {
@@ -311,9 +327,11 @@ class MenuHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function hasChildPage($menu, $hasTreeList = false) {
-		$childPage = Hash::extract(
-			$this->_View->viewVars['pages'], $menu['Page']['id'] . '.ChildPage.{n}.id', array()
-		);
+		if (isset($this->_View->viewVars['childPageIds'][$menu['Page']['id']])) {
+			$childPage = $this->_View->viewVars['childPageIds'][$menu['Page']['id']];
+		} else {
+			$childPage = [];
+		}
 
 		if ($hasTreeList) {
 			$pageTreeList = $this->_View->viewVars['treeList4Disp'];
@@ -332,7 +350,7 @@ class MenuHelper extends AppHelper {
 		if ($hasTreeList) {
 			$result = $hasChildPage;
 		} else {
-			if (Hash::get($menu, 'MenuFramesPage.folder_type') && $hasChildPage) {
+			if ($menu['MenuFramesPage']['folder_type'] && $hasChildPage) {
 				$result = true;
 			} elseif ($hasChildPage) {
 				$result = true;
@@ -353,8 +371,18 @@ class MenuHelper extends AppHelper {
 	public function getIndent($treePageId) {
 		$pageId = trim($treePageId);
 		$pages = $this->_View->viewVars['pages'];
-		$page = Hash::get($pages, $pageId);
+		$page = $pages[$pageId];
 
+		return $this->_getIndent($treePageId, $page);
+	}
+/**
+ * インデント数の取得
+ *
+ * @param string $treePageId Tree(Tabコード付き)のページID
+ * @param array $page ページ情報
+ * @return int
+ */
+	protected function _getIndent($treePageId, $page) {
 		$indent = substr_count($treePageId, Page::$treeParser);
 		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			$indent--;

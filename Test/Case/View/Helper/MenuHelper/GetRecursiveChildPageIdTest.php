@@ -70,7 +70,8 @@ class MenuHelperGetRecursiveChildPageIdTest extends NetCommonsHelperTestCase {
 		$Page = ClassRegistry::init('Pages.Page');
 
 		$roomIds = array('2', '5', '6');
-		Current::write('Page.id', '9');
+		$pageId = '9';
+		Current::write('Page.id', $pageId);
 
 		$viewVars = array();
 		$viewVars['menus'] = $MenuFramesPage->getMenuData(array(
@@ -84,6 +85,16 @@ class MenuHelperGetRecursiveChildPageIdTest extends NetCommonsHelperTestCase {
 		$viewVars['pageTreeList'] = $Page->generateTreeList(
 				array('Page.room_id' => $roomIds), null, null, Page::$treeParser);
 		$viewVars['pages'] = $Page->getPages($roomIds);
+
+		$viewVars['childPageIds'] = [];
+		$pageIds = array_keys($viewVars['pageTreeList']);
+		foreach ($pageIds as $pageId) {
+			$viewVars['childPageIds'][$pageId] = [];
+			foreach ($viewVars['pages'][$pageId]['ChildPage'] as $child) {
+				$viewVars['childPageIds'][$pageId][] = $child['id'];
+			}
+		}
+
 		$viewVars['parentPages'] = $Page->getPath(Current::read('Page.id'));
 
 		return $viewVars;

@@ -73,6 +73,34 @@ class MenuFrameSettingsController extends MenusAppController {
 	}
 
 /**
+ * 前準備
+ *
+ * @return void
+ */
+	protected function _prepare() {
+		//ルームデータ取得
+		$conditions = $this->Room->getReadableRoomsConditions();
+		//$conditions['recursive'] = 0;
+		//$conditions['fields'] = ['Room.id', 'Room.page_id_top'];
+		$rooms = $this->Room->find('all', $conditions);
+		if (! $rooms) {
+			return $this->setAction('throwBadRequest');
+		}
+		$setRoom = [];
+		foreach ($rooms as $r) {
+			$setRoom[$r['Room']['id']] = $r;
+		}
+		$this->set('rooms', $setRoom);
+		//メニューデータ取得
+		$menus = $this->MenuFramesPage->getMenuData(array(
+			'conditions' => array(
+					$this->Page->alias . '.room_id' => array_keys($this->viewVars['rooms'])
+			)
+		));
+		$this->set('menus', $menus);
+	}
+
+/**
  * edit
  *
  * @return void

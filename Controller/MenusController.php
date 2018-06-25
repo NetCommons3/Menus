@@ -104,6 +104,7 @@ class MenusController extends MenusAppController {
  * 表示するページのTree
  *
  * @return void
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	protected function _setTreeListForDisplay() {
 		$roomIds = array_keys($this->viewVars['rooms']);
@@ -120,12 +121,18 @@ class MenusController extends MenusAppController {
 		$treeList4Disp = []; //表示ツリー用の変数
 		$treeChildList = []; //子(孫)ページを表示するかどうか保持す変数
 		$pageTreeList = []; //隠しページを除いたツリー用の変数
+		$childPageIds = [];
 
 		$pages = $this->viewVars['pages'];
 		$menus = $this->viewVars['menus'];
 		foreach ($dbPageTreeList as $pageId => $treePageId) {
-			$page = Hash::get($pages, $pageId);
-			$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+			$childPageIds[$pageId] = [];
+			foreach ($pages[$pageId]['ChildPage'] as $child) {
+				$childPageIds[$pageId][] = $child['id'];
+			}
+
+			$page = $pages[$pageId];
+			$menu = $menus[$page['Room']['id']][$pageId];
 
 			//最初のノードは、必ず表示する。そのため、インデント数で判断する
 			$indent = $this->_getIndent($page, $treePageId);
@@ -160,7 +167,7 @@ class MenusController extends MenusAppController {
 				//ページの下層ページIDs
 				$treeChildList = Hash::merge(
 					$treeChildList,
-					Hash::extract($pages, $pageId . '.ChildPage.{n}.id', [])
+					$childPageIds[$pageId]
 				);
 				continue;
 			}
@@ -176,7 +183,7 @@ class MenusController extends MenusAppController {
 					//ページの下層ページIDs
 					$treeChildList = Hash::merge(
 						$treeChildList,
-						Hash::extract($pages, $pageId . '.ChildPage.{n}.id', [])
+						$childPageIds[$pageId]
 					);
 				}
 			}
@@ -184,6 +191,7 @@ class MenusController extends MenusAppController {
 
 		$this->set('treeList4Disp', $treeList4Disp);
 		$this->set('pageTreeList', $pageTreeList);
+		$this->set('childPageIds', $childPageIds);
 	}
 
 /**
@@ -213,13 +221,14 @@ class MenusController extends MenusAppController {
  */
 	protected function _showPrivateRoom($menu) {
 		$defaultHidden = Hash::get($this->viewVars, 'defaultHidden', false);
-		$room = Hash::get($this->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+
+		$room = $this->viewVars['menuFrameRooms'][$menu['Page']['room_id']]['Room'];
+
 		if ($room['parent_id'] !== Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			return false;
 		}
 
-		$pathKey = 'MenuFrameSetting.is_private_room_hidden';
-		if (Hash::get($this->viewVars['menuFrameSetting'], $pathKey)) {
+		if (! empty($this->viewVars['menuFrameSetting']['MenuFrameSetting']['is_private_room_hidden'])) {
 			return false;
 		}
 
@@ -239,10 +248,13 @@ class MenusController extends MenusAppController {
  */
 	protected function _showRoom($menu) {
 		$defaultHidden = Hash::get($this->viewVars, 'defaultHidden', false);
-		$room = Hash::get($this->viewVars['menuFrameRooms'], $menu['Page']['room_id'] . '.Room');
+
+		$room = $this->viewVars['menuFrameRooms'][$menu['Page']['room_id']]['Room'];
+
 		if ($room['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			return false;
 		}
+
 		$menuFrameRooms = Hash::get($this->viewVars['menuFrameRooms'], $room['id'], array());
 		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
 				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {

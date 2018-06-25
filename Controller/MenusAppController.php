@@ -58,12 +58,18 @@ class MenusAppController extends AppController {
  */
 	protected function _prepare() {
 		//ルームデータ取得
-		$rooms = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
+		$conditions = $this->Room->getReadableRoomsConditions();
+		$conditions['recursive'] = 0;
+		$conditions['fields'] = ['Room.id', 'Room.page_id_top'];
+		$rooms = $this->Room->find('all', $conditions);
 		if (! $rooms) {
 			return $this->setAction('throwBadRequest');
 		}
-		$this->set('rooms', Hash::combine($rooms, '{n}.Room.id', '{n}'));
-
+		$setRoom = [];
+		foreach ($rooms as $r) {
+			$setRoom[$r['Room']['id']] = $r;
+		}
+		$this->set('rooms', $setRoom);
 		//メニューデータ取得
 		$menus = $this->MenuFramesPage->getMenuData(array(
 			'conditions' => array(

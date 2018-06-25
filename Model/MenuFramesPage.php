@@ -88,9 +88,19 @@ class MenuFramesPage extends MenusAppModel {
 		$options = Hash::merge(array(
 			'recursive' => -1,
 			'fields' => array(
-				$this->Page->alias . '.*',
-				$this->PagesLanguage->alias . '.*',
-				$this->alias . '.*',
+				$this->Page->alias . '.id',
+				$this->Page->alias . '.room_id',
+				$this->Page->alias . '.root_id',
+				$this->Page->alias . '.parent_id',
+				$this->Page->alias . '.lft',
+				$this->Page->alias . '.rght',
+				$this->Page->alias . '.permalink',
+				$this->PagesLanguage->alias . '.page_id',
+				$this->PagesLanguage->alias . '.name',
+				$this->alias . '.id',
+				$this->alias . '.page_id',
+				$this->alias . '.folder_type',
+				$this->alias . '.is_hidden',
 			),
 			'conditions' => array(
 				$this->Page->alias . '.room_id' => Current::read('Room.id'),
@@ -150,7 +160,11 @@ class MenuFramesPage extends MenusAppModel {
 		), $options, ['conditions' => $pageLangConditions]);
 
 		$menus = $this->Page->find('all', $options);
-		return Hash::combine($menus, '{n}.Page.id', '{n}', '{n}.Page.room_id');
+		$ret = array();
+		foreach ($menus as $m) {
+			$ret[$m['Page']['room_id']][$m['Page']['id']] = $m;
+		}
+		return $ret;
 	}
 
 }

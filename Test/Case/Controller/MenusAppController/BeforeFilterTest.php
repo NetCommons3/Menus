@@ -138,8 +138,8 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 		$keyPath = 'Page.permalink';
 		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($menu, $keyPath));
 
-		$keyPath = 'Page.slug';
-		$this->assertEquals(Hash::get($expected, 'Page.permalink'), Hash::get($menu, $keyPath));
+		//$keyPath = 'Page.slug';
+		//$this->assertEquals(Hash::get($expected, 'Page.permalink'), Hash::get($menu, $keyPath));
 
 		$keyPath = 'PagesLanguage.page_id';
 		$this->assertEquals($pageId, $menu['PagesLanguage']['page_id']);
@@ -150,8 +150,8 @@ class MenusAppControllerBeforeFilterTest extends NetCommonsControllerTestCase {
 		$keyPath = 'MenuFramesPage.id';
 		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($menu, $keyPath));
 
-		$keyPath = 'MenuFramesPage.frame_key';
-		$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($menu, $keyPath));
+		//$keyPath = 'MenuFramesPage.frame_key';
+		//$this->assertEquals(Hash::get($expected, $keyPath), Hash::get($menu, $keyPath));
 
 		$keyPath = 'MenuFramesPage.page_id';
 		if (Hash::get($expected, 'MenuFramesPage.id')) {
