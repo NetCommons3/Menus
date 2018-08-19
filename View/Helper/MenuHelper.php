@@ -82,7 +82,8 @@ class MenuHelper extends AppHelper {
 		$html = '';
 		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
 		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
-		$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
+		//$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
+		$childPages = Hash::sort($childPages, '{n}.sort_key', 'asc');
 		$parentPageIds = array_merge(array(Hash::get($childPages, '0.id')), $parentPageIds);
 		$parentPageIds = array_unique($parentPageIds);
 

@@ -92,8 +92,11 @@ class MenuFramesPage extends MenusAppModel {
 				$this->Page->alias . '.room_id',
 				$this->Page->alias . '.root_id',
 				$this->Page->alias . '.parent_id',
-				$this->Page->alias . '.lft',
-				$this->Page->alias . '.rght',
+				//$this->Page->alias . '.lft',
+				//$this->Page->alias . '.rght',
+				$this->Page->alias . '.weight',
+				$this->Page->alias . '.sort_key',
+				$this->Page->alias . '.child_count',
 				$this->Page->alias . '.permalink',
 				$this->PagesLanguage->alias . '.page_id',
 				$this->PagesLanguage->alias . '.name',
@@ -155,7 +158,8 @@ class MenuFramesPage extends MenusAppModel {
 				),
 			),
 			'order' => array(
-				$this->Page->alias . '.lft' => 'asc',
+				//$this->Page->alias . '.lft' => 'asc',
+				$this->Page->alias . '.sort_key' => 'asc',
 			)
 		), $options, ['conditions' => $pageLangConditions]);
 
