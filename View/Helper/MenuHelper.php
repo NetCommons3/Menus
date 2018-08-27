@@ -50,11 +50,10 @@ class MenuHelper extends AppHelper {
 		}
 
 		//現在選択しているページの親ページIDs
-		$this->parentPageIds = array(Page::PUBLIC_ROOT_PAGE_ID);
-		$this->parentPageIds = array_merge(
-			$this->parentPageIds,
-			Hash::extract($this->_View->viewVars['parentPages'], '{n}.Page.id', array())
-		);
+		$this->parentPageIds = [Page::PUBLIC_ROOT_PAGE_ID];
+		foreach ($this->_View->viewVars['parentPages'] as $parentPage) {
+			$this->parentPageIds[] = $parentPage['Page']['id'];
+		}
 		if (! in_array(Current::read('Page.id'), $this->parentPageIds, true)) {
 			$this->parentPageIds[] = Current::read('Page.id');
 		}
@@ -80,16 +79,20 @@ class MenuHelper extends AppHelper {
  */
 	public function renderParent($displayType = null) {
 		$html = '';
-		$parentPageIds = Hash::extract($this->_View->viewVars, 'parentPages.{n}.Page.id');
+		$parentPageIds = [];
+		foreach ($this->_View->viewVars['parentPages'] as $parentPage) {
+			$parentPageIds[] = $parentPage['Page']['id'];
+		}
 		$childPages = $this->_View->viewVars['pages'][1]['ChildPage'];
 		$childPages = Hash::sort($childPages, '{n}.lft', 'asc');
-		$parentPageIds = array_merge(array(Hash::get($childPages, '0.id')), $parentPageIds);
+		$parentPageIds = array_merge([$childPages[0]['id']], $parentPageIds);
 		$parentPageIds = array_unique($parentPageIds);
 
 		foreach ($parentPageIds as $parentPageId) {
-			$parentRoomId = Hash::get(
-				$this->_View->viewVars['pages'], $parentPageId . '.Page.room_id'
-			);
+			$parentRoomId = null;
+			if (isset($this->_View->viewVars['pages'][$parentPageId]['Page']['room_id'])) {
+				$parentRoomId = $this->_View->viewVars['pages'][$parentPageId]['Page']['room_id'];
+			}
 			if (! $parentRoomId) {
 				continue;
 			}
