@@ -60,32 +60,34 @@ class MenuFormHelper extends AppHelper {
  * @return string HTMLタグ
  */
 	public function checkboxMenuFramesRoom($roomId, $room, $pageId) {
-		list($prefixInput, $isFidden, $html) = $this->_getRoomPrefix($roomId, $room);
+		list($prefixInput, $isHidden, $html) = $this->_getRoomPrefix($roomId, $room);
 
 		$childPageIds = [];
 		$childPageIds = $this->getRecursiveChildPageId($pageId, $childPageIds);
 		$domChildPageIds = [];
 		foreach ($childPageIds as $childPageId) {
-			$childRoomId = Hash::get(
-				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id'
-			);
+			$childRoomId = $this->_View->viewVars['pages'][$childPageId]['Page']['room_id'];
 			$domChildPageIds[] = $this->domId(
 				'Menus.' . $childRoomId . '.' . $childPageId . '.MenuFramesPage.is_hidden'
 			);
 		}
 
-		$html .= $this->NetCommonsForm->checkbox($prefixInput . '.' . $isFidden, array(
+		$html .= $this->NetCommonsForm->checkbox($prefixInput . '.' . $isHidden, array(
 			'div' => false,
 			'value' => '0',
 			'hiddenField' => '1',
-			'checked' => ! (bool)Hash::get($this->_View->request->data, $prefixInput . '.' . $isFidden),
+			'checked' => ! isset($this->_View->request->data[$prefixInput][$isHidden]),
 			'ng-click' => 'disableChildPages($event, ' . json_encode($domChildPageIds) . ')',
 		));
-		$extract = Hash::extract(
-			$room, 'RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . ']'
-		);
+		$name = '';
+		foreach ($room['RoomsLanguage'] as $room) {
+			if ($room['language_id'] == Current::read('Language.id')) {
+				$name = $room['name'];
+				break;
+			}
+		}
 		$html .= $this->NetCommonsForm->label(
-			$prefixInput . '.' . $isFidden, h(Hash::get($extract, '0.name'))
+			$prefixInput . '.' . $isHidden, h($name)
 		);
 
 		return $html;
@@ -104,9 +106,9 @@ class MenuFormHelper extends AppHelper {
  */
 	public function checkboxMenuFramesPage($roomId, $room, $pageId, $menu, $rootRoomId, $rootRoom) {
 		$html = '';
-		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID) ||
-				Hash::get($menu, 'Page.room_id') !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID) &&
-					! Hash::get($menu, 'Page.parent_id')) {
+		if ($room['Room']['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID) ||
+				$menu['Page']['room_id'] !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID) &&
+					! $menu['Page']['parent_id']) {
 
 			return $html;
 		}
@@ -114,16 +116,14 @@ class MenuFormHelper extends AppHelper {
 			return $html;
 		}
 
-		list($roomPrefixInput, $roomIsFidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom);
-		$roomDisabled = (bool)Hash::get(
-			$this->_View->request->data, $roomPrefixInput . '.' . $roomIsFidden
-		);
+		list($roomPrefixInput, $roomIsHidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom);
+		$roomDisabled = isset($this->_View->request->data[$roomPrefixInput][$roomIsHidden]);
 
 		$prefixInput = 'Menus.' . $roomId . '.' . $pageId . '.MenuFramesPage';
 
 		//ページ名のネスト
 		$nest = substr_count(
-			Hash::get($this->_View->viewVars['pageTreeList'], $pageId), Page::$treeParser
+			$this->_View->viewVars['pageTreeList'][$pageId], Page::$treeParser
 		);
 		$nest--;
 
@@ -131,9 +131,7 @@ class MenuFormHelper extends AppHelper {
 		$childPageIds = $this->getRecursiveChildPageId($pageId, $childPageIds);
 		$domChildPageIds = [];
 		foreach ($childPageIds as $childPageId) {
-			$childRoomId = Hash::get(
-				$this->_View->viewVars['pages'], $childPageId . '.Page.room_id'
-			);
+			$childRoomId = $this->_View->viewVars['pages'][$childPageId]['Page']['room_id'];
 			$domChildPageIds[] = $this->domId(
 				'Menus.' . $childRoomId . '.' . $childPageId . '.MenuFramesPage.is_hidden'
 			);
@@ -158,15 +156,16 @@ class MenuFormHelper extends AppHelper {
  *
  * @param int $pageId Page.id
  * @param array $result 再帰の結果配列
- * @return string HTMLタグ
+ * @return array ページID配列
  */
 	public function getRecursiveChildPageId($pageId, $result) {
-		$childPageIds = Hash::extract(
-			$this->_View->viewVars['pages'], $pageId . '.ChildPage.{n}.id', array()
-		);
-		foreach ($childPageIds as $childPageId) {
-			$result[] = $childPageId;
-			$result = $this->getRecursiveChildPageId($childPageId, $result);
+		if (isset($this->_View->viewVars['pages'][$pageId]['ChildPage'])) {
+			foreach ($this->_View->viewVars['pages'][$pageId]['ChildPage'] as $childPage) {
+				if (isset($childPage['id'])) {
+					$result[] = $childPage['id'];
+					$result = $this->getRecursiveChildPageId($childPage['id'], $result);
+				}
+			}
 		}
 		return $result;
 	}
@@ -180,7 +179,7 @@ class MenuFormHelper extends AppHelper {
  */
 	protected function _getRoomPrefix($roomId, $room) {
 		$html = '';
-		if (Hash::get($room, 'Room.parent_id') === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
+		if ($room['Room']['parent_id'] === Space::getRoomIdRoot(Space::PRIVATE_SPACE_ID)) {
 			$prefixInput = 'MenuFrameSetting';
 			$isFidden = 'is_private_room_hidden';
 		} else {
@@ -210,14 +209,14 @@ class MenuFormHelper extends AppHelper {
  *
  * @param array $room ルームデータ
  * @param int $pageId ページID
- * @return array
+ * @return string CSSクラス名
  */
 	protected function _getPageNameCss($room, $pageId) {
-		$page = Hash::get($this->_View->viewVars['pages'], $pageId);
-		if (Hash::get($room, 'Room.page_id_top') === $pageId &&
-				Hash::get($page, 'Page.room_id') !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
+		$page = $this->_View->viewVars['pages'][$pageId];
+		if ($room['Room']['page_id_top'] === $pageId &&
+				$page['Page']['room_id'] !== Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID)) {
 			$pageNameCss = 'menu-tree-room';
-		} elseif (Hash::get($page, 'ChildPage')) {
+		} elseif (isset($page['ChildPage'])) {
 			$pageNameCss = 'menu-tree-node-page';
 		} else {
 			$pageNameCss = 'menu-tree-leaf-page';

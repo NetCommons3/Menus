@@ -125,10 +125,7 @@ class MenuFrameSettingsController extends MenusAppController {
 			$this->NetCommons->handleValidationError($this->MenuFrameSetting->validationErrors);
 		}
 
-		$this->request->data = Hash::merge($this->request->data,
-			$this->MenuFrameSetting->getMenuFrameSetting()
-		);
-
+		$this->request->data += $this->MenuFrameSetting->getMenuFrameSetting();
 		$this->request->data['Frame'] = Current::read('Frame');
 		$this->request->data['Menus'] = $this->viewVars['menus'];
 		$this->request->data['MenuRooms'] = $this->MenuFramesRoom->getMenuFrameRooms(array(
