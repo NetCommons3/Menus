@@ -154,7 +154,7 @@ class MenuFrameSetting extends MenusAppModel {
 		if (isset($this->data['Menus'])) {
 			$data = [];
 			foreach ($this->data['Menus'] as $menu) {
-				foreach ($menu as $pageId => $item) {
+				foreach ($menu as $item) {
 					$data[$item['MenuFramesPage']['page_id']] = $item;
 				}
 			}
