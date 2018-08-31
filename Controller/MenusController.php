@@ -61,7 +61,7 @@ class MenusController extends MenusAppController {
 				$this->Room->alias . '.id' => $roomIds
 			)
 		));
-		$this->set('menuFrameRooms', Hash::combine($menuFrameRooms, '{n}.Room.id', '{n}'));
+		$this->set('menuFrameRooms', $menuFrameRooms);
 
 		$pages = $this->Page->getPages($roomIds);
 		$this->set('pages', $pages);
@@ -104,7 +104,10 @@ class MenusController extends MenusAppController {
  * 表示するページのTree
  *
  * @return void
+ *
+ * 速度改善の修正に伴って発生したため抑制
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 	protected function _setTreeListForDisplay() {
 		$roomIds = array_keys($this->viewVars['rooms']);
@@ -116,7 +119,10 @@ class MenusController extends MenusAppController {
 		$dbPageTreeList = $this->Page->generateTreeList($conditions, null, null, Page::$treeParser);
 
 		$parentPages = $this->Page->getPath(Current::read('Page.id'));
-		$parentPageIds = Hash::extract($parentPages, '{n}.Page.id');
+		$parentPageIds = [];
+		foreach ($parentPages as $parentPage) {
+			$parentPageIds[] = $parentPage['Page']['id'];
+		}
 
 		$treeList4Disp = []; //表示ツリー用の変数
 		$treeChildList = []; //子(孫)ページを表示するかどうか保持す変数
@@ -165,7 +171,7 @@ class MenusController extends MenusAppController {
 				$treeList4Disp[$pageId] = $treePageId;
 
 				//ページの下層ページIDs
-				$treeChildList = Hash::merge(
+				$treeChildList = array_merge(
 					$treeChildList,
 					$childPageIds[$pageId]
 				);
@@ -179,9 +185,10 @@ class MenusController extends MenusAppController {
 				//以下の条件の時、下層ページデータを取得して、次ループで当処理に入ってくるようにデータを保持する
 				// * クリック時下層ページを表示
 				// * 現在表示しているページの親ページ
-				if (Hash::get($menu, 'MenuFramesPage.folder_type')) {
+				if (isset($menu['MenuFramesPage']['folder_type']) &&
+					! empty($menu['MenuFramesPage']['folder_type'])) {
 					//ページの下層ページIDs
-					$treeChildList = Hash::merge(
+					$treeChildList = array_merge(
 						$treeChildList,
 						$childPageIds[$pageId]
 					);
@@ -220,7 +227,9 @@ class MenusController extends MenusAppController {
  * @return bool
  */
 	protected function _showPrivateRoom($menu) {
-		$defaultHidden = Hash::get($this->viewVars, 'defaultHidden', false);
+		$defaultHidden = isset($this->viewVars['defaultHidden'])
+			? $this->viewVars['defaultHidden']
+			: false;
 
 		$room = $this->viewVars['menuFrameRooms'][$menu['Page']['room_id']]['Room'];
 
@@ -247,7 +256,9 @@ class MenusController extends MenusAppController {
  * @return bool
  */
 	protected function _showRoom($menu) {
-		$defaultHidden = Hash::get($this->viewVars, 'defaultHidden', false);
+		$defaultHidden = isset($this->viewVars['defaultHidden'])
+			? $this->viewVars['defaultHidden']
+			: false;
 
 		$room = $this->viewVars['menuFrameRooms'][$menu['Page']['room_id']]['Room'];
 
@@ -255,9 +266,11 @@ class MenusController extends MenusAppController {
 			return false;
 		}
 
-		$menuFrameRooms = Hash::get($this->viewVars['menuFrameRooms'], $room['id'], array());
-		if (Hash::get($menuFrameRooms, 'MenuFramesRoom.is_hidden') ||
-				$defaultHidden && ! Hash::get($menuFrameRooms, 'MenuFramesRoom.id')) {
+		$menuFrameRooms = isset($this->viewVars['menuFrameRooms'])
+			? $this->viewVars['menuFrameRooms'][$room['id']]
+			: [];
+		if ($menuFrameRooms['MenuFramesRoom']['is_hidden'] ||
+				$defaultHidden && ! $menuFrameRooms['MenuFramesRoom']['id']) {
 			return false;
 		}
 		if ($defaultHidden && ! $menu['MenuFramesPage']['id']) {

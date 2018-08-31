@@ -132,7 +132,7 @@ class MenuFrameSetting extends MenusAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
@@ -151,10 +151,15 @@ class MenuFrameSetting extends MenusAppModel {
 			),
 		));
 
-		if (Hash::get($this->data, 'Menus')) {
-			$data = Hash::combine($this->data['Menus'], '{n}.{n}.MenuFramesPage.page_id', '{n}.{n}');
+		if (isset($this->data['Menus'])) {
+			$data = [];
+			foreach ($this->data['Menus'] as $menu) {
+				foreach ($menu as $item) {
+					$data[$item['MenuFramesPage']['page_id']] = $item;
+				}
+			}
 			if (! $this->MenuFramesPage->validateMany($data)) {
-				$this->validationErrors = Hash::merge(
+				$this->validationErrors = array_merge(
 					$this->validationErrors, $this->MenuFramesPage->validationErrors
 				);
 				return false;
@@ -175,10 +180,14 @@ class MenuFrameSetting extends MenusAppModel {
  * @throws InternalErrorException
  */
 	public function afterSave($created, $options = array()) {
-		//MenuFramesPage登録
 		if (isset($this->data['Menus'])) {
 			//MenuFramesPage登録処理
-			$data = Hash::combine($this->data['Menus'], '{n}.{n}.MenuFramesPage.page_id', '{n}.{n}');
+			$data = [];
+			foreach ($this->data['Menus'] as $menu) {
+				foreach ($menu as $pageId => $item) {
+					$data[$pageId] = $item;
+				}
+			}
 			if (! $this->MenuFramesPage->saveMany($data, ['validate' => false])) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}

@@ -31,8 +31,8 @@
 						}
 
 						$pageId = trim($treePageId);
-						$page = Hash::get($pages, $pageId);
-						$menu = Hash::get($menus, $page['Room']['id'] . '.' . $pageId);
+						$page = $pages[$pageId];
+						$menu = $menus[$page['Room']['id']][$pageId];
 
 						$nest = $this->Menu->getIndent($treePageId);
 						if ($nest === 0) {

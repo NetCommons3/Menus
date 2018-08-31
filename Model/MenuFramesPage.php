@@ -55,7 +55,7 @@ class MenuFramesPage extends MenusAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
+		$this->validate = array_merge($this->validate, array(
 			'frame_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
