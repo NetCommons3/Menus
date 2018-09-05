@@ -186,7 +186,8 @@ class MenuFramesRoom extends MenusAppModel {
 				),
 			),
 			'order' => array(
-				$this->Room->alias . '.lft' => 'asc',
+				//$this->Room->alias . '.lft' => 'asc',
+				$this->Room->alias . '.sort_key' => 'asc',
 			)
 		);
 	}
