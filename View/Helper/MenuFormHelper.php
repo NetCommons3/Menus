@@ -143,7 +143,7 @@ class MenuFormHelper extends AppHelper {
 			'pageId' => $pageId,
 			'nest' => $nest,
 			//'displayWhenClicking' => $menu['Page']['lft'] + 1 !== (int)$menu['Page']['rght'],
-			'displayWhenClicking' => !(bool)$menu['Page']['child_count'],
+			'displayWhenClicking' => (bool)$menu['Page']['child_count'],
 			'domChildPageIds' => $domChildPageIds,
 			'roomDisabled' => $roomDisabled,
 			'pageNameCss' => $this->_getPageNameCss($room, $pageId),
