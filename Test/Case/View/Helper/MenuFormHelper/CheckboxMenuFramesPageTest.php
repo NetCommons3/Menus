@@ -188,8 +188,9 @@ class MenuFormHelperCheckboxMenuFramesPageTest extends NetCommonsHelperTestCase 
 			$this->assertInput('input',
 					'data[Menus][1][' . $pageId . '][MenuFramesPage][is_hidden]', '1', $result);
 
-			$this->assertInput('input',
-					'data[Menus][1][' . $pageId . '][MenuFramesPage][folder_type]', '0', $result);
+			//$this->assertInput('input',
+			//		'data[Menus][1][' . $pageId . '][MenuFramesPage][folder_type]', '0', $result);
+			$this->assertTextNotContains('[folder_type]', $result);
 		}
 	}
 
