@@ -14,13 +14,13 @@ if ($nest === 0) {
 	$linkClick = 'linkClick(\'' . $this->Menu->getLinkDomId('header', $pageId) . '\')';
 	if ($isActive || $isRootActive) {
 		if ($hasChild) {
-			$listTagStart = '<li role="presentation" class="dropdown active" ng-click="' . $linkClick . '">';
+			$listTagStart = '<li role="presentation" class="dropdown active">';
 		} else {
 			$listTagStart = '<li class="active" ng-click="' . $linkClick . '">';
 		}
 	} else {
 		if ($hasChild) {
-			$listTagStart = '<li role="presentation" class="dropdown" ng-click="' . $linkClick . '">';
+			$listTagStart = '<li role="presentation" class="dropdown">';
 		} else {
 			$listTagStart = '<li ng-click="' . $linkClick . '">';
 		}

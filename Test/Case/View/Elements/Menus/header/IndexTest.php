@@ -108,7 +108,7 @@ class MenusViewElementsMenusHeaderIndexTest extends NetCommonsControllerTestCase
 				'<\/li>';
 		} elseif ($hasDropMark) {
 			$pattern =
-				'<li role="presentation" class="dropdown" ng-click="linkClick\(\'' . $domId . '\'\)">' .
+				'<li role="presentation" class="dropdown">' .
 					'<a href=".*?' . preg_quote($permalink, '/') . '" id="' . $domId . '" title="' . $name . '" class="clearfix dropdown-toggle">' .
 						'<span>' . $name . '<\/span> <span class="caret"><\/span>' .
 					'<\/a>' .
