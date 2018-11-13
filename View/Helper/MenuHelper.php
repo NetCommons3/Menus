@@ -319,7 +319,7 @@ class MenuHelper extends AppHelper {
  * @return bool
  */
 	public function isActive($page) {
-		return Current::read('Page.permalink') === (string)$page['Page']['permalink'];
+		return Current::read('Page.full_permalink') === (string)$page['Page']['full_permalink'];
 	}
 
 /**
@@ -391,7 +391,6 @@ class MenuHelper extends AppHelper {
 		if ($page['Page']['root_id'] === Page::PUBLIC_ROOT_PAGE_ID) {
 			$indent--;
 		}
-
 		return $indent;
 	}
 
