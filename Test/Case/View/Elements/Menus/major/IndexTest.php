@@ -66,6 +66,7 @@ class MenusViewElementsMenusMajorIndexTest extends NetCommonsControllerTestCase 
 		$frameId = '2';
 		Current::write('Page.id', '4');
 		Current::write('Page.permalink', 'home');
+		Current::write('Page.full_permalink', 'home');
 
 		//テスト実行
 		$this->_testGetAction('/test_menus/test_view_elements_menus_major_index/index?frame_id=' . $frameId,
