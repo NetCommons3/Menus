@@ -319,7 +319,7 @@ class MenuHelper extends AppHelper {
  * @return bool
  */
 	public function isActive($page) {
-		return Current::read('Page.full_permalink') === (string)$page['Page']['full_permalink'];
+		return Current::read('Page.id') === (string)$page['Page']['id'];
 	}
 
 /**
