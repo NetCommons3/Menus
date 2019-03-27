@@ -76,7 +76,7 @@ class MenuFormHelper extends AppHelper {
 			'div' => false,
 			'value' => '0',
 			'hiddenField' => '1',
-			'checked' => ! isset($this->_View->request->data[$prefixInput][$isHidden]),
+			'checked' => ! Hash::get($this->_View->request->data, $prefixInput . '.' . $isHidden, false),
 			'ng-click' => 'disableChildPages($event, ' . json_encode($domChildPageIds) . ')',
 		));
 		$name = '';
