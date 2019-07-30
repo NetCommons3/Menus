@@ -15,7 +15,7 @@
 
 	<div class="panel-body">
 		<div class="tab-content">
-			<?php echo $this->element('MenuFrameSettings/edit_form'); ?>
+			<?php echo $this->element('Menus.MenuFrameSettings/edit_form'); ?>
 		</div>
 	</div>
 
