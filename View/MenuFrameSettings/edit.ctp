@@ -1,6 +1,6 @@
 <?php
 /**
- * UserAttribute edit template
+ * メニューの編集画面のview
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
