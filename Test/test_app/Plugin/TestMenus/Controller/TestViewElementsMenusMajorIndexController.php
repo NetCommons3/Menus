@@ -39,6 +39,12 @@ class TestViewElementsMenusMajorIndexController extends MenusController {
  */
 	public function index() {
 		$this->autoRender = true;
+
+		Current::write('Frame.id', $this->request->query['frame_id']);
+		Current::write('Frame.header_type', 'default');
+		Current::write('Frame.plugin_key', 'menus');
+		Current::write('Page.id', '4');
+
 		parent::index();
 	}
 

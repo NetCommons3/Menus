@@ -259,7 +259,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
  */
 	public function testLinkWithSettingMode() {
 		//Helperロード
-		Current::isSettingMode(true);
+		Current::setSettingMode(true);
 		$viewVars = $this->__getViewVars('4');
 		$requestData = array();
 		$params = array();
@@ -285,7 +285,7 @@ class MenuHelperLinkTest extends NetCommonsHelperTestCase {
 		);
 		$this->assertEquals($expected, $result);
 
-		Current::isSettingMode(false);
+		Current::setSettingMode(false);
 	}
 
 }
