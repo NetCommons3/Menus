@@ -10,6 +10,7 @@
  */
 
 App::uses('MenusController', 'Menus.Controller');
+App::uses('Container', 'Containers.Model');
 
 /**
  * View/Elements/Menus/minor/indexテスト用Controller
@@ -41,6 +42,13 @@ class TestViewElementsMenusMinorIndexController extends MenusController {
 		$this->request->params['plugin'] = 'menus';
 		$this->request->params['controller'] = 'menus';
 		$this->autoRender = true;
+
+		Current::write('Frame.id', $this->request->query['frame_id']);
+		Current::write('Frame.header_type', 'default');
+		Current::write('Frame.plugin_key', 'menus');
+		Current::write('Page.id', '9');
+		Current::write('PageContainer.container_type', Container::TYPE_MINOR);
+
 		parent::index();
 	}
 

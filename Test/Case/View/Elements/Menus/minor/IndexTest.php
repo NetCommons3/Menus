@@ -64,9 +64,6 @@ class MenusViewElementsMenusMinorIndexTest extends NetCommonsControllerTestCase 
  */
 	public function testIndex() {
 		$frameId = '3';
-		Current::write('Page.id', '9');
-		Current::write('Page.permalink', 'page_1');
-		Current::write('Page.full_permalink', 'page_1');
 
 		//テスト実行
 		$this->_testGetAction('/test_menus/test_view_elements_menus_minor_index/index?frame_id=' . $frameId,

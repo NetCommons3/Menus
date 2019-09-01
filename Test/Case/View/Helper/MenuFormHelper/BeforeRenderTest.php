@@ -62,12 +62,8 @@ class MenuFormHelperBeforeRenderTest extends NetCommonsControllerTestCase {
 		$pattern = '/' . preg_quote('View/Helper/TestMenuFormHelperBeforeRender', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 
-		//cssのURLチェック
-		$pattern = '/<link.*?' . preg_quote('/menus/css/style.css', '/') . '.*?>/';
-		$this->assertRegExp($pattern, $this->contents);
-
 		//scriptのURLチェック
-		$pattern = '/<script.*?' . preg_quote('/menus/js/menus.js', '/') . '.*?>/';
+		$pattern = '/<script.*?' . preg_quote('/menus.js', '/') . '.*?>/';
 		$this->assertRegExp($pattern, $this->contents);
 	}
 
