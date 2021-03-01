@@ -119,6 +119,14 @@ class MenuFrameSettingsController extends MenusAppController {
 			//不要パラメータ除去
 			unset($this->request->data['save']);
 			//登録処理
+			foreach ($this->request->data['MenuRooms'] as $i => $menuRoom) {
+				$roomId = $menuRoom['MenuFramesRoom']['room_id'] ?? null;
+				$pageId = $menuRoom['MenuFramesRoom']['page_id_top'] ?? null;
+				$isHidden =
+					$this->request->data['Menus'][$roomId][$pageId]['MenuFramesPage']['is_hidden'] ?? null;
+				$this->request->data['MenuRooms'][$i]['MenuFramesRoom']['is_hidden'] = $isHidden;
+			}
+
 			if ($this->MenuFrameSetting->saveMenuFrameSetting($this->request->data)) {
 				return $this->redirect(NetCommonsUrl::backToPageUrl());
 			}

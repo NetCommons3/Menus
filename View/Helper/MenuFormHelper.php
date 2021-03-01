@@ -117,7 +117,7 @@ class MenuFormHelper extends AppHelper {
 		}
 
 		list($roomPrefixInput, $roomIsHidden, ) = $this->_getRoomPrefix($rootRoomId, $rootRoom);
-		$roomDisabled = isset($this->_View->request->data[$roomPrefixInput][$roomIsHidden]);
+		$roomDisabled = Hash::get($this->_View->request->data, $roomPrefixInput)[$roomIsHidden] ?? null;
 
 		$prefixInput = 'Menus.' . $roomId . '.' . $pageId . '.MenuFramesPage';
 
@@ -191,6 +191,17 @@ class MenuFormHelper extends AppHelper {
 			if ($roomId === Space::getRoomIdRoot(Space::PUBLIC_SPACE_ID, 'Room')) {
 				$pageIdTop = Space::getPageIdSpace(Space::PUBLIC_SPACE_ID);
 			}
+
+			$prefixInput = 'MenuRooms.' . $roomId . '.MenuFramesRoom';
+			$html .= $this->NetCommonsForm->hidden($prefixInput . '.id');
+			$html .= $this->NetCommonsForm->hidden($prefixInput . '.frame_key',
+					array('value' => $this->_View->request->data['Frame']['key']));
+			$html .= $this->NetCommonsForm->hidden(
+				$prefixInput . '.page_id_top', array('value' => $pageIdTop)
+			);
+			$html .= $this->NetCommonsForm->hidden(
+				$prefixInput . '.room_id', array('value' => $roomId)
+			);
 
 			$prefixInput = 'Menus.' . $roomId . '.' . $pageIdTop . '.MenuFramesPage';
 			$isFidden = 'is_hidden';
