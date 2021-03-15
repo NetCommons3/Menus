@@ -10,8 +10,9 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-
-<nav ng-controller="MenusController">
-<?php echo $this->Menu->renderMain(); ?>
-</nav>
-
+<?php
+if (!empty($treeList4Disp)) {
+	echo '<nav ng-controller="MenusController">';
+	echo $this->Menu->renderMain();
+	echo '</nav>';
+}
