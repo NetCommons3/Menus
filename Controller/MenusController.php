@@ -81,7 +81,7 @@ class MenusController extends MenusAppController {
 			)
 		));
 
-		if ($count1 && $count2) {
+		if (!$count1 && $count2) {
 			$options = array(
 				MenuFrameSetting::DISPLAY_TYPE_HEADER,
 				MenuFrameSetting::DISPLAY_TYPE_FOOTER,
