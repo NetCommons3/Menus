@@ -66,6 +66,7 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 				'id' => '2',
 				'frame_key' => 'frame_2',
 				'display_type' => 'major',
+				'is_private_room_hidden' => null,
 				'created_user' => null,
 				'created' => null,
 				'modified_user' => null,
@@ -74,6 +75,7 @@ class MenuFrameSettingGetMenuFrameSettingTest extends NetCommonsGetTest {
 			array('frameKey' => 'frame_8', 'expected' => array(
 				'frame_key' => 'frame_8',
 				'display_type' => 'major',
+				'is_private_room_hidden' => null,
 				'created_user' => null,
 				'created' => null,
 				'modified_user' => null,

@@ -63,6 +63,7 @@ class MenuFrameSettingSaveTest extends NetCommonsModelTestCase {
 				'id' => '3',
 				'frame_key' => 'frame_3',
 				'display_type' => 'major',
+				'is_private_room_hidden' => null,
 			),
 			'Menus' => array(
 				1 => array(
