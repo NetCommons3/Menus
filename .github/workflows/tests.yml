@@ -48,6 +48,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Fix up git URLs
+        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
+
       - name: environment
         run: |
           echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE}"
@@ -58,7 +61,7 @@ jobs:
 
       - name: docker-compose install
         run: |
-          curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+          curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
           chmod +x ~/docker-compose
           sudo mv ~/docker-compose /usr/local/bin/docker-compose
           docker-compose --version
