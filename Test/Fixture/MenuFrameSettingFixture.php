@@ -18,25 +18,6 @@
 class MenuFrameSettingFixture extends CakeTestFixture {
 
 /**
- * Fields
- *
- * @var array
- */
-	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary', 'comment' => 'ID'),
-		'frame_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'フレームKey', 'charset' => 'utf8'),
-		'display_type' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'bootstrap navi type', 'charset' => 'utf8'),
-		'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '作成者'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
-		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'comment' => '更新者'),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
-	);
-
-/**
  * Records
  *
  * @var array
@@ -46,27 +27,42 @@ class MenuFrameSettingFixture extends CakeTestFixture {
 			'id' => '1',
 			'frame_key' => 'frame_1',
 			'display_type' => 'header',
+			'is_private_room_hidden' => null,
 		),
 		array(
 			'id' => '2',
 			'frame_key' => 'frame_2',
 			'display_type' => 'major',
+			'is_private_room_hidden' => null,
 		),
 		array(
 			'id' => '3',
 			'frame_key' => 'frame_3',
 			'display_type' => 'major',
+			'is_private_room_hidden' => null,
 		),
 		array(
 			'id' => '4',
 			'frame_key' => 'frame_4',
 			'display_type' => 'minor',
+			'is_private_room_hidden' => null,
 		),
 		array(
 			'id' => '5',
 			'frame_key' => 'frame_5',
 			'display_type' => 'footer',
+			'is_private_room_hidden' => null,
 		),
 	);
 
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ */
+	public function init() {
+		require_once App::pluginPath('Menus') . 'Config' . DS . 'Schema' . DS . 'schema.php';
+		$this->fields = (new MenusSchema())->tables[Inflector::tableize($this->name)];
+		parent::init();
+	}
 }
