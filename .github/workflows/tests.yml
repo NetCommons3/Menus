@@ -44,6 +44,7 @@ jobs:
         MYSQL_VERSION: ${{ matrix.mysql }}
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: cakephp_test
+        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
